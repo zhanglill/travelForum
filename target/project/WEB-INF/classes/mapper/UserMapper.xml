@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.travel.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.zl.travel.domain.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="credit" property="credit" jdbcType="INTEGER" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="TINYINT" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="is_locked" property="isLocked" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="AllUserInfo" type="com.zl.travel.domain.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="credit" property="credit" jdbcType="INTEGER" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="TINYINT" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="is_locked" property="isLocked" jdbcType="VARCHAR" />
+
+		<association property="log" javaType="com.zl.travel.domain.LoginLog">
+			<id column="id" property="id" jdbcType="BIGINT" />
+			<result column="user_id" property="userId" jdbcType="INTEGER" />
+			<result column="login_time" property="loginTime" jdbcType="DATE" />
+			<result column="ip" property="ip" jdbcType="VARCHAR" />
+			<result column="device" property="device" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<!-- 管理员查询用户 -->
+	<select resultMap="AllUserInfo" parameterType="java.util.Map"
+		id="getUserList">
+		select u.*,log.* from user u left join login_log log on
+		u.id=log.user_id
+		<where>
+			u.del_flag='0'
+			and u.type='0'
+			<if test="param.searchParam != null and param.searchParam != ''">
+				AND username like #{param.searchParam}
+			</if>
+		</where>
+		order by u.create_time
+	</select>
+	<!-- 超级管理员查询用户 -->
+	<select resultMap="AllUserInfo" parameterType="java.util.Map"
+		id="getAllUserList">
+		select u.*,log.* from user u left join login_log log on
+		u.id=log.user_id
+		<where>
+			u.del_flag='0'
+			and u.type<![CDATA[!= ]]>'2'
+			<if test="param.searchParam != null and param.searchParam != ''">
+				AND username like #{param.searchParam}
+			</if>
+		</where>
+		order by u.create_time
+	</select>
+	
+	<!-- 根据用户id查询用户信息 -->
+	<select resultMap="AllUserInfo" parameterType="java.lang.Integer"
+		id="selectUserInfoByPrimaryKey">
+		select u.*,log.* from user u left join login_log log on
+		u.id=log.user_id where u.del_flag='0' and u.id = #{id,jdbcType=INTEGER}
+	</select>
+	
+
+	<sql id="Base_Column_List">
+		id, username, password, email, phone_num, create_time,
+		update_time,
+		credit, avatar,
+		type,del_flag,is_locked
+	</sql>
+
+	<!-- 保存用户 -->
+	<insert parameterType="com.zl.travel.domain.User" id="insert">
+		insert into
+		user (username,
+		password,
+		email, phone_num, create_time,
+		update_time,
+		credit,
+		type,avatar,del_flag,is_locked)
+		values (#{username,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{phoneNum,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}, #{credit,jdbcType=INTEGER},
+		#{type,jdbcType=TINYINT},#{avatar,jdbcType=VARCHAR}),#{delFlag,jdbcType=VARCHAR},#{isLocked,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 保存用户 -->
+	<insert parameterType="com.zl.travel.domain.User" id="insertSelective">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="phoneNum != null">
+				phone_num,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="credit != null">
+				credit,
+			</if>
+			<if test="avatar != null">
+				avatar,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="isLocked != null">
+                is_locked
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNum != null">
+				#{phoneNum,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="credit != null">
+				#{credit,jdbcType=INTEGER},
+			</if>
+			<if test="avatar != null">
+				#{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=TINYINT},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="isLocked != null">
+                #{isLocked,jdbcType=VARCHAR}
+            </if>
+		</trim>
+	</insert>
+
+	<!-- 根据用户id查询用户 -->
+	<select resultMap="BaseResultMap" parameterType="java.lang.Integer"
+		id="selectByPrimaryKey">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{id,jdbcType=INTEGER} and del_flag='0'
+	</select>
+
+	<!-- 根据用户名查询普通用户 -->
+	<select resultMap="BaseResultMap" parameterType="java.lang.String"
+		id="selectByUsername">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where username = #{username,jdbcType=VARCHAR} and
+		del_flag='0' and is_locked='0'
+	</select>
+	<!-- <select resultMap="BaseResultMap" parameterType="java.lang.String"
+		id="selectByUsername">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where username = #{username,jdbcType=VARCHAR} and
+		del_flag='0' and type='0'
+	</select> -->
+	<!-- 根据用户名查询所有符合的用户 -->
+	<select resultMap="BaseResultMap" parameterType="java.lang.String"
+		id="selectByUsername2">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where username = #{username,jdbcType=VARCHAR} and
+		del_flag='0' and is_locked='0' and type<![CDATA[!= ]]>'0'
+	</select>
+
+	<!-- 获取系统用户数 -->
+	<!-- <select id="getUserCount" resultType="java.lang.Integer"> select count(*) 
+		from user </select> -->
+
+	<!-- 查询用户名是否存在 -->
+	<select resultType="java.lang.Integer" parameterType="java.lang.String"
+		id="existUsername">
+		SELECT count(*) from user where username =
+		#{username,jdbcType=VARCHAR} and del_flag='0' and is_locked='0'
+	</select>
+	<!-- 查询用户名是否存在 -->
+	<select resultType="java.lang.Integer" parameterType="java.lang.String"
+		id="existUsername2">
+		SELECT count(*) from user where username =
+		#{username,jdbcType=VARCHAR} and del_flag='0' and is_locked='0' and type &gt; '0'
+	</select>
+
+	<!-- <delete parameterType="java.lang.Integer" id="deleteByPrimaryKey"> 
+		delete from user where id = #{id,jdbcType=INTEGER} </delete> -->
+	<delete parameterType="java.lang.Integer" id="deleteByPrimaryKey">
+		update user
+		set
+		del_flag ='1'
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<update parameterType="com.zl.travel.domain.User" id="updateByPrimaryKeySelective">
+		update user
+		<set>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNum != null">
+				phone_num = #{phoneNum,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="credit != null">
+				credit = #{credit,jdbcType=INTEGER},
+			</if>
+			<if test="avatar != null">
+				avatar = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=TINYINT},
+			</if>
+			<if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="isLocked != null">
+                is_locked = #{isLocked,jdbcType=TINYINT}
+            </if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update parameterType="com.zl.travel.domain.User" id="updateByPrimaryKey">
+		update user
+		set
+		username = #{username,jdbcType=VARCHAR},
+		password =
+		#{password,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		phone_num = #{phoneNum,jdbcType=VARCHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		credit = #{credit,jdbcType=INTEGER},
+		avatar = #{avatar,jdbcType=VARCHAR},
+		type = #{type,jdbcType=TINYINT},
+		del_flag = #{delFlag,jdbcType=TINYINT},
+		is_locked = #{isLocked,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="addCredit">
+		update user set credit = credit +
+		#{points,jdbcType=INTEGER} WHERE id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateLockUserByPrimaryKey">
+        update user set is_locked = '1'
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateUnLockUserByPrimaryKey">
+        update user set is_locked = '0'
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateUserRole">
+        update user set type = #{type,jdbcType=TINYINT}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    
+</mapper>

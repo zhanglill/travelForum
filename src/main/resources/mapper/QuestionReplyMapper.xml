@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.travel.dao.QuestionsReplyMapper">
+
+	<!-- 评论信息 -->
+	<resultMap id="QuestionsReplyAndUser" type="com.zl.travel.domain.QuestionsReply">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="questions_id" property="questionsId" jdbcType="INTEGER" />
+		<result column="reply_user_id" property="replyUserId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<association property="user" javaType="com.zl.travel.domain.User">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+
+
+	<select resultMap="QuestionsReplyAndUser" parameterType="java.lang.Integer"
+		id="getRepliesOfQuestions">
+		SELECT questions_reply.*,user.username,user.avatar
+		from questions_reply,user
+		where questions_reply.reply_user_id = user.id and questions_reply.questions_id =
+		#{questionsId,jdbcType=INTEGER}
+		order by questions_reply.create_time ASC;
+	</select>
+
+	<select resultType="java.lang.Integer" parameterType="java.lang.Integer"
+		id="getQuestionsRepliesNum">
+		SELECT count(id)
+		FROM questions_reply
+		WHERE questions_id = #{questionsId,jdbcType=INTEGER}
+	</select>
+
+	<delete parameterType="java.lang.Long" id="deleteByPrimaryKey">
+		delete from questions_reply
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert parameterType="com.zl.travel.domain.QuestionsReply" id="insert">
+		insert into questions_reply (questions_id, reply_user_id,
+		create_time, update_time,
+		content)
+		values ( #{questionsId,jdbcType=INTEGER}, #{replyUserId,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{content,jdbcType=LONGVARCHAR})
+	</insert>
+
+
+</mapper>

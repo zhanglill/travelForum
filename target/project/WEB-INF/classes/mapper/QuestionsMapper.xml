@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.travel.dao.QuestionsMapper">
+
+	<!-- 主题基本结果集 -->
+	<resultMap id="BaseResultMap" type="com.zl.travel.domain.Questions">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 主题基本结果集+ 主题内容 用于主题详情 -->
+	<resultMap id="ResultMapWithBLOBs" type="com.zl.travel.domain.Questions"
+		extends="BaseResultMap">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<!-- 主题和用户信息结果集 用于首页显示 -->
+	<resultMap id="QuestionsAndUserInfo" type="com.zl.travel.domain.Questions">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="click" property="click" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="count_replies" property="countReplies"
+			jdbcType="INTEGER" />
+		<association property="user" javaType="com.zl.travel.domain.User">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<!-- 主题详情及用户必要信息 用于主题详情页 -->
+	<resultMap id="QuestionsAndUserDetails" type="com.zl.travel.domain.Questions">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="click" property="click" jdbcType="INTEGER" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<association property="user" javaType="com.zl.travel.domain.User">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<resultMap id="QuestionsAndUserDetail" type="com.zl.travel.domain.Questions">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+		<result column="click" property="click" jdbcType="INTEGER" />
+		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 最多评论主题列表 -->
+	<resultMap id="mostCommentsQuestions" type="com.zl.travel.domain.Questions">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="count_replies" property="countReplies"
+			jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, create_time, update_time, title, content,
+		click, tab_id
+	</sql>
+
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+
+	<select resultMap="BaseResultMap" id="myQuestionList"
+		parameterType="java.lang.Integer">
+		SELECT * from questions where user_id=#{id, jdbcType=INTEGER} and del_flag='0';
+	</select>
+	
+	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsers"> 
+		select questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,user.username,user.avatar, 
+		count(questions_reply.id) as count_replies from questions LEFT JOIN user 
+		on questions.user_id = user.id LEFT JOIN questions_reply on questions.id=questions_reply.questions_id where questions.del_flag="0"
+		group by questions.id order by questions.id desc; </select>
+		
+	<select resultMap="BaseResultMap" id="listQuestionsAndUser">
+		select * from questions
+		where del_flag="0" order by id desc ;
+	</select>
+	
+	
+	<select resultMap="QuestionsAndUserDetails" id="selectById"
+		parameterType="java.lang.Integer">
+		SELECT questions.*,user.username,user.avatar from
+		questions,user where
+		questions.user_id = user.id and questions.id =
+		#{id,jdbcType=INTEGER};
+	</select>
+	<select resultMap="QuestionsAndUserDetail" id="selectOneById"
+		parameterType="java.lang.Integer">
+		SELECT * from questions where id=#{id,jdbcType=INTEGER} and del_flag="0";
+	</select>
+
+	<select resultMap="BaseResultMap" id="getAllQuestions">
+		select
+		<include refid="Base_Column_List" />
+		from questions where del_flag="0"
+		ORDER BY id DESC
+	</select>
+
+	<select id="getQuestionsNum" resultType="java.lang.Integer">
+		select
+		COUNT(*)
+		from
+		questions where del_flag="0"
+	</select>
+
+	<select resultMap="mostCommentsQuestions" id="listMostCommentsQuestions">
+		SELECT
+		questions.id,questions.title,questions.content,count(questions_reply.id)
+		as count_replies from
+		questions ,questions_reply where questions.id = questions_reply.questions_id
+		and questions.del_flag="0"
+		group by questions.id
+		order by count_replies desc limit 5;
+	</select>
+
+	<select resultMap="BaseResultMap" id="listUserPersonalQuestions">
+		SELECT * from questions
+		where user_id=#{id} and del_flag="0";
+	</select>
+
+	<!-- <delete parameterType="java.lang.Integer" id="deleteByPrimaryKey"> 
+		delete from questions where id = #{id,jdbcType=INTEGER} </delete> -->
+	<delete parameterType="java.lang.Integer" id="deleteByPrimaryKey">
+		update questions
+		set del_flag = '1'
+		where id = #{id,jdbcType=INTEGER} and del_flag="0"
+	</delete>
+	
+	<insert parameterType="com.zl.travel.domain.Questions" id="insert">
+		insert into questions (user_id, create_time,
+		update_time,title,
+		content, del_flag)
+		values (#{userId,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{title,jdbcType=VARCHAR},#{content,jdbcType=LONGVARCHAR},
+		#{delFlag,jdbcType=VARCHAR})
+	</insert>
+
+	<insert parameterType="com.zl.travel.domain.Questions" id="insertSelective">
+		insert into questions
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="click != null">
+				click,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="delFlag != null">
+				del_flag
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="click != null">
+				#{click,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zl.travel.domain.Questions">
+		update questions
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="click != null">
+				click = #{click,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=LONGVARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update parameterType="com.zl.travel.domain.Questions" id="updateByPrimaryKeyWithBLOBs">
+		update questions
+		set user_id = #{userId,jdbcType=INTEGER},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		click = #{click,jdbcType=INTEGER},
+		title = #{title,jdbcType=VARCHAR},
+		content =
+		#{content,jdbcType=LONGVARCHAR},
+		del_flag =
+		#{delFlag,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update parameterType="com.zl.travel.domain.Questions" id="updateByPrimaryKey">
+		update questions
+		set user_id = #{userId,jdbcType=INTEGER},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		title = #{title,jdbcType=VARCHAR},
+		content = #{content,jdbcType=VARCHAR},
+		click =
+		#{click,jdbcType=INTEGER},
+		del_flag =
+		#{delFlag,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update parameterType="java.lang.Integer" id="clickAddOne">
+		update questions
+		set
+		click = click+1
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

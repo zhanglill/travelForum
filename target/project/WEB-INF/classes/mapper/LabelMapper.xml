@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.travel.dao.LabelMapper">
+
+	<resultMap id="BaseResultMap" type="com.zl.travel.domain.Label">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="label_name" property="labelName" jdbcType="VARCHAR" />
+		<result column="date" property="date" jdbcType="TIMESTAMP" />
+		<result column="place" property="place" jdbcType="VARCHAR" />
+		<result column="desc" property="desc" jdbcType="VARCHAR" />
+		<result column="point_x" property="pointX" jdbcType="VARCHAR" />
+		<result column="point_y" property="pointY" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, label_name,date,place,desc,point_x,point_y
+	</sql>
+
+
+	<delete parameterType="java.lang.String" id="deleteByPrimaryKey">
+		delete from label
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+<!-- 	<select resultMap="BaseResultMap" parameterType="java.lang.Integer"
+		id="getAllLabels">
+		select
+		*
+		from label
+		ORDER BY id ASC
+	</select> -->
+
+<!-- 	<select resultMap="BaseResultMap" parameterType="java.lang.Integer"
+		id="selectByPrimaryKey">
+		select
+		<include refid="Base_Column_List" />
+		from label
+		where id = #{id,jdbcType=VARCHAR}
+	</select> -->
+
+	<insert parameterType="com.zl.travel.domain.Label" id="insert">
+		insert into label (id, label_name,date,place,desc,point_x,point_y)
+		values (#{id,jdbcType=VARCHAR}, #{labelName,jdbcType=VARCHAR},
+		#{date,jdbcType=DATE},#{place,jdbcType=VARCHAR},
+		#{desc,jdbcType=VARCHAR},#{pointX,jdbcType=VARCHAR},
+		#{pointY,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert parameterType="com.zl.travel.domain.Label" id="insertSelective">
+		insert into label
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="labelName != null">
+				label_name,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="place != null">
+				place,
+			</if>
+			<if test="desc != null">
+				desc,
+			</if>
+			<if test="pointX != null">
+				point_x,
+			</if>
+			<if test="pointY != null">
+				point_y
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="labelName != null">
+				#{labelName,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=INTEGER},
+			</if>
+			<if test="place != null">
+				#{place,jdbcType=INTEGER},
+			</if>
+			<if test="desc != null">
+				#{desc,jdbcType=INTEGER},
+			</if>
+			<if test="pointX != null">
+				#{pointX,jdbcType=INTEGER},
+			</if>
+			<if test="pointY != null">
+				#{pointY,jdbcType=INTEGER}
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

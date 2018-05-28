@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.travel.dao.TabMapper" >
+
+  <resultMap id="BaseResultMap" type="com.zl.travel.domain.Tab" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tab_name" property="tabName" jdbcType="VARCHAR" />
+    <result column="tab_name_en" property="tabNameEn" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, tab_name,tab_name_en,del_flag
+  </sql>
+
+  <select resultMap="BaseResultMap" parameterType="java.lang.Integer" id="getAllTabs">
+    select
+    <include refid="Base_Column_List" />
+    from tab
+    where del_flag ='0'
+    ORDER BY id ASC
+  </select>
+
+  <select resultMap="BaseResultMap" parameterType="java.lang.Integer" id="selectByPrimaryKey">
+    select 
+    <include refid="Base_Column_List" />
+    from tab
+    where id = #{id,jdbcType=INTEGER} and del_flag ='0' 
+  </select>
+
+  <select resultMap="BaseResultMap" parameterType="java.lang.String" id="getByTabNameEn">
+    select
+    <include refid="Base_Column_List" />
+    from tab
+    where del_flag ='0' and tab_name_en = #{tabNameEn,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete parameterType="java.lang.Integer" id="deleteByPrimaryKey">
+    update tab
+    set del_flag = '1'
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert parameterType="com.zl.travel.domain.Tab" id="insert">
+    insert into tab (id, tab_name, tab_name_en, del_flag)
+    values (#{id,jdbcType=INTEGER}, #{tabName,jdbcType=VARCHAR}, #{tabNameEn,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert parameterType="com.zl.travel.domain.Tab" id="insertSelective">
+    insert into tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tabName != null" >
+        tab_name,
+      </if>
+      <if test="tabNameEn != null" >
+        tab_name_en,
+      </if>
+      <if test="delFlag != null" >
+        del_flag
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tabName != null" >
+        #{tabName,jdbcType=VARCHAR},
+      </if>
+      <if test="tabNameEn != null" >
+        #{tabNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update parameterType="com.zl.travel.domain.Tab" id="updateByPrimaryKeySelective">
+    update tab
+    <set >
+      <if test="tabName != null" >
+        tab_name = #{tabName,jdbcType=VARCHAR},
+      </if>
+      <if test="tabNameEn != null" >
+        tab_name_en = #{tabNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update parameterType="com.zl.travel.domain.Tab" id="updateByPrimaryKey">
+    update tab
+    set 
+    tab_name = #{tabName,jdbcType=VARCHAR},
+    tab_name_en = #{tabNameEn,jdbcType=VARCHAR},
+    del_flag = #{delFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
