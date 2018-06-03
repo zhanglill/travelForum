@@ -1,5 +1,6 @@
 package com.zl.travel.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zl.travel.domain.Questions;
 import com.zl.travel.domain.QuestionsReply;
 import com.zl.travel.domain.Reply;
+import com.zl.travel.domain.Tab;
 import com.zl.travel.domain.Topic;
 import com.zl.travel.domain.User;
 import com.zl.travel.service.impl.QuestionsServiceImpl;
 import com.zl.travel.service.impl.ReplyServiceImpl;
+import com.zl.travel.service.impl.TabServiceImpl;
 import com.zl.travel.service.impl.UserServiceImpl;
 
 /**
@@ -38,60 +41,249 @@ public class QuestionsController {
 
 	@Autowired
 	public QuestionsServiceImpl questionsService;
-	
+
 	@Autowired
 	public ReplyServiceImpl replyService;
-	
+
 	@Autowired
 	public UserServiceImpl userService;
-	
+
+	@Autowired
+	public TabServiceImpl tabService;
+
 	// log4j对象
 	private final Log log = LogFactory.getLog(getClass());
 
 	/**
-	 * 渲染首页
+	 * 渲染首页 按时间降序排列
 	 * 
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping("/questions/Index")
 	public ModelAndView toMain(HttpSession session) {
-		
+
 		ModelAndView indexPage = new ModelAndView("jsp/questions-index");
-		
+
 		// 全部主题
 		List<Questions> questions = questionsService.listQuestionsAndUsers();
-
-		for(int i = 0 ; i < questions.size() ; i++) {
-			  System.out.println(questions.get(i).getContent());
-			}
 		
+		List<Questions> question = questionsService.listQuestionsAndUsersByClick();
+
+		List<Questions> noReply = new ArrayList<>();
+
+		for (int i = 0; i < question.size(); i++) {
+			if(noReply.size() < 6){
+				if (question.get(i).getCountReplies() == 0) {
+					noReply.add(question.get(i));
+				}
+			}
+			System.out.println(questions.get(i).getCountReplies());
+		}
+
+		List<Tab> tab = tabService.getQuestionTabs();
+
 		// 获取统计信息
-		/*int questionsNum = questionsService.getQuestionsNum();
-		int usersNum = userService.getUserCount();
-		*/
+		
+		 int questionsNum = questionsService.getQuestionsNum(); 
+		 //int usersNum = userService.getUserCount();
+		 
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
-		
+
 		// 最热问答
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
 
 		// 用户个人发表的文章
 		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(userId);
-				
-		//添加问答模块内容
-		
+
+		// 添加问答模块内容
+
 		indexPage.addObject("questions", questions);
+		indexPage.addObject("tab", tab);
+		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
-		/*indexPage.addObject("questionsNum", questionsNum);
-		indexPage.addObject("usersNum", usersNum);*/
-		//indexPage.addObject("user", user);
 		
+		indexPage.addObject("questionsNum", questionsNum);
+		indexPage.addObject("tabMessage", "timeDesc");
+		// indexPage.addObject("usersNum", usersNum);
+		 
+		// indexPage.addObject("user", user);
+
 		return indexPage;
 	}
 	
+	/**
+	 * 渲染首页 按评论数降序排列
+	 * 
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/questions/IndexByCount")
+	public ModelAndView indexByCount(HttpSession session) {
+
+		ModelAndView indexPage = new ModelAndView("jsp/questions-index");
+
+		// 全部主题
+		List<Questions> questions = questionsService.listQuestionsAndUsersByCount();
+		
+		List<Questions> question = questionsService.listQuestionsAndUsersByClick();
+
+		List<Questions> noReply = new ArrayList<>();
+
+		for (int i = 0; i < question.size(); i++) {
+			if(noReply.size() < 6){
+				if (question.get(i).getCountReplies() == 0) {
+					noReply.add(question.get(i));
+				}
+			}
+			System.out.println(questions.get(i).getCountReplies());
+		}
+
+		List<Tab> tab = tabService.getQuestionTabs();
+
+		// 获取统计信息
+		int questionsNum = questionsService.getQuestionsNum();
+		/*
+		 *  int usersNum = userService.getUserCount();
+		 */
+		// 获取用户信息
+		Integer userId = (Integer) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+
+		// 最热问答
+		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+
+		// 用户个人发表的文章
+		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(userId);
+
+		// 添加问答模块内容
+
+		indexPage.addObject("questions", questions);
+		indexPage.addObject("tab", tab);
+		indexPage.addObject("noReply", noReply);
+		indexPage.addObject("hotestQuestions", hotestQuestions);
+		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
+		indexPage.addObject("questionsNum", questionsNum);
+		indexPage.addObject("tabMessage", "hot");
+		
+		/*
+		 * indexPage.addObject("usersNum", usersNum);
+		 */
+		// indexPage.addObject("user", user);
+
+		return indexPage;
+	}
+
+	@RequestMapping("/questions/questionNoReply")
+	public ModelAndView questionNoReply(HttpSession session) {
+
+		ModelAndView indexPage = new ModelAndView("jsp/questions-noReply");
+
+		// 全部主题
+		List<Questions> questions = questionsService.listQuestionsAndUsers();
+
+		List<Questions> noReply = new ArrayList<>();
+
+		for (int i = 0; i < questions.size(); i++) {
+			if (questions.get(i).getCountReplies() == 0) {
+				noReply.add(questions.get(i));
+			}
+			System.out.println(questions.get(i).getCountReplies());
+		}
+
+		List<Tab> tab = tabService.getQuestionTabs();
+
+		int questionsNum = questionsService.getQuestionsNum();
+		
+		// 获取统计信息
+		/*
+		 *  int usersNum = userService.getUserCount();
+		 */
+		// 获取用户信息
+		Integer userId = (Integer) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+
+		// 最热问答
+		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+
+		// 用户个人发表的文章
+		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(userId);
+
+		// 添加问答模块内容
+
+		indexPage.addObject("questions", questions);
+		indexPage.addObject("tab", tab);
+		indexPage.addObject("noReply", noReply);
+		indexPage.addObject("hotestQuestions", hotestQuestions);
+		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
+		
+		indexPage.addObject("questionsNum", questionsNum);
+		indexPage.addObject("tabMessage", "timeDesc");
+		/*
+		 * indexPage.addObject("usersNum", usersNum);
+		 */
+		// indexPage.addObject("user", user);
+
+		return indexPage;
+	}
+	
+	@RequestMapping("/questions/questionNoReplyByClick")
+	public ModelAndView questionNoReplyByCount(HttpSession session) {
+
+		ModelAndView indexPage = new ModelAndView("jsp/questions-noReply");
+
+		// 全部主题
+		List<Questions> questions = questionsService.listQuestionsAndUsersByClick();
+
+		List<Questions> noReply = new ArrayList<>();
+
+		for (int i = 0; i < questions.size(); i++) {
+			if (questions.get(i).getCountReplies() == 0) {
+				noReply.add(questions.get(i));
+			}
+			System.out.println(questions.get(i).getCountReplies());
+		}
+
+		List<Tab> tab = tabService.getQuestionTabs();
+		int questionsNum = questionsService.getQuestionsNum();
+
+		// 获取统计信息
+		/*
+		 *  int usersNum = userService.getUserCount();
+		 */
+		// 获取用户信息
+		Integer userId = (Integer) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+
+		// 最热问答
+		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+
+		// 用户个人发表的文章
+		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(userId);
+
+		// 添加问答模块内容
+
+		indexPage.addObject("questions", questions);
+		indexPage.addObject("tab", tab);
+		indexPage.addObject("noReply", noReply);
+		indexPage.addObject("hotestQuestions", hotestQuestions);
+		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
+		
+		indexPage.addObject("questionsNum", questionsNum);
+		indexPage.addObject("tabMessage", "hot");
+		
+		/*
+		 * 
+		 * indexPage.addObject("usersNum", usersNum);
+		 */
+		// indexPage.addObject("user", user);
+
+		return indexPage;
+	}
+
 	/**
 	 * 渲染首页
 	 * 
@@ -100,39 +292,75 @@ public class QuestionsController {
 	 */
 	@RequestMapping("/questions/myQuestionList")
 	public ModelAndView myQuestion(HttpSession session) {
-		
+
 		ModelAndView indexPage = new ModelAndView();
-		
+
 		// 全部主题
 		List<Questions> questions = questionsService.listQuestionsAndUsers();
 
-		for(int i = 0 ; i < questions.size() ; i++) {
-			  System.out.println(questions.get(i).getContent());
-			}
+		for (int i = 0; i < questions.size(); i++) {
+			System.out.println(questions.get(i).getContent());
+		}
+
+		int questionsNum = questionsService.getQuestionsNum();
 		
 		// 获取统计信息
-		/*int questionsNum = questionsService.getQuestionsNum();
-		int usersNum = userService.getUserCount();
-		*/
+		/*
+		 *  int usersNum = userService.getUserCount();
+		 */
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
-		
+
 		// 最热问答
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
 
 		// 用户个人发表的文章
 		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(userId);
-				
-		//添加问答模块内容
-		
+
+		// 添加问答模块内容
+
 		indexPage.addObject("questions", questions);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
-		/*indexPage.addObject("questionsNum", questionsNum);
-		indexPage.addObject("usersNum", usersNum);*/
-		//indexPage.addObject("user", user);
+		indexPage.addObject("questionsNum", questionsNum);
 		
+		/*
+		 * 
+		 * indexPage.addObject("usersNum", usersNum);
+		 */
+		// indexPage.addObject("user", user);
+
+		return indexPage;
+	}
+
+	/**
+	 * 进入新建问答页面
+	 */
+	@RequestMapping(value = { "/new" })
+	public ModelAndView newTopic(HttpServletRequest request, HttpSession session) {
+
+		ModelAndView indexPage;
+		// 未登陆
+		if (session.getAttribute("userId") == null) {
+			indexPage = new ModelAndView("jsp/login");
+		} else {
+
+			indexPage = new ModelAndView("jsp/questions-new");
+			List<Tab> tabs = tabService.getQuestionTabs();
+
+			// 获取统计信息
+			/*
+			 * int topicsNum = topicService.getTopicsNum(); int usersNum =
+			 * userService.getUserCount();
+			 */
+			indexPage.addObject("tabs", tabs);
+		}
+
+		/*
+		 * newTopicPage.addObject("topicsNum", topicsNum);
+		 * newTopicPage.addObject("usersNum", usersNum);
+		 */
 		return indexPage;
 	}
 
@@ -155,6 +383,8 @@ public class QuestionsController {
 		Integer userId = (Integer) session.getAttribute("userId");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
+		Integer tabId = Integer.parseInt(request.getParameter("tabId"));
+
 		// 新建Topic
 		Questions questions = new Questions();
 		questions.setUserId(userId);
@@ -163,15 +393,21 @@ public class QuestionsController {
 		questions.setCreateTime(new Date());
 		questions.setUpdateTime(new Date());
 		questions.setDelFlag("0");
+		questions.setTabId(tabId);
+
+		Tab tab = tabService.selectByPrimaryKey(tabId);
+		tab.setCount(tab.getCount() + 1);
+		tabService.updateByPrimaryKeySelective(tab);
+		
 		// 添加topic
 		boolean ifSucc = questionsService.addQuestions(questions);
 		boolean ifSuccAddCredit = userService.addCredit(1, userId);
-		
+
 		indexPage = new ModelAndView("redirect:/question/questions/Index");
 
 		return indexPage;
 	}
-	
+
 	/**
 	 * 更新提问
 	 * 
@@ -204,13 +440,56 @@ public class QuestionsController {
 		// 添加topic
 		boolean ifSucc = questionsService.updateByPrimaryKeySelective(questions);
 		boolean ifSuccAddCredit = userService.addCredit(1, userId);
-		
+
 		indexPage = new ModelAndView("redirect:/question/questions/Index");
 
 		return indexPage;
 	}
-	
-	
+
+	/**
+	 * 渲染指定板块页面
+	 */
+	@RequestMapping("/tab/{tabId}")
+	public ModelAndView toTabPage(@PathVariable("tabId") int tabId, HttpSession session) {
+
+		/*
+		 * Tab tab = tabService.getByTabNameEn(tabNameEn); Integer tabId =
+		 * tab.getId();
+		 */
+
+		ModelAndView indexPage = new ModelAndView("jsp/questions-index");
+
+		List<Questions> questions = questionsService.listQuestionsAndUsersOfTab(tabId);
+		List<Tab> tab = tabService.getQuestionTabs();
+		Tab oneTab = tabService.selectByPrimaryKey(tabId);
+		// 获取用户信息
+		Integer uid = (Integer) session.getAttribute("userId");
+		User user = userService.getUserById(uid);
+
+		List<Questions> question = questionsService.listQuestionsAndUsers();
+		List<Questions> noReply = new ArrayList<>();
+
+		for (int i = 0; i < question.size(); i++) {
+			if(noReply.size() < 6){
+				if (question.get(i).getCountReplies() == 0) {
+					noReply.add(question.get(i));
+				}
+			}
+			System.out.println(question.get(i).getCountReplies());
+		}
+		
+		int questionsNum = questionsService.getQuestionsNum(); 
+		
+		indexPage.addObject("questionsNum", questionsNum);
+		indexPage.addObject("questions", questions);
+		indexPage.addObject("noReply", noReply);
+
+		indexPage.addObject("tab", tab);
+		indexPage.addObject("oneTab", oneTab);
+		indexPage.addObject("user", user);
+		return indexPage;
+	}
+
 	/**
 	 * 渲染主题详细页面
 	 * 
@@ -220,47 +499,116 @@ public class QuestionsController {
 	 */
 	@RequestMapping("/questions/{id}")
 	public ModelAndView ToQquestion(@PathVariable("id") Integer id, HttpSession session) {
-		
-		// 点击量加一
-		boolean ifSucc = questionsService.clickAddOne(id);
-		
+
 		// 获取主题信息
 		Questions questions = questionsService.selectById(id);
-		
+
+		String questionTabName = questions.getTab().getTabName();
 		// 获取主题全部评论
 		List<QuestionsReply> replies = replyService.getRepliesOfQuestions(id);
-		
+
 		// 获取评论数
 		int repliesNum = replyService.questionzReplyNum(id);
-		
+
 		// 获取统计信息
-		/*int questionsNum = questionsService.getQuestionsNum();
-		int usersNum = userService.getUserCount();*/
-		
+		/*
+		 * int questionsNum = questionsService.getQuestionsNum(); int usersNum =
+		 * userService.getUserCount();
+		 */
+
 		// 获取用户信息
 		Integer uid = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(uid);
-		
+
 		// 最热主题
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
 
 		// 用户个人发表的文章
 		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(uid);
-				
-				
+
+		List<Questions> allQuestion = questionsService.listQuestionsAndUsers();
+
+		List<Questions> noReplyQuestion = new ArrayList<>();
+
+		for (int i = 0; i < allQuestion.size(); i++) {
+			if (allQuestion.get(i).getCountReplies() == 0) {
+				noReplyQuestion.add(allQuestion.get(i));
+			}
+			System.out.println(allQuestion.get(i).getCountReplies());
+		}
+
 		// 渲染视图
 		ModelAndView topicPage = new ModelAndView("jsp/questions-detail");
+		topicPage.addObject("noReplyQuestion", noReplyQuestion);
 		topicPage.addObject("questions", questions);
 		topicPage.addObject("replies", replies);
 		topicPage.addObject("repliesNum", repliesNum);
-		/*topicPage.addObject("questionsNum", questionsNum);
-		topicPage.addObject("usersNum", usersNum);*/
+		/*
+		 * topicPage.addObject("questionsNum", questionsNum);
+		 * topicPage.addObject("usersNum", usersNum);
+		 */
+		topicPage.addObject("user", user);
+		topicPage.addObject("hotestQuestions", hotestQuestions);
+		topicPage.addObject("userPersonalQuestions", userPersonalQuestions);
+		topicPage.addObject("questionTabName", questionTabName);
+		return topicPage;
+	}
+	
+	@RequestMapping("/questions/noReply/{id}")
+	public ModelAndView noReply(@PathVariable("id") Integer id, HttpSession session) {
+
+		// 获取主题信息
+		Questions questions = questionsService.selectById(id);
+
+		// 获取主题全部评论
+		List<QuestionsReply> replies = replyService.getRepliesOfQuestions(id);
+
+		// 获取评论数
+		int repliesNum = replyService.questionzReplyNum(id);
+
+		// 获取统计信息
+		/*
+		 * int questionsNum = questionsService.getQuestionsNum(); int usersNum =
+		 * userService.getUserCount();
+		 */
+
+		// 获取用户信息
+		Integer uid = (Integer) session.getAttribute("userId");
+		User user = userService.getUserById(uid);
+
+		// 最热主题
+		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+
+		// 用户个人发表的文章
+		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(uid);
+
+		List<Questions> allQuestion = questionsService.listQuestionsAndUsers();
+
+		List<Questions> noReplyQuestion = new ArrayList<>();
+
+		for (int i = 0; i < allQuestion.size(); i++) {
+			if (allQuestion.get(i).getCountReplies() == 0) {
+				noReplyQuestion.add(allQuestion.get(i));
+			}
+			System.out.println(allQuestion.get(i).getCountReplies());
+		}
+
+		// 渲染视图
+		ModelAndView topicPage = new ModelAndView("jsp/questions-noReplyDetail");
+		topicPage.addObject("noReplyQuestion", noReplyQuestion);
+		topicPage.addObject("questions", questions);
+		topicPage.addObject("replies", replies);
+		topicPage.addObject("repliesNum", repliesNum);
+		/*
+		 * topicPage.addObject("questionsNum", questionsNum);
+		 * topicPage.addObject("usersNum", usersNum);
+		 */
 		topicPage.addObject("user", user);
 		topicPage.addObject("hotestQuestions", hotestQuestions);
 		topicPage.addObject("userPersonalQuestions", userPersonalQuestions);
 		return topicPage;
 	}
-	
+
 	/**
 	 * 更新界面调整
 	 * 
@@ -270,77 +618,78 @@ public class QuestionsController {
 	 */
 	@RequestMapping("/questions/update/{id}")
 	public ModelAndView ToUpdateQquestion(@PathVariable("id") Integer id, HttpSession session) {
-		
+
 		// 点击量加一
 		boolean ifSucc = questionsService.clickAddOne(id);
-		
+
 		// 获取主题信息
 		Questions questions = questionsService.selectById(id);
-		
+
 		// 获取主题全部评论
 		List<Reply> replies = replyService.getRepliesOfTopic(id);
-		
+
 		// 获取评论数
 		int repliesNum = replyService.repliesNum(id);
-		
+
 		// 获取用户信息
 		Integer uid = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(uid);
-		
+
 		// 最热主题
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
 
 		// 用户个人发表的文章
 		List<Questions> userPersonalQuestions = questionsService.listUserPersonalQuestions(uid);
-				
+
 		// 渲染视图
 		ModelAndView topicPage = new ModelAndView("jsp/questions-update");
 		topicPage.addObject("questions", questions);
 		topicPage.addObject("replies", replies);
 		topicPage.addObject("repliesNum", repliesNum);
-		/*topicPage.addObject("questionsNum", questionsNum);
-		topicPage.addObject("usersNum", usersNum);*/
+		/*
+		 * topicPage.addObject("questionsNum", questionsNum);
+		 * topicPage.addObject("usersNum", usersNum);
+		 */
 		topicPage.addObject("user", user);
 		topicPage.addObject("hotestQuestions", hotestQuestions);
 		topicPage.addObject("userPersonalQuestions", userPersonalQuestions);
 		return topicPage;
 	}
 
-	
 	@RequestMapping(value = "/deleteQuestion/{id}")
-    @ResponseBody
-    public ModelAndView deleteById(@PathVariable Integer id) {
+	@ResponseBody
+	public ModelAndView deleteById(@PathVariable Integer id) {
 		Boolean bool = questionsService.deleteByPrimaryKey(id);
-    	ModelAndView indexPage = new ModelAndView("redirect:/question/questions/Index");
-    	
-    	if (bool) {
-    		indexPage.addObject("message", "删除成功");
-        } else {
-        	indexPage.addObject("message", "删除失败");
-        }
-    	
-        return indexPage;
-    }
-	
-	/*===================后台========================*/
-	 /**
-     * 查询所有的问答
-     * 
-     * @param session
-     * @return
-     */
-    @RequestMapping("/questions/list")
-    @ResponseBody
-    public Map<String, Object> listQuestion() {
-        Map<String, Object> rtnMap = new HashMap<String, Object>();
+		ModelAndView indexPage = new ModelAndView("redirect:/question/questions/Index");
 
-        // 全部主题
-        List<Questions> questions = questionsService.listQuestionsAndUser();
-        rtnMap.put("questions", questions);
-        return rtnMap;
-    }
-	
-    /**
+		if (bool) {
+			indexPage.addObject("message", "删除成功");
+		} else {
+			indexPage.addObject("message", "删除失败");
+		}
+
+		return indexPage;
+	}
+
+	/* ===================后台======================== */
+	/**
+	 * 查询所有的问答
+	 * 
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/questions/list")
+	@ResponseBody
+	public Map<String, Object> listQuestion() {
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+		// 全部主题
+		List<Questions> questions = questionsService.listQuestionsAndUser();
+		rtnMap.put("questions", questions);
+		return rtnMap;
+	}
+
+	/**
 	 * 渲染主题详细页面
 	 * 
 	 * @param id
@@ -353,26 +702,25 @@ public class QuestionsController {
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 		// 获取主题信息
 		Questions questions = questionsService.selectOneById(id);
-		
+
 		rtnMap.put("questions", questions);
-        return rtnMap;
-        
+		return rtnMap;
+
 	}
 
 	// 删除tab
-		@RequestMapping(value = "/delete/{id}")
-		@ResponseBody
-		public Map<String, Object> delete(@PathVariable("id") Integer id) {
-			Map<String, Object> rtnMap = new HashMap<String, Object>();
-			Boolean bool = questionsService.deleteByPrimaryKey(id);
+	@RequestMapping(value = "/delete/{id}")
+	@ResponseBody
+	public Map<String, Object> delete(@PathVariable("id") Integer id) {
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		Boolean bool = questionsService.deleteByPrimaryKey(id);
 
-			if (bool) {
-				rtnMap.put("message", "删除成功");
-			} else {
-				rtnMap.put("message", "删除失败");
+		if (bool) {
+			rtnMap.put("message", "删除成功");
+		} else {
+			rtnMap.put("message", "删除失败");
 
-			}
-			return rtnMap;
 		}
+		return rtnMap;
+	}
 }
-	

@@ -2,6 +2,9 @@ package com.zl.travel.dao;
 
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.zl.travel.domain.Tab;
 
@@ -21,4 +24,8 @@ public interface TabMapper {
     int updateByPrimaryKey(Tab record);
 
     List<Tab> getAllTabs();
+    
+    List<Tab> getQuestionTabs();
+    
+    List<Tab> selectTabsByParam(@Param("searchParam") Map<String, Object> map);
 }

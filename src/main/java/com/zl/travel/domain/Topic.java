@@ -38,11 +38,17 @@ public class Topic {
     private Integer click;
 
     // 板块id
-    private Byte tabId;
+    private Integer tabId;
 
     // 内容
     private String content;
 
+    // 省份
+    private String province;
+    
+    // 城市
+    private String city;
+    
     // 类型（原创、转发、收藏）
     private Integer type;
 
@@ -122,7 +128,23 @@ public class Topic {
         this.title = title == null ? null : title.trim();
     }
 
-    public Integer getClick() {
+    public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public Integer getClick() {
         return click;
     }
 
@@ -130,15 +152,15 @@ public class Topic {
         this.click = click;
     }
 
-    public Byte getTabId() {
-        return tabId;
-    }
+    public Integer getTabId() {
+		return tabId;
+	}
 
-    public void setTabId(Byte tabId) {
-        this.tabId = tabId;
-    }
+	public void setTabId(Integer tabId) {
+		this.tabId = tabId;
+	}
 
-    public String getContent() {
+	public String getContent() {
         return content;
     }
 

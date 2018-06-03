@@ -61,7 +61,7 @@ body {
 				<th style="text-align: center">操作</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody style="overflow: auto">
 
 		</tbody>
 	</table>

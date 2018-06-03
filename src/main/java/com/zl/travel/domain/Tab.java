@@ -15,6 +15,8 @@ public class Tab implements Serializable {
 
     private String delFlag;
     
+    private int count;
+    
     private List<Topic> topics;
 
     public String getTabNameEn() {
@@ -53,6 +55,15 @@ public class Tab implements Serializable {
     public void setTabName(String tabName) {
         this.tabName = tabName;
     }
+
+    
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
 
 	public String getDelFlag() {
 		return delFlag;

@@ -9,8 +9,10 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
-		<result column="tab_id" property="tabId" jdbcType="TINYINT" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
 		<result column="is_publish" property="isPublish" jdbcType="VARCHAR" />
@@ -29,8 +31,10 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
-		<result column="tab_id" property="tabId" jdbcType="TINYINT" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="is_publish" property="isPublish" jdbcType="VARCHAR" />
@@ -53,8 +57,10 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
-		<result column="tab_id" property="tabId" jdbcType="TINYINT" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="is_publish" property="isPublish" jdbcType="VARCHAR" />
@@ -77,9 +83,11 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
-		<result column="tab_id" property="tabId" jdbcType="TINYINT" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="is_publish" property="isPublish" jdbcType="VARCHAR" />
 		<association property="user" javaType="com.zl.travel.domain.User">
@@ -94,9 +102,11 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
-		<result column="tab_id" property="tabId" jdbcType="TINYINT" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="type" property="type" jdbcType="INTEGER" />
 		<result column="is_publish" property="isPublish" jdbcType="VARCHAR" />
 	</resultMap>
@@ -110,7 +120,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id, user_id, create_time, update_time, title, click, tab_id,type,del_flag,is_publish
+		id, user_id, create_time, update_time, title, province, city, click, tab_id,type,del_flag,is_publish
 	</sql>
 
 	<sql id="Blob_Column_List">
@@ -119,11 +129,11 @@
 
 	<select resultMap="topicAndUserInfo" id="listTopicsAndUsers">
 		select
-		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
+		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.province, topic.city, topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
 		tab.tab_name,count(reply.id) as count_replies from topic LEFT JOIN
 		user on topic.user_id = user.id
 		LEFT JOIN tab on tab.id=topic.tab_id LEFT JOIN reply on
-		topic.id=reply.topic_id where topic.del_flag='0' and topic.is_publish='0'
+		topic.id=reply.topic_id where tab.type='0' and topic.del_flag='0' and topic.is_publish='0'
 		group by topic.id order by topic.id desc;
 	</select>
 	
@@ -148,24 +158,24 @@
 	<select resultMap="topicAndUserInfo" parameterType="java.lang.String"
 		id="listTopicsAndUsersByParam">
 		select
-		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
+		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.province, topic.city,topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
 		tab.tab_name,count(reply.id) as count_replies from topic LEFT JOIN
 		user on topic.user_id = user.id
 		LEFT JOIN tab on tab.id=topic.tab_id LEFT JOIN reply on
 		topic.id=reply.topic_id
 		where topic.title like concat(concat("%",#{params}),"%") or topic.content
-		like concat(concat("%",#{params}),"%") and topic.del_flag='0' and topic.is_publish='0'
+		like concat(concat("%",#{params}),"%") and topic.del_flag='0' and topic.is_publish='0' and tab.type='0'
 		group by topic.id order by topic.id desc;
 	</select>
 
 	<select resultMap="topicAndUserInfo" parameterType="java.lang.Integer"
 		id="listTopicsAndUsersOfTab">
 		select
-		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.click,topic.tab_id,topic.type,user.username,user.avatar,
+		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.province, topic.city,topic.click,topic.tab_id,topic.type,user.username,user.avatar,
 		tab.tab_name,count(reply.id) as count_replies from topic LEFT JOIN
 		user on topic.user_id = user.id
 		LEFT JOIN tab on tab.id=topic.tab_id LEFT JOIN reply on
-		topic.id=reply.topic_id where tab.id = #{id,jdbcType=INTEGER} and topic.del_flag='0' and topic.is_publish='0'
+		topic.id=reply.topic_id where tab.id = #{id,jdbcType=INTEGER} and topic.del_flag='0' and topic.is_publish='0' and tab.type='0'
 		group by topic.id order by topic.id desc;
 	</select>
 
@@ -203,11 +213,11 @@
 	<!-- 热门话题 -->
 	<select resultMap="topicAndUserInfo" id="listMostCommentsTopics">
 		select
-		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
+		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.province, topic.city,topic.click,topic.tab_id,topic.type,topic.content,user.username,user.avatar,
 		tab.tab_name,count(reply.id) as count_replies from topic LEFT JOIN
 		user on topic.user_id = user.id
 		LEFT JOIN tab on tab.id=topic.tab_id LEFT JOIN reply on
-		topic.id=reply.topic_id where topic.type='0' and topic.del_flag='0' and topic.is_publish='0'
+		topic.id=reply.topic_id where topic.type='0' and topic.del_flag='0' and topic.is_publish='0' and tab.type='0'
 		group by topic.id order by count_replies desc limit 5;
 	</select>
 
@@ -249,11 +259,12 @@
 
 	<insert parameterType="com.zl.travel.domain.Topic" id="insert">
 		insert into topic (user_id, create_time,
-		update_time, title,
+		update_time, title,province, city,
 		tab_id, type, content,del_flag,is_publish)
 		values ( #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
 		#{updateTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR},
-		#{tabId,jdbcType=TINYINT},
+		#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
+		#{tabId,jdbcType=INTEGER},
 		#{type,jdbcType=INTEGER},#{content,jdbcType=LONGVARCHAR},
 		#{delFlag,jdbcType=VARCHAR},#{isPublish,jdbcType=VARCHAR})
 	</insert>
@@ -275,6 +286,12 @@
 			</if>
 			<if test="title != null">
 				title,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
 			</if>
 			<if test="click != null">
 				click,
@@ -311,11 +328,17 @@
 			<if test="title != null">
 				#{title,jdbcType=VARCHAR},
 			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
 			<if test="click != null">
 				#{click,jdbcType=INTEGER},
 			</if>
 			<if test="tabId != null">
-				#{tabId,jdbcType=TINYINT},
+				#{tabId,jdbcType=INTEGER},
 			</if>
 			<if test="type != null">
 				#{type,jdbcType=INTEGER},
@@ -347,11 +370,17 @@
 			<if test="title != null">
 				title = #{title,jdbcType=VARCHAR},
 			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
 			<if test="click != null">
 				click = #{click,jdbcType=INTEGER},
 			</if>
 			<if test="tabId != null">
-				tab_id = #{tabId,jdbcType=TINYINT},
+				tab_id = #{tabId,jdbcType=INTEGER},
 			</if>
 			<if test="type != null">
 				type = #{type,jdbcType=INTEGER},
@@ -375,8 +404,10 @@
 		create_time = #{createTime,jdbcType=TIMESTAMP},
 		update_time = #{updateTime,jdbcType=TIMESTAMP},
 		title = #{title,jdbcType=VARCHAR},
+		province = #{province,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
 		click = #{click,jdbcType=INTEGER},
-		tab_id = #{tabId,jdbcType=TINYINT},
+		tab_id = #{tabId,jdbcType=INTEGER},
 		type = #{type,jdbcType=INTEGER},
 		content = #{type,jdbcType=LONGVARCHAR},
 		del_flag = #{delFlag,jdbcType=VARCHAR},
@@ -389,8 +420,10 @@
 		create_time = #{createTime,jdbcType=TIMESTAMP},
 		update_time = #{updateTime,jdbcType=TIMESTAMP},
 		title = #{title,jdbcType=VARCHAR},
+		province = #{province,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
 		click = #{click,jdbcType=INTEGER},
-		tab_id = #{tabId,jdbcType=TINYINT},
+		tab_id = #{tabId,jdbcType=INTEGER},
 		type = #{type,jdbcType=INTEGER},
 		content = #{type,jdbcType=LONGVARCHAR},
 		del_flag = #{delFlag,jdbcType=VARCHAR},

@@ -81,6 +81,22 @@ public class QuestionsServiceImpl implements QuestionsService {
         return questionsMapper.listQuestionsAndUsers();
     }
     
+    public List<Questions> listQuestionsAndUsersByCount() {
+        return questionsMapper.listQuestionsAndUsersByCount();
+    }
+    
+    public List<Questions> listQuestionsAndUsersByClick() {
+        return questionsMapper.listQuestionsAndUsersByClick();
+    }
+    
+    public List<Questions> listQuestionsAndUsersNoReply() {
+        return questionsMapper.listQuestionsAndUsersNoReply();
+    }
+    
+    public List<Questions> listQuestionsAndUsersNoReplyByClick() {
+        return questionsMapper.listQuestionsAndUsersNoReplyByClick();
+    }
+    
     public List<Questions> listQuestionsAndUser() {
         return questionsMapper.listQuestionsAndUser();
     }
@@ -91,5 +107,9 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     public boolean updateByPrimaryKeySelective(Questions record) {
     	return questionsMapper.updateByPrimaryKeySelective(record) > 0;
+    }
+    
+    public List<Questions> listQuestionsAndUsersOfTab(Integer tabId) {
+        return questionsMapper.listQuestionsAndUsersOfTab(tabId);
     }
 }

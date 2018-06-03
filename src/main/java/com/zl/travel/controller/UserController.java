@@ -23,9 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zl.travel.domain.LoginLog;
+import com.zl.travel.domain.Questions;
+import com.zl.travel.domain.Tab;
 import com.zl.travel.domain.Topic;
 import com.zl.travel.domain.User;
 import com.zl.travel.service.impl.LoginLogServiceImpl;
+import com.zl.travel.service.impl.QuestionsServiceImpl;
+import com.zl.travel.service.impl.TabServiceImpl;
 import com.zl.travel.service.impl.TopicServiceImpl;
 import com.zl.travel.service.impl.UserServiceImpl;
 import com.zl.travel.util.MD5Util;
@@ -46,7 +50,13 @@ public class UserController {
 
     @Autowired
     public LoginLogServiceImpl loginLogService;
+    
+    @Autowired
+    public TabServiceImpl tabService;
 
+    @Autowired
+    public QuestionsServiceImpl questionsService;
+    
     /**
      * 用户注册
      * 
@@ -166,10 +176,60 @@ public class UserController {
      */
 
     @RequestMapping("/signout")
-    public String signout(HttpSession session) {
+    public ModelAndView signout(HttpSession session) {
         session.removeAttribute("userId");
         session.removeAttribute("username");
-        return "redirect:/";
+        
+        ModelAndView indexPage = new ModelAndView("jsp/index");
+
+		// 全部主题
+		List<Topic> topics = topicService.listTopicsAndUsers();
+
+		// 获取统计信息
+		/*
+		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
+		 * userService.getUserCount();
+		 */
+
+		// 获取用户信息
+		//Integer userId = (Integer) session.getAttribute("userId");
+		//User user = userService.getUserById(userId);
+
+		// 最热主题
+		List<Topic> hotestTopics = topicService.listMostCommentsTopics();
+		
+		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+
+		List<Tab> tabs = tabService.getAllTabs();
+		List<Tab> tab = tabService.getQuestionTabs();
+		//List<Place> place = placeService.getAllPlace();
+
+		// 全部问答
+		List<Questions> questions = questionsService.listQuestionsAndUsers();
+
+		// 获取统计信息
+		/*
+		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
+		 * userService.getUserCount();
+		 */
+		//indexPage.addObject("place", place);
+		
+		indexPage.addObject("tab", tab);
+
+		// 添加问答模块内容
+
+		//indexPage.addObject("topics", topics);
+		indexPage.addObject("tabs", tabs);
+		indexPage.addObject("questions", questions);
+		indexPage.addObject("hotestTopics", hotestTopics);
+		indexPage.addObject("hotestQuestions", hotestQuestions);
+		/*
+		 * indexPage.addObject("topicsNum", topicsNum);
+		 * indexPage.addObject("usersNum", usersNum);
+		 */
+		//indexPage.addObject("user", user);
+
+		return indexPage;
     }
 
     /**

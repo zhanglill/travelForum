@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.zl.travel.domain.Tab;
 import com.zl.travel.service.TabService;
@@ -23,6 +24,19 @@ public class TabController {
 	@Autowired
 	private TabService tabService;
 
+	/*@RequestMapping(value = "/getTab")
+	@ResponseBody
+	public ModelAndView getTab(Map<String, Object> param) {
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		String searchParam = (String) param.get("searchParam");
+		
+		List<Tab> tab = 
+		ModelAndView indexPage = new ModelAndView("redirect:/question/questions/Index");
+
+
+		return rtnMap;
+	}*/
+	
 	// 查询所有tab
 	@RequestMapping(value = "/search")
 	@ResponseBody
@@ -54,6 +68,7 @@ public class TabController {
 		Tab tab = new Tab();
 		tab.setTabName(tabName);
 		tab.setTabNameEn(tabNameEn);
+		tab.setCount(0);
 		tab.setDelFlag("0");
 
 		/*Boolean bool = tabService.insertSelective(tab);

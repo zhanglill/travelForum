@@ -23,6 +23,13 @@ public interface QuestionsService {
      */
      List<Questions> listQuestionsAndUsers();
      
+     List<Questions> listQuestionsAndUsersByCount();
+     
+     List<Questions> listQuestionsAndUsersByClick();
+     
+     List<Questions> listQuestionsAndUsersNoReply();
+     
+     List<Questions> listQuestionsAndUsersNoReplyByClick();
      /**
       * 获取全部主题及用户信息 用于渲染首页
       */
@@ -68,5 +75,7 @@ public interface QuestionsService {
     
     boolean updateByPrimaryKeySelective(Questions record);
 
+    List<Questions> listQuestionsAndUsersOfTab(Integer tabId);
+    
 
 }

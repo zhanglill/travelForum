@@ -12,10 +12,7 @@
 <script type="application/x-javascript">
 	
 	
-	
-	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
 
 
 </script>
@@ -44,73 +41,139 @@
 	rel='stylesheet' type='text/css'>
 <!-- //web-fonts -->
 </head>
+
+<style type="text/css">
+.header {
+	position: relative;
+	padding-top: 10px;
+	border-bottom: 1px solid #ebebeb;
+	background: #fbfbfb;
+	z-index: 100;
+	margin-top: -24px;
+	height: 50px;
+}
+
+.header .layout {
+	position: relative;
+	height: 60px;
+}
+
+.headerNav .layout, .header .layout, .bottomNav .layout {
+	width: 980px;
+	margin: 0 auto;
+}
+
+.header .headerL {
+	float: left;
+	margin: -10px -30px;
+}
+
+.headerL h1 {
+	overflow: hidden;
+	width: 200px;
+	height: 35px;
+}
+
+.headerL h1 .country {
+	float: left;
+	font: 22px/32px "Microsoft Yahei";
+	color: #1a2b38;
+}
+
+.headerL .site {
+	float: left;
+}
+
+.header .headerR {
+	display: inline;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+</style>
 <body>
 
 	<!-- 引入header文件 -->
 	<jsp:include page="header.jsp"></jsp:include>
 
+	<div class="header">
+		<div class="layout">
+			<div class="icoHill">&nbsp;</div>
+			<div class="headerL">
+				<div class="site">
+					当前位置： <a href="/travelForum/">首页</a> &gt; <a
+						href="/travelForum/topic/Index">论坛</a> &gt;<span>发表游记</span>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 热门话题 -->
 	<div style="width: 70%; margin: 30px 200px;">
 		<div class="panel panel-default" id="main">
-			<div class="panel-heading"
+
+
+			<%-- <div class="panel-heading"
 				style="background-color: white; margin: 10px;">
 				<a href="/travelForum/topic/Index">论坛首页</a> &nbsp;›&nbsp;
 				${topic.title}
-			</div>
+			</div> --%>
 			<div class="panel-body" style="margin-top: -15px;">
 				<div style="margin-bottom: 15px; margin-left: 15px;">
 					<h3 id="title">${topic.title}</h3>
 
-					<c:if test="${!empty user}">
+					<%-- <c:if test="${!empty user}">
 
-							<c:if test="${sessionScope.userId == topic.userId}">
-							<div style="float:left; margin-top: -30px; margin-left: 750px;">
-								<span class="text-muted"><a href="/travelForum/getOneById/${topic.id}" id="edit"><i
-											class="fa fa-edit" aria-hidden="true"></i>&nbsp;编辑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
-								<span class="text-muted"><a href="/travelForum/delete/${topic.id}" id="delete"><i
-											class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;删除&nbsp;&nbsp;</a></span>
+						<c:if
+							test="${sessionScope.userId == topic.userId && topic.type == '0'}">
+							<div style="float: left; margin-top: -30px; margin-left: 750px;">
+								<span class="text-muted"><a
+									href="/travelForum/getOneById/${topic.id}" id="edit"><i
+										class="fa fa-edit" aria-hidden="true"></i>&nbsp;编辑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
+								<span class="text-muted"><a
+									href="/travelForum/delete/${topic.id}" id="delete"><i
+										class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;删除&nbsp;&nbsp;</a></span>
 							</div>
-							</c:if>
-					</c:if>
+						</c:if>
+					</c:if> --%>
 
 				</div>
 				<div>
-				<span class="text-muted" style="margin-left: 15px;"> <a
-					href="/travelForum/user/member/${topic.user.username}"> <strong>${topic.user.username}</strong></a></span>&nbsp;&nbsp;&nbsp;
+					<span class="text-muted" style="margin-left: 15px;"> <a
+						href="/travelForum/user/member/${topic.user.username}"> <strong>${topic.user.username}</strong></a></span>&nbsp;&nbsp;&nbsp;
+					<span class="author"><i class="fa fa-map-marker"></i>&nbsp;${topic.province},${topic.city}&nbsp;&nbsp;&nbsp;</span></span>
+					<span style="display: none" id="tabId">${topic.tabId}</span> <span
+						class="badge" style="height: 25px; padding: 6px;"> <c:if
+							test="${topic.tabId == '1'}">游记攻略</c:if> <c:if
+							test="${topic.tabId == '2'}">户外探险</c:if> <c:if
+							test="${topic.tabId == '3'}">游记分享</c:if> <c:if
+							test="${topic.tabId == '4'}">骑行</c:if> <c:if
+							test="${topic.tabId == '5'}">徒步</c:if> <c:if
+							test="${topic.tabId == '6'}">自驾游</c:if> <c:if
+							test="${topic.tabId == '7'}">登山</c:if>
+					</span> <span class="badge" style="height: 25px; padding: 6px;"> <c:if
+							test="${topic.type == '0'}">原创</c:if> <c:if
+							test="${topic.type == '1'}">转发</c:if> <c:if
+							test="${topic.type == '2'}">收藏</c:if></span> &nbsp;&nbsp; <span
+						class="text-muted" id="localCreateTime">${topic.localCreateTime}</span>&nbsp;&nbsp;&nbsp;
+					<span class="text-muted">阅读量：<span id="click">${topic.click}</span></span>
 
-				<span style="display: none" id="tabId">${topic.tabId}</span> <span
-					class="badge" style="height: 25px; padding: 6px;"> <c:if
-						test="${topic.tabId == '1'}">游记攻略</c:if> <c:if
-						test="${topic.tabId == '2'}">户外探险</c:if> <c:if
-						test="${topic.tabId == '3'}">游记分享</c:if> <c:if
-						test="${topic.tabId == '4'}">骑行</c:if> <c:if
-						test="${topic.tabId == '5'}">徒步</c:if> <c:if
-						test="${topic.tabId == '6'}">自驾游</c:if> <c:if
-						test="${topic.tabId == '7'}">登山</c:if>
-				</span> <span class="badge" style="height: 25px; padding: 6px;"> <c:if
-						test="${topic.type == '0'}">原创</c:if> <c:if
-						test="${topic.type == '1'}">转发</c:if> <c:if
-						test="${topic.type == '2'}">收藏</c:if></span> &nbsp;&nbsp; <span
-					class="text-muted" id="localCreateTime">${topic.localCreateTime}</span>&nbsp;&nbsp;&nbsp;
-				<span class="text-muted">阅读量：<span id="click">${topic.click}</span></span>
+					<c:if test="${!empty user}">
+						<ul class="nav navbar-nav navbar-right"
+							style="list-style-type: none; margin-right: 15px">
 
-				<c:if test="${!empty user}">
-					<ul class="nav navbar-nav navbar-right"
-						style="list-style-type: none; margin-right: 15px">
+							<li><span class="text-muted"><a href="#"
+									id="transmit"><i class="fa fa-share" aria-hidden="true"></i>&nbsp;转发&nbsp;&nbsp;</a></span></li>
+							<li><span class="text-muted"><a href="#" id="collect"><i
+										class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;收藏</a></span></li>
+						</ul>
+					</c:if>
 
-						<li><span class="text-muted"><a href="#" id="transmit"><i
-									class="fa fa-share" aria-hidden="true"></i>&nbsp;转发&nbsp;&nbsp;</a></span></li>
-						<li><span class="text-muted"><a href="#" id="collect"><i
-									class="fa fa-heart-o" aria-hidden="true"></i>&nbsp;收藏</a></span></li>
+					<ul class="list-group" style="width: 100%; margin: 20px auto;">
+						<li class="list-group-item" id="content">${topic.content}</li>
 					</ul>
-				</c:if>
-
-				<ul class="list-group" style="width: 100%; margin: 20px auto;">
-					<li class="list-group-item" id="content">${topic.content}</li>
-				</ul>
+				</div>
 			</div>
-		</div>
 		</div>
 		<c:if test="${!empty replies}">
 			<div class="panel panel-default" id="main" style="">
@@ -152,7 +215,7 @@
 			</div>
 		</c:if>
 
-		<c:if test="${!empty user}">
+		<%-- <c:if test="${!empty user}"> --%>
 
 			<div class="panel panel-default" id="main" style="">
 				<div class="panel-heading" style="background-color: white">
@@ -164,14 +227,13 @@
 							<input type="hidden" name="replyUserId" value="${user.id}">
 							<textarea class="form-control" rows="3" name="content"
 								required="required"></textarea>
-							<br /> <input type="submit" class="btn btn-default btn-sm"
+							<br /> <input type="submit" class="btn btn-success btn-sm"
 								value="发表评论" style="float: right">
 						</form>
 					</div>
 
 				</div>
 			</div>
-		</c:if>
 
 	</div>
 	<div style="display: none" id="userId">${topic.userId}</div>
@@ -230,13 +292,13 @@
 		});
 
 		function initPageEvent() {
-			
+
 			// 编辑
 			//$(document).on("click", "#edit", edit_topic);
-			
+
 			// 删除
 			$(document).on("click", "#delete", delete_topic);
-			
+
 			// 转发
 			$(document).on("click", "#transmit", transmit_topic);
 
@@ -282,23 +344,23 @@
 				},
 				success : function(data) {
 					alert(data.message);
-					
+
 				}
 			});
 		}
-		
+
 		// 删除
 		function delete_topic() {
 			$.ajax({
 				url : contextPath + "/delete/" + topicId,
-					//window.location.href = "/travelForum/jsp/index.jsp";
-					//window.location.href = "/travelForum/jsp/index.jsp";
-					/* $.ajax({
-						url : contextPath + "/topic/Index",
-					}); */
+			//window.location.href = "/travelForum/jsp/index.jsp";
+			//window.location.href = "/travelForum/jsp/index.jsp";
+			/* $.ajax({
+				url : contextPath + "/topic/Index",
+			}); */
 			});
 		}
-		
+
 		// 编辑
 		/* function edit_topic() {
 			//window.location.href = contextPath + "/jsp/topic-update.jsp?topicId=" + topicId;
@@ -308,7 +370,6 @@
 				url : contextPath + "/getOneById/" + topicId
 			});
 		} */
-		
 	</script>
 	<!-- Bootstrap core JavaScript
     ================================================== -->

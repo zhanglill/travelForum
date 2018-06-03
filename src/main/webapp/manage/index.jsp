@@ -66,7 +66,7 @@
 		<div id="page-content-wrapper">
 			<ul class="list-inline top-bar">
 				<li id="topbar"></li>
-				<li style="float: right"><span id="logout" class="logout"><a>退出</a></span></li>
+				<li style="float: right"><span id="logout" class="logout"><a href="/travelForum/user/signout">退出</a></span></li>
 				<li style="float: right">
 				<i class="fa fa-user-o" aria-hidden="true"></i>
 							<a><span>${sessionScope.username}</span></a>

@@ -4,6 +4,7 @@ package com.zl.travel.dao;
 import java.util.List;
 
 import com.zl.travel.domain.Questions;
+import com.zl.travel.domain.Topic;
 
 public interface QuestionsMapper {
     int deleteByPrimaryKey(Integer id);
@@ -19,6 +20,14 @@ public interface QuestionsMapper {
     List<Questions> myQuestionList(Integer id);
     
     List<Questions> listQuestionsAndUsers();
+    
+    List<Questions> listQuestionsAndUsersByCount();
+    
+    List<Questions> listQuestionsAndUsersByClick();
+    
+    List<Questions> listQuestionsAndUsersNoReply();
+    
+    List<Questions> listQuestionsAndUsersNoReplyByClick();
     
     List<Questions> listQuestionsAndUser();
 
@@ -38,4 +47,7 @@ public interface QuestionsMapper {
 
     //获取主题总数
     int getQuestionsNum();
+    
+    List<Questions> listQuestionsAndUsersOfTab(Integer tabId);
+    
 }

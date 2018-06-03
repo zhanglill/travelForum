@@ -11,6 +11,7 @@
 		<result column="title" property="title" jdbcType="VARCHAR" />
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 	</resultMap>
 
 	<!-- 主题基本结果集+ 主题内容 用于主题详情 -->
@@ -29,12 +30,17 @@
 		<result column="click" property="click" jdbcType="INTEGER" />
 		<result column="title" property="title" jdbcType="VARCHAR" />
 		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="count_replies" property="countReplies"
 			jdbcType="INTEGER" />
 		<association property="user" javaType="com.zl.travel.domain.User">
 			<id column="id" property="id" jdbcType="INTEGER" />
 			<result column="username" property="username" jdbcType="VARCHAR" />
 			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+		<association property="tab" javaType="com.zl.travel.domain.Tab">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="tab_name" property="tabName" jdbcType="VARCHAR" />
 		</association>
 	</resultMap>
 
@@ -48,10 +54,15 @@
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
 		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<association property="user" javaType="com.zl.travel.domain.User">
 			<id column="id" property="id" jdbcType="INTEGER" />
 			<result column="username" property="username" jdbcType="VARCHAR" />
 			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+		<association property="tab" javaType="com.zl.travel.domain.Tab">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="tab_name" property="tabName" jdbcType="VARCHAR" />
 		</association>
 	</resultMap>
 	<resultMap id="QuestionsAndUserDetail" type="com.zl.travel.domain.Questions">
@@ -63,14 +74,29 @@
 		<result column="content" property="content" jdbcType="LONGVARCHAR" />
 		<result column="click" property="click" jdbcType="INTEGER" />
 		<result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
+		<association property="tab" javaType="com.zl.travel.domain.Tab">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="tab_name" property="tabName" jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 
 	<!-- 最多评论主题列表 -->
 	<resultMap id="mostCommentsQuestions" type="com.zl.travel.domain.Questions">
 		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
 		<result column="count_replies" property="countReplies"
 			jdbcType="INTEGER" />
 		<result column="content" property="content" jdbcType="VARCHAR" />
+		<association property="user" javaType="com.zl.travel.domain.User">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		</association>
+		<association property="tab" javaType="com.zl.travel.domain.Tab">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="tab_name" property="tabName" jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -82,33 +108,111 @@
 		content
 	</sql>
 
+	<select resultMap="QuestionsAndUserDetail" parameterType="java.lang.Integer"
+		id="listQuestionsAndUsersOfTab">
+		select questions.*,user.username,user.avatar,
+		tab.tab_name,count(questions_reply.id) as count_replies from questions
+		LEFT JOIN
+		user on questions.user_id = user.id
+		LEFT JOIN tab on
+		tab.id=questions.tab_id
+		LEFT JOIN questions_reply on
+		questions.id=
+		questions_reply.questions_id where tab.id =
+		#{id,jdbcType=INTEGER} and
+		questions.del_flag='0'
+		group by questions.id order by questions.id
+		desc;
+	</select>
+
 	<select resultMap="BaseResultMap" id="myQuestionList"
 		parameterType="java.lang.Integer">
-		SELECT * from questions where user_id=#{id, jdbcType=INTEGER} and del_flag='0';
+		SELECT * from questions where user_id=#{id,
+		jdbcType=INTEGER} and del_flag='0';
 	</select>
+
+	<!-- 默认按时间降序排列 -->
+	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsers">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,questions.tab_id,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT
+		JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id
+		= user.id LEFT JOIN questions_reply on
+		questions.id=questions_reply.questions_id where questions.del_flag="0"
+		group by questions.id order by questions.create_time desc;
+	</select>
+
+
+	<!-- 按评论数降序排列 -->
+	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersByCount">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,questions.tab_id,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT
+		JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id
+		= user.id LEFT JOIN questions_reply on
+		questions.id=questions_reply.questions_id where questions.del_flag="0"
+		group by questions.id order by count(questions_reply.id) desc;
+	</select>
+
+	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersByClick">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,questions.tab_id,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id	= user.id 
+		LEFT JOIN questions_reply on questions.id=questions_reply.questions_id 
+		where questions.del_flag="0"
+		group by questions.id order by questions.click desc;
+	</select>
+
+	<!-- 查询没有评论的问答 ：按时间顺序 -->
+	<!-- <select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersNoReply">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id	= user.id 
+		LEFT JOIN questions_reply on questions.id=questions_reply.questions_id 
+		where questions.del_flag="0" and count(questions_reply.id)=0
+		group by questions.id order by questions.create_time desc;
+	</select> -->
 	
-	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsers"> 
-		select questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,user.username,user.avatar, 
-		count(questions_reply.id) as count_replies from questions LEFT JOIN user 
-		on questions.user_id = user.id LEFT JOIN questions_reply on questions.id=questions_reply.questions_id where questions.del_flag="0"
-		group by questions.id order by questions.id desc; </select>
-		
+	<!-- 查询没有评论的问答 ：按时间阅读量 -->
+	<!-- <select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersNoReplyByClick">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT
+		JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id
+		= user.id LEFT JOIN questions_reply on
+		questions.id=questions_reply.questions_id where questions.del_flag="0" and count_replies="0"
+		group by questions.id order by count(questions_reply.id) desc;
+	</select> -->
+
 	<select resultMap="BaseResultMap" id="listQuestionsAndUser">
 		select * from questions
 		where del_flag="0" order by id desc ;
 	</select>
-	
-	
+
 	<select resultMap="QuestionsAndUserDetails" id="selectById"
 		parameterType="java.lang.Integer">
-		SELECT questions.*,user.username,user.avatar from
-		questions,user where
-		questions.user_id = user.id and questions.id =
+		SELECT questions.*,user.username,user.avatar,tab.* from
+		questions left join user on questions.user_id = user.id
+		left join tab
+		on questions.tab_id = tab.id where
+		questions.id =
 		#{id,jdbcType=INTEGER};
 	</select>
+
 	<select resultMap="QuestionsAndUserDetail" id="selectOneById"
 		parameterType="java.lang.Integer">
-		SELECT * from questions where id=#{id,jdbcType=INTEGER} and del_flag="0";
+		SELECT * from questions where id=#{id,jdbcType=INTEGER}
+		and del_flag="0";
 	</select>
 
 	<select resultMap="BaseResultMap" id="getAllQuestions">
@@ -127,11 +231,13 @@
 
 	<select resultMap="mostCommentsQuestions" id="listMostCommentsQuestions">
 		SELECT
-		questions.id,questions.title,questions.content,count(questions_reply.id)
-		as count_replies from
-		questions ,questions_reply where questions.id = questions_reply.questions_id
-		and questions.del_flag="0"
-		group by questions.id
+		questions.id,questions.title,questions.content,tab.*,count(questions_reply.id)
+		as count_replies from questions
+		left join questions_reply on questions.id = questions_reply.questions_id
+		left join tab on questions.tab_id = tab.id
+		where questions.del_flag='0'
+		group by
+		questions.id
 		order by count_replies desc limit 5;
 	</select>
 
@@ -147,16 +253,16 @@
 		set del_flag = '1'
 		where id = #{id,jdbcType=INTEGER} and del_flag="0"
 	</delete>
-	
+
 	<insert parameterType="com.zl.travel.domain.Questions" id="insert">
 		insert into questions (user_id, create_time,
 		update_time,title,
-		content, del_flag)
+		content, del_flag,tab_id)
 		values (#{userId,jdbcType=INTEGER},
 		#{createTime,jdbcType=TIMESTAMP},
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{title,jdbcType=VARCHAR},#{content,jdbcType=LONGVARCHAR},
-		#{delFlag,jdbcType=VARCHAR})
+		#{delFlag,jdbcType=VARCHAR},#{tabId,jdbcType=INTEGER})
 	</insert>
 
 	<insert parameterType="com.zl.travel.domain.Questions" id="insertSelective">
@@ -184,7 +290,10 @@
 				content,
 			</if>
 			<if test="delFlag != null">
-				del_flag
+				del_flag,
+			</if>
+			<if test="tabId != null">
+				tab_id
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -210,7 +319,10 @@
 				#{content,jdbcType=LONGVARCHAR},
 			</if>
 			<if test="delFlag != null">
-				#{delFlag,jdbcType=VARCHAR}
+				#{delFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="tabId != null">
+				#{tabId,jdbcType=INTEGER}
 			</if>
 		</trim>
 	</insert>
@@ -271,7 +383,8 @@
 		#{click,jdbcType=INTEGER},
 		del_flag =
 		#{delFlag,jdbcType=INTEGER}
-		where id = #{id,jdbcType=INTEGER}
+		where
+		id = #{id,jdbcType=INTEGER}
 	</update>
 
 	<update parameterType="java.lang.Integer" id="clickAddOne">

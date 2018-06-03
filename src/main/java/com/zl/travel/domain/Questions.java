@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class Questions {
 
+	// 板块信息
+    private Tab tab;
+    
 	private User user;
 
 	private Integer countReplies;
@@ -32,6 +35,9 @@ public class Questions {
 
 	private String delFlag;
 
+	// 板块id
+    private Integer tabId;
+    
 	public User getUser() {
 		return user;
 	}
@@ -122,6 +128,22 @@ public class Questions {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-M-dd HH:mm:ss");// 设置日期格式
 		String date = df.format(updateTime);
 		return date;
+	}
+
+	public Tab getTab() {
+		return tab;
+	}
+
+	public void setTab(Tab tab) {
+		this.tab = tab;
+	}
+
+	public Integer getTabId() {
+		return tabId;
+	}
+
+	public void setTabId(Integer tabId) {
+		this.tabId = tabId;
 	}
 
 }

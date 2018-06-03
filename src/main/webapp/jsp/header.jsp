@@ -17,12 +17,18 @@ html, body {
 		"WenQuanYi Micro Hei", sans-serif;
 	background: #f0f2f5;
 }
-/* header {
+header {
 	font-family: 'microsoft yahei';
-} */
+} 
+
+.navbar-right {
+    float: right!important;
+    margin-right: -15px;
+}
+
 .dropdown-menu {
 	margin-top:45px;
-	height: 110px;
+	height: 150px;
 	width: 40px;
 }
 
@@ -30,15 +36,52 @@ html, body {
 	margin-top:45px;
 }
 
-.navbar .nav>li .dropdown-menu {
+.nav>li {
+    position: relative;
+    display: block;
+}
+
+.navbar .navbar-nav > li > a {
+    padding: 10px 15px;
+    margin: 10px 3px;
+    position: relative;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #F5F5F5;
+    color: #333333;
+    opacity: 1;
+    text-decoration: none;
+}
+
+.navbar .nav > li .dropdown-menu {
 	margin: 0;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    border-radius: 10px;
+    margin-top: -5px;
 }
 
 .navbar .nav>li:hover .dropdown-menu {
 	display: block;
 }
 
-.exit {
+.dropdown-menu > li > a {
+    padding: 8px 16px;
+    color: #333333;
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+ .exit {
 	margin-top: 4px;
 	background-color: #ffffff;
 	height: 30px;
@@ -52,11 +95,11 @@ html, body {
 
 .exit:hover a {
 	color: #ffffff;
-}
+} 
 
-.navbar-nav>li {
+ .navbar-nav>li {
 	float: left;
-}
+} 
 
 #searchBtn:hover {
 	color: #ffffff;
@@ -108,10 +151,10 @@ li {
 					<li><a class="navbar-brand" href="/travelForum/">旅游论坛</a></li>
 					<li><a href="/travelForum/">首页</a></li>
 					<li><a href="/travelForum/topic/Index">论坛</a></li>
-					<li><a href="/travelForum/question/questions/Index">问答</a></li>
+					<li><a href="/travelForum/question/questions/IndexByCount">问答</a></li>
 					<li><a href="/travelForum/jsp/footer.jsp">足迹</a></li>
 
-					<li><a href="#" id="manage">后台管理</a></li>
+					<li><a href="/travelForum/manage/login.jsp" id="manage">后台管理</a></li>
 					<li>
 						<div class="search_bar">
 							<input type="text" class="input_search" name="search_input"
@@ -145,6 +188,32 @@ li {
 				<c:if test="${!empty userId}">
 					<!--已登陆-->
 					<ul class="nav navbar-nav navbar-right">
+                        <li>
+							<p class="navbar-text">
+								<a href="/travelForum/main/new"><i class="fa fa-plus-square"
+									aria-hidden="true"></i>&nbsp;写游记</a>
+							</p>
+						</li>
+						<li>
+							<p class="navbar-text">
+								<a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i>&nbsp;消息</a>
+							</p>
+						</li>
+                        <li class="dropdown">
+                              <a href="/travelForum/topic/myIndex" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <span>${sessionScope.username}</span>
+                                    <b class="caret"></b>
+                              </a>
+                              <ul class="dropdown-menu" style="margin-top: -13px;">
+                                <li><a href="/travelForum/topic/myIndex">我的主页</a></li>
+                                <li><a href="/travelForum/user/getUserInfoById/${sessionScope.userId}">我的资料</a></li>
+                                <li><a href="/travelForum/jsp/my_editPassword.jsp">修改密码</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/travelForum/user/signout">安全退出</a></li>
+                              </ul>
+                        </li>
+                    </ul>
+					<%-- <ul class="nav navbar-nav navbar-right">
 
 						<li>
 							<p class="navbar-text">
@@ -159,7 +228,7 @@ li {
 						</li>
 						<li>
 							<div id="userinfo" class="dropdown">
-							<%-- <span>${sessionScope.username}</span> --%>
+							<span>${sessionScope.username}</span>
 								<img class="pull-left"
 									src="/travelForum/skins/skin/${user.avatar}"
 									style="width: 40px; height: 40px; border-radius: 50%; margin: 5px 10px;">
@@ -188,7 +257,7 @@ li {
 							</div>
 						</li>
 
-					</ul>
+					</ul> --%>
 				</c:if>
 			</div>
 		</div>
@@ -222,8 +291,8 @@ var contextPath = '<%=request.getContextPath()%>';
 			dataType: "json"
 			success : function(data) {
 			}
-		}); */
-	}
+		}); 
+	}*/
 	
 	//中间搜索框鼠标点击事件
 	function searchDocumentClick() {
