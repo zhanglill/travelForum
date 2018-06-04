@@ -49,6 +49,25 @@
 		</property>
 	</bean>
 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<!--使用下面的方式配置参数，一行配置一个 -->
+						<value>
+							offsetAsPageNum=true
+							rowBoundsWithCount=true
+							pageSizeZero=true
+							reasonable=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+
 	<!-- 配置静态资源 -->
 	<mvc:resources location="/skins/skin/img/" mapping="/img/**" />
 	<mvc:resources location="/skins/js/" mapping="/js/**" />

@@ -169,8 +169,9 @@ li {
 					<ul class="nav navbar-nav navbar-right" style="margin-right: auto;">
 						<li>
 							<p class="navbar-text">
-								<!-- <i class="fa fa-bell" aria-hidden="true"></i> -->
-								<a href="/travelForum/main/new">发帖</a>
+								<i class="fa fa-plus-square"
+									aria-hidden="true"></i>
+								<a href="/travelForum/main/new">写游记</a>
 							</p>
 						</li>
 						<li>

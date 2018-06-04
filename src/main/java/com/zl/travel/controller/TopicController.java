@@ -4,8 +4,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,7 +56,7 @@ public class TopicController {
 
 	@Autowired
 	public TabServiceImpl tabService;
-	
+
 	@Autowired
 	public PlaceServiceImpl placeService;
 
@@ -76,17 +79,15 @@ public class TopicController {
 
 		// 全部主题
 		List<Topic> topics = topicService.listTopicsAndUsers();
-		
-		/*Topic newTopic = new Topic();
-		List<Topic> topics = new ArrayList<>();
-		
-		for(int i=0; i < topicsList.size(); i++) {
-			if(topicsList.get(i).getContent().length() > 200){
-				String cotnent = topicsList.get(i).getContent().substring(0, 200);
-				newTopic.setContent(cotnent);
-				topics.add(newTopic);
-			}
-		}*/
+
+		/*
+		 * Topic newTopic = new Topic(); List<Topic> topics = new ArrayList<>();
+		 * 
+		 * for(int i=0; i < topicsList.size(); i++) {
+		 * if(topicsList.get(i).getContent().length() > 200){ String cotnent =
+		 * topicsList.get(i).getContent().substring(0, 200);
+		 * newTopic.setContent(cotnent); topics.add(newTopic); } }
+		 */
 
 		// 获取统计信息
 		/*
@@ -100,12 +101,12 @@ public class TopicController {
 
 		// 最热主题
 		List<Topic> hotestTopics = topicService.listMostCommentsTopics();
-		
+
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
 
 		List<Tab> tabs = tabService.getAllTabs();
 		List<Tab> tab = tabService.getQuestionTabs();
-		//List<Place> place = placeService.getAllPlace();
+		// List<Place> place = placeService.getAllPlace();
 
 		// 全部问答
 		List<Questions> questions = questionsService.listQuestionsAndUsers();
@@ -115,13 +116,13 @@ public class TopicController {
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
 		 * userService.getUserCount();
 		 */
-		//indexPage.addObject("place", place);
-		
+		// indexPage.addObject("place", place);
+
 		indexPage.addObject("tab", tab);
 
 		// 添加问答模块内容
 
-		//indexPage.addObject("topics", topics);
+		// indexPage.addObject("topics", topics);
 		indexPage.addObject("tabs", tabs);
 		indexPage.addObject("questions", questions);
 		indexPage.addObject("hotestTopics", hotestTopics);
@@ -148,17 +149,15 @@ public class TopicController {
 
 		// 全部主题
 		List<Topic> topics = topicService.listTopicsAndUsers();
-		
-		/*Topic newTopic = new Topic();
-		List<Topic> topics = new ArrayList<>();
-		
-		for(int i=0; i < topicsList.size(); i++) {
-			if(topicsList.get(i).getContent().length() > 200){
-				String cotnent = topicsList.get(i).getContent().substring(0, 200);
-				newTopic.setContent(cotnent);
-				topics.add(newTopic);
-			}
-		}*/
+
+		/*
+		 * Topic newTopic = new Topic(); List<Topic> topics = new ArrayList<>();
+		 * 
+		 * for(int i=0; i < topicsList.size(); i++) {
+		 * if(topicsList.get(i).getContent().length() > 200){ String cotnent =
+		 * topicsList.get(i).getContent().substring(0, 200);
+		 * newTopic.setContent(cotnent); topics.add(newTopic); } }
+		 */
 
 		// 获取话题统计信息
 		/*
@@ -186,7 +185,7 @@ public class TopicController {
 		List<Topic> userCollectTopics = topicService.listUserCollectTopics(userId);
 
 		List<Tab> tab = tabService.getAllTabs();
-		
+
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("hotestTopics", hotestTopics);
 		indexPage.addObject("userPersonalTopics", userPersonalTopics);
@@ -223,6 +222,25 @@ public class TopicController {
 		// 全部主题
 		List<Topic> topics = topicService.listTopicsAndUsers();
 
+		String regex;
+		List<String> srcList = new ArrayList<String>();
+		regex = "src=\"(.*?)\"";
+
+		for (int i = 0; i < topics.size(); i++) {
+			
+			Pattern pa = Pattern.compile(regex);
+			Matcher ma = pa.matcher(topics.get(i).getContent());
+			while (ma.find()) {
+				srcList.add(ma.group());
+			}
+			
+			Topic topic = topics.get(i);
+			String txtcontent = topic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
+			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+			topic.setContent(txtcontent);
+
+		}
+
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
@@ -247,6 +265,7 @@ public class TopicController {
 		indexPage = new ModelAndView("jsp/my-index");
 
 		indexPage.addObject("topics", topics);
+		indexPage.addObject("srcList", srcList);
 		indexPage.addObject("myQuestions", myQuestions);
 		indexPage.addObject("hotestTopics", hotestTopics);
 		indexPage.addObject("userPersonalTopics", userPersonalTopics);
@@ -404,6 +423,7 @@ public class TopicController {
 		indexPage.addObject("user", user);
 		return indexPage;
 	}
+
 	/**
 	 * 发表主题
 	 * 
@@ -426,15 +446,17 @@ public class TopicController {
 		String city = request.getParameter("city");
 		String content = request.getParameter("editorValue");
 		Integer tabId = Integer.parseInt(request.getParameter("tab"));
-		//Integer placeId = Integer.parseInt(request.getParameter("placeId"));
+		// Integer placeId = Integer.parseInt(request.getParameter("placeId"));
 
 		Tab tab = tabService.selectByPrimaryKey(tabId);
 		tab.setCount(tab.getCount() + 1);
 		tabService.updateByPrimaryKeySelective(tab);
-		
-		/*Place place = placeService.selectByPrimaryKey(placeId);
-		place.setCount(place.getCount() + 1);
-		placeService.updateByPrimaryKeySelective(place);*/
+
+		/*
+		 * Place place = placeService.selectByPrimaryKey(placeId);
+		 * place.setCount(place.getCount() + 1);
+		 * placeService.updateByPrimaryKeySelective(place);
+		 */
 
 		// 新建Topic
 		Topic topic = new Topic();
@@ -458,7 +480,7 @@ public class TopicController {
 				log.info("添加主题成功!");
 			}
 		}
-		indexPage = new ModelAndView("redirect:/");
+		indexPage = new ModelAndView("redirect:/topic/Index");
 
 		return indexPage;
 	}
@@ -739,9 +761,9 @@ public class TopicController {
 
 		// 获取主题信息
 		Topic topic = topicService.selectTopicById(id);
-		String txtcontent = topic.getContent().replaceAll("</?[^>]+>", ""); //剔出<html>的标签    
-        txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");//去除字符串中的空格,回车,换行符,制表符    
-        topic.setContent(txtcontent); 
+		String txtcontent = topic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
+		txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+		topic.setContent(txtcontent);
 
 		// 获取主题全部评论
 		List<Reply> replies = replyService.getRepliesOfTopic(id);

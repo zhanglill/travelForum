@@ -90,6 +90,23 @@
 	right: 0px;
 	top: 0px;
 }
+
+/* --- */
+.rg-tags a {
+	color: #585858;
+	outline: 0 none;
+}
+
+.rg-tags {
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 10px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+}
 </style>
 <body>
 
@@ -102,7 +119,7 @@
 			<div class="headerL">
 				<div class="site">
 					当前位置： <a href="/travelForum/">首页</a> &gt; <a
-						href="/travelForum/topic/Index">论坛</a> &gt;<span>发表游记</span>
+						href="/travelForum/topic/Index">游记</a> &gt;<span>发表游记</span>
 				</div>
 			</div>
 		</div>
@@ -142,7 +159,7 @@
 					<span class="text-muted" style="margin-left: 15px;"> <a
 						href="/travelForum/user/member/${topic.user.username}"> <strong>${topic.user.username}</strong></a></span>&nbsp;&nbsp;&nbsp;
 					<span class="author"><i class="fa fa-map-marker"></i>&nbsp;${topic.province},${topic.city}&nbsp;&nbsp;&nbsp;</span></span>
-					<span style="display: none" id="tabId">${topic.tabId}</span> <span
+					<%-- <span style="display: none" id="tabId">${topic.tabId}</span> <span
 						class="badge" style="height: 25px; padding: 6px;"> <c:if
 							test="${topic.tabId == '1'}">游记攻略</c:if> <c:if
 							test="${topic.tabId == '2'}">户外探险</c:if> <c:if
@@ -151,7 +168,10 @@
 							test="${topic.tabId == '5'}">徒步</c:if> <c:if
 							test="${topic.tabId == '6'}">自驾游</c:if> <c:if
 							test="${topic.tabId == '7'}">登山</c:if>
-					</span> <span class="badge" style="height: 25px; padding: 6px;"> <c:if
+					</span> --%>
+					<span class="rg-tags"><a
+									href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span>
+					 <span class="badge" style="height: 25px; padding: 6px;"> <c:if
 							test="${topic.type == '0'}">原创</c:if> <c:if
 							test="${topic.type == '1'}">转发</c:if> <c:if
 							test="${topic.type == '2'}">收藏</c:if></span> &nbsp;&nbsp; <span

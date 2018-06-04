@@ -12,7 +12,10 @@
 <script type="application/x-javascript">
 	
 	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
 
 </script>
 <!-- Custom Theme files -->
@@ -402,7 +405,7 @@ ol, ul {
 					<span class="country">论坛精选</span>
 				</h1> -->
 				<div class="site">
-					当前位置： <a href="/travelForum/">首页</a> &gt; <span>问答</span>
+					当前位置： <a href="/travelForum/">首页</a> &gt; <span>游记</span>
 				</div>
 			</div>
 
@@ -573,13 +576,16 @@ ol, ul {
 				<div class="strgy-list-wrap" style="margin-bottom: 100px;">
 
 					<c:forEach items="${topics}" var="topic">
+						<c:if test="${topics}= null | ${topics} = ''">
+							<div class="strgy-item">
+								<div class="module-face">未查询到相关游记</div>
+							</div>
+						</c:if>
 						<!--一个游记-->
 						<div class="strgy-item">
 							<div class="module-face">
-								<a href="http://u.8264.com/space-uid-116401.html"
-									target="_blank"><img
-									src="/travelForum/skins/skin/${topic.user.avatar}"
-									onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_middle.gif'"></a>
+								<a href="/travelForum/topic/tab/${topic.tabId}"><img
+									src="/travelForum/skins/skin/${topic.user.avatar}"></a>
 							</div>
 							<div class="module-title">
 								<h3>
@@ -601,30 +607,63 @@ ol, ul {
 
 							</div>
 							<div class="module-body">
-								<p>${topic.content.substring(0,100)}</p>
+								<p>${topic.content.substring(0,200)}</p>
 							</div>
 							<div class="module-pic">
-								<a href="http://www.8264.com/youji/219194.html" target="_blank"
-									class="pic-item"> <img
-									src="http://image1.8264.com/forum/day_090522/0905221033b3c27d2dafdee60a.jpg!w175h131">
-								</a> <a href="http://www.8264.com/youji/219194.html" target="_blank"
-									class="pic-item"> <img
-									src="http://image1.8264.com/forum/day_090522/09052210338e427d89f903204e.jpg!w175h131">
-								</a> <a href="http://www.8264.com/youji/219194.html" target="_blank"
-									class="pic-item"> <img
-									src="http://image1.8264.com/forum/day_090522/0905221033dfab19c8463e21ff.jpg!w175h131">
-								</a> <a href="http://www.8264.com/youji/219194.html" target="_blank"
-									class="pic-item"> <img
-									src="http://image1.8264.com/forum/day_090522/09052220409d4ae6c7afadc3b8.jpg!w175h131">
-								</a> <a href="http://www.8264.com/youji/219194.html" target="_blank"
-									class="pic-item"> <img
-									src="http://image1.8264.com/forum/day_090522/09052220407f492666525b229d.jpg!w175h131">
+								<a href="/travelForum/topic/${topic.id}" class="pic-item"> 
+									<c:forEach items="${srcList}" var="srcList">
+										<img src="${srcList}">
+									</c:forEach>
 								</a>
 							</div>
 						</div>
 					</c:forEach>
 				</div>
 			</div>
+
+			<%-- <div class="col-md-5">当前第 ${pageInfo.pageNum} 页.总共
+				${pageInfo.pages} 页.一共 ${pageInfo.total} 条记录</div>
+
+			<div class="col-md-3">
+				<nav aria-label="Page navigation">
+					<ul class="pagination">
+
+						<li><a
+							href="${pageContext.request.contextPath}/topic/Index?pn=1">首页</a></li>
+
+						<!--上一页-->
+						<li><c:if test="${pageInfo.hasPreviousPage}">
+								<a
+									href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pageNum-1}"
+									aria-label="Previous"> <span aria-hidden="true">«</span>
+								</a>
+							</c:if></li>
+
+						<!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+						<c:forEach items="${pageInfo.navigatepageNums}" var="page_num">
+							<c:if test="${page_num == pageInfo.pageNum}">
+								<li class="active"><a href="#">${page_num}</a></li>
+							</c:if>
+							<c:if test="${page_num != pageInfo.pageNum}">
+								<li><a
+									href="${pageContext.request.contextPath}/topic/Index?pn=${page_num}">${page_num}</a></li>
+							</c:if>
+						</c:forEach>
+
+						<!--下一页-->
+						<li><c:if test="${pageInfo.hasNextPage}">
+								<a
+									href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pageNum+1}"
+									aria-label="Next"> <span aria-hidden="true">»</span>
+								</a>
+							</c:if></li>
+
+						<li><a
+							href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pages}">尾页</a></li>
+					</ul>
+				</nav>
+
+			</div> --%>
 
 			<div id="J-MuiCatebar" class="mui-mbar-outer" style="right: -452px;">
 				<div class="close-menu">
@@ -644,18 +683,12 @@ ol, ul {
 								</h3>
 								<p class="art-count">1757篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="http://u.8264.com/space-uid-40477019.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/040/47/70/19_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-39151128.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/039/15/11/28_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-36342768.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/036/34/27/68_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
 								</div>
 							</li>
 							<li>
@@ -665,18 +698,12 @@ ol, ul {
 								</h3>
 								<p class="art-count">1633篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="http://u.8264.com/space-uid-40477019.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/040/47/70/19_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-34579525.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/034/57/95/25_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-36050500.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/036/05/05/00_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
 								</div>
 							</li>
 							<li>
@@ -686,18 +713,12 @@ ol, ul {
 								</h3>
 								<p class="art-count">932篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="http://u.8264.com/space-uid-40529409.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/040/52/94/09_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-38860190.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/038/86/01/90_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
-									<a href="http://u.8264.com/space-uid-34622690.html"
-										target="_blank"><img
-										src="http://avatar.8264.com/data/avatar/034/62/26/90_avatar_small.jpg"
-										onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_small.gif'"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
+									<a href="#"><img
+										src="#"></a>
 								</div>
 							</li>
 						</ul>

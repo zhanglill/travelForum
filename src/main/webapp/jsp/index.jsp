@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
 <head>
-<title>Home</title>
+<title>首页</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
@@ -10,7 +10,17 @@
 <script type="application/x-javascript">
 	
 	
+	
+	
+	
+	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
+
 
 
 </script>
@@ -75,7 +85,7 @@
 		url(http://static.8264.com/static/images/moban/indexnew/images/morelinkicon.jpg)
 		right center no-repeat;
 	padding: 0px 14px 0px 0px;
-	margin: 15px 10px 0px 0px;
+	/* margin: 15px 10px 0px 0px; */
 }
 
 /* 热门旅游地 */
@@ -180,6 +190,23 @@ em {
 	line-height: 1;
 	margin-right: 5px;
 }
+
+/* --- */
+.rg-tags a {
+	color: #585858;
+	outline: 0 none;
+}
+
+.rg-tags {
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 10px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+}
 </style>
 
 <body>
@@ -214,13 +241,14 @@ em {
 		<div class="panel col-xs-7" id="main"
 			style="margin: 20px 10px 20px 100px;">
 			<ul class="clearfix">
+
 				<c:forEach items="${hotestTopics}" var="topic">
 
 					<li style="list-style: none; margin-top: 18px;">
 						<dl class="clearfix">
 							<dt class="col-xs-3">
-								<a href="/travelForum/topic/${topic.id}"
-									target="_blank" title="${topic.title}"><img
+								<a href="/travelForum/topic/${topic.id}" target="_blank"
+									title="${topic.title}"><img
 									src="/travelForum/skin/images/i2.jpg" alt="${topic.title}"
 									height="164" style="display: inline; width: 100%;"></a>
 							</dt>
@@ -232,14 +260,18 @@ em {
 									</h3>
 									<div class="desc">${topic.content.substring(0,100)}</div>
 									<div class="extra">
-										<ul class="clearfix" style="list-style: none;">
+										<ul class="clearfix"
+											style="list-style: none; margin-left: -18px;">
 											<li class="author" style="float: left">
-												<img href="/travelForum/user/member/${topic.user.username}"
-													width="16" height="16"> <i class="fa fa-user-o"
+												<%-- <img href="/travelForum/user/member/${topic.user.username}"
+													width="16" height="16"> --%> <i class="fa fa-user-o"
 												aria-hidden="true"></i>&nbsp; ${topic.user.username}&nbsp;
 											</li>
+											<%-- <li class="author" style="float: left"><span
+												class="badge"> ${topic.tab.tabName}&nbsp; </span></li> --%>
 											<li class="author" style="float: left"><span
-												class="badge"> ${topic.tab.tabName}&nbsp; </span></li>
+												class="rg-tags"><a
+													href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span></li>
 											<li class="author" style="float: left"><i
 												class="fa fa-map-marker"></i>&nbsp;${topic.province},${topic.city}&nbsp;
 												&nbsp;</li>
@@ -268,13 +300,13 @@ em {
 		<div class="panel col-xs-3" style="margin-top: 20px">
 			<div class="w300">
 				<div class="righttitle mt27">
-					热门玩法<a href="http://www.8264.com/youji/" target="_blank"
+					热门玩法<a href="/travelForum/topic/Index" target="_blank"
 						class="alllink">全部</a>
 				</div>
 				<div class="hotmudidibox clear_b">
 					<ul>
 						<c:forEach items="${tabs}" var="tab">
-							<li><a href="http://hd.8264.com/xianlu-4-0-0-0-0-0-2-1"
+							<li><a href="/travelForum/topic/tab/${tab.id}"
 								target="_blank"> <span>${tab.tabName}</span> <em>${tab.count}&nbsp;条</em>
 							</a></li>
 						</c:forEach>
@@ -286,7 +318,7 @@ em {
 		<div class="panel col-xs-3" style="margin-top: 20px">
 			<div class="w300">
 				<div class="righttitle mt27">
-					热门旅行地<a href="http://www.8264.com/youji/" target="_blank"
+					热门旅行地<a href="/travelForum/topic/Index" target="_blank"
 						class="alllink">全部</a>
 				</div>
 				<div class="hotmudidibox clear_b">
@@ -368,6 +400,7 @@ em {
 	<div class="panel col-xs-7" id="main"
 		style="margin: 20px 10px 20px 100px;">
 		<ul class="clearfix">
+
 			<c:forEach items="${questions}" var="hotestQuestions">
 
 				<li style="list-style: none; margin-top: 18px;">
@@ -388,7 +421,8 @@ em {
 
 								<div class="ques-labels"
 									style="margin-left: 50px; margin-top: 5px;">
-									<a class="tagiconone" href="/travelForum/question/tab/${hotestQuestions.tab.id}"
+									<a class="tagiconone"
+										href="/travelForum/question/tab/${hotestQuestions.tabId}"
 										target="_blank">${hotestQuestions.tab.tabName}</a>
 								</div>
 
@@ -433,216 +467,6 @@ em {
 		</div>
 	</div>
 
-	<!-- welcome -->
-	<div class="welcome">
-		<div class="container">
-			<div class="col-md-7 welcome-w3lleft">
-				<h3>Welcome !</h3>
-				<h5>Cras porttitor imperdiet volutpat nulla malesuada lectus
-					eros ut convallis felis consectetur ut</h5>
-				<p>Integer vitae ligula sed lectus consectetur pellentesque
-					blandit nec orci. Nulla ultricies nunc et lorem semper, quis
-					accumsan dui aliquam aucibus sagittis placerat. Pellentesque
-					habitant morbi tristique senectus et netus et malesuada fames ac
-					turpis egestas. Morbi non nibh nec enim sollicitudin
-					interdum.tristique senectus et netus et malesuada fames ac turpis
-					egestas</p>
-				<a href="#" class="w3layouts-more" data-toggle="modal"
-					data-target="#myModal">Read More</a>
-			</div>
-			<div class="col-md-5 welcome-w3lright">
-				<div class="welcome-grids">
-					<div class="service-box">
-						<div class="agileits-wicon">
-							<i class="fa fa-motorcycle" aria-hidden="true"></i>
-						</div>
-						<h5>Proin eget ipsum ultrices</h5>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-				<div class="welcome-grids">
-					<div class="col-md-6 col-sm-6 col-xs-6 service-box">
-						<div class="agileits-wicon">
-							<i class="fa fa-truck" aria-hidden="true"></i>
-						</div>
-						<h5>Proin eget ipsum ultrices</h5>
-					</div>
-					<div class="col-md-6 col-sm-6 col-xs-6 service-box">
-						<div class="agileits-wicon">
-							<i class="fa fa-car" aria-hidden="true"></i>
-						</div>
-						<h5>Proin eget ipsum ultrices</h5>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-	<!-- //welcome -->
-	<!-- modal-about -->
-	<div class="modal bnr-modal fade" id="myModal" tabindex="-1"
-		role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body modal-spa">
-					<h4>Blanditiis deleniti</h4>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Cras rutrum iaculis enim, non convallis felis mattis at. Donec
-						fringilla lacus eu pretium rutrum. Cras aliquet congue
-						ullamcorper. Etiam mattis eros eu ullamcorper volutpat. Proin ut
-						dui a urna efficitur varius. uisque molestie cursus mi et congue
-						consectetur adipiscing elit cras rutrum iaculis enim, Lorem ipsum
-						dolor sit amet, non convallis felis mattis at. Maecenas sodales
-						tortor ac ligula ultrices dictum et quis urna. Etiam pulvinar
-						metus neque, eget porttitor massa vulputate in. Fusce lacus purus,
-						pulvinar ut lacinia id, sagittis eu mi. Vestibulum eleifend massa
-						sem, eget dapibus turpis efficitur at. Aliquam viverra quis leo et
-						efficitur. Nullam arcu risus, scelerisque quis interdum eget,
-						fermentum viverra turpis. Itaque earum rerum hic tenetur a
-						sapiente delectus, ut aut reiciendis voluptatibus maiores alias
-						consequatur aut At vero eos</p>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- //modal-about -->
-	<!-- trips -->
-	<!-- <div class="trips">
-		<div class="container">
-			<div class="trips-agileinfo">
-				<div class="col-md-6 trip-agileitsimg"></div>
-				<div class="col-md-6 trip-agileitstext welcome-w3lleft">
-					<h3>我们的旅程</h3>
-					<h5>Cras porttitor imperdiet volutpat</h5>
-					<p>Pellentesque habitant morbi tristique senectus et netus et
-						malesuada fames ac turpis egestas. Morbi non nibh nec enim
-						sollicitudin interdum.tristique senectus et netus et malesuada
-						fames ac turpis egestas</p>
-					<div id="owl-demo" class="owl-carousel owl-theme">
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i1.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i2.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/mages/i3.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i4.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i1.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i2.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i3.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i4.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i1.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-						<div class="item agile-item">
-							<img src="/travelForum/skin/images/i3.jpg" class="trip-w3img"
-								alt="" />
-						</div>
-					</div>
-					<script>
-						$(document).ready(function() {
-							$("#owl-demo").owlCarousel({
-								autoPlay : 3000, //Set AutoPlay to 3 seconds
-
-								items : 3,
-								itemsDesktop : [ 768, 3 ],
-								itemsDesktopSmall : [ 414, 4 ]
-
-							});
-
-						});
-					</script>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div> -->
-	<!-- //trips -->
-	<!-- news -->
-	<%-- <div class="news">
-		<div class="container">
-			<h3 class="w3agileits-title">我的旅程</h3>
-			<div class="new-agileinfo">
-				<div class="col-md-4 news-left">
-					<ul id="demo1_thumbs" class="list-inline">
-						<li><a href="/travelForum/skin/images/img2.jpg"><img
-								src="images/i2.jpg" alt=""
-								data-desoslide-caption="<h3>Maecenas aliqua</h3> <br>Eligendi optio nam libero tempore cum soluta nobis est cumque nihil impedit quo minus id quod maxime placeat facere possimus omnis optio cumque nihil impedit quo minus id quod maxime placeat facere possimus">
-								<div class="news-w3text">
-									<h4>Maecenas aliqua</h4>
-									<h6>
-										<i class="fa fa-calendar" aria-hidden="true"></i> 05 / 09 /
-										2016
-									</h6>
-									<p>Integer viverra eleifend neque, duis vulputate tempus
-										laoreet.</p>
-								</div> </a></li>
-						<li><a href="/travelForum/skin/images/img1.jpg"><img
-								src="images/i1.jpg" alt=""
-								data-desoslide-caption="<h3>Facere possimus </h3> <br>Nam libero tempore cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus omnis optio cumque nihil impedit quo minus id quod maxime placeat facere possimus">
-								<div class="news-w3text">
-									<h4>Facere possimus</h4>
-									<h6>
-										<i class="fa fa-calendar" aria-hidden="true"></i> 05 / 09 /
-										2016
-									</h6>
-									<p>Aliquam erat volutpat. Duis vulputate tempus laoreet.</p>
-								</div> </a></li>
-						<li><a href="/travelForum/skin/images/img3.jpg"><img
-								src="images/i3.jpg" alt=""
-								data-desoslide-caption="<h3>Nulla molestie</h3> <br>Nam libero tempore cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus omnis optio cumque nihil impedit quo minus id quod maxime placeat facere possimus">
-								<div class="news-w3text">
-									<h4>Nulla molestie</h4>
-									<h6>
-										<i class="fa fa-calendar" aria-hidden="true"></i> 05 / 09 /
-										2016
-									</h6>
-									<p>Aliquam erat volutpat. Duis vulputate tempus laoreet.</p>
-								</div> </a></li>
-						<li><a href="/travelForum/skin/images/img4.jpg"><img
-								src="images/i4.jpg" alt=""
-								data-desoslide-caption="<h3>Duis accumsan</h3> <br>Eligendi optio nam libero tempore cum soluta nobis est cumque nihil impedit quo minus id quod maxime placeat facere possimus omnis optio cumque nihil impedit quo minus id quod maxime placeat facere possimus">
-								<div class="news-w3text">
-									<h4>Duis accumsan</h4>
-									<h6>
-										<i class="fa fa-calendar" aria-hidden="true"></i> 05 / 06 /
-										2018
-									</h6>
-									<p>Integer viverra eleifend neque, duis vulputate tempus
-										laoreet.</p>
-								</div> </a></li>
-					</ul>
-				</div>
-				<div id="demo1_main_image" class="col-md-8  news-right"></div>
-			</div> --%>
 	<link rel="stylesheet"
 		href="/travelForum/skin/css/jquery.desoslide.css">
 	<script src="/travelForum/skin/js/jquery.desoslide.js"></script>
@@ -657,43 +481,6 @@ em {
 				});
 			</script>
 	<!-- //news -->
-	<!-- footer -->
-	<div class="footer">
-		<div class="container">
-			<!-- 			<div class="col-md-4 footer-grids">
-				<h3>Review</h3>
-				<p>Sed ut turpis elit ullamcorper in auctor non, accumsan vel
-					lacus nulla auctor cursus nunc. Maecenas ultricies dolor in urna
-					tempus, id egestas erat finibus interdum lectus eget scelerisque.</p>
-			</div>
-			<div class="col-md-3 footer-grids">
-				<h3>Contact Us</h3>
-				<p>
-					123 NewYork City USA.<br> <span>Office: 908-0000</span>
-				</p>
-				<div class="footer-bottom">
-					<a href="#"><i class="fa fa-facebook"> </i><span>Facebook</span></a>
-					<a href="#"><i class="fa fa-twitter"> </i><span>Twitter</span></a>
-					<a href="#"><i class="fa fa-google-plus"> </i><span>Google
-							+</span></a> <a href="#"><i class="fa fa-dribbble"> </i><span>Dribbble</span></a>
-				</div>
-			</div>
-			<div class="col-md-5 footer-grids">
-				<h3>Flickr</h3>
-				<a class="footer-img" href=""><img
-					src="/travelForum/skin/images/i4.jpg" alt=""></a> <a
-					class="footer-img" href=""><img
-					src="/travelForum/skin/images/i2.jpg" alt=""></a> <a
-					class="footer-img" href=""><img
-					src="/travelForum/skin/images/i3.jpg" alt=""></a>
-			</div>
-			<div class="clearfix"></div> -->
-			<!-- <div class="footer-copy">
-				<p>Copyright &copy; 2018.Company name All rights reserved.</p>
-			</div> -->
-		</div>
-	</div>
-	<!-- //footer -->
 	<!-- menu js -->
 	<script>
 		$('.toggle').on('click', function() {
@@ -732,7 +519,8 @@ em {
 	</script>
 
 	<script>
-	var contextPath = '<%=request.getContextPath()%>';
+	var contextPath = '<%=request.getContextPath()%>
+		';
 
 		$(function() {
 

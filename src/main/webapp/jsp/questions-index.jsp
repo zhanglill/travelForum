@@ -25,7 +25,15 @@
 	
 	
 	
+	
+	
+	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
 
 
 
@@ -462,9 +470,11 @@ button, input, select, textarea {
 					<div class="assortmentbox clear_b">
 						<div class="assortmentbox-inner line">
 							<div class="assortmentcon" style="height: 80px;">
-								<a href="/travelForum/question/questions/IndexByCount" class="hover" id="all">全部</a>
+								<a href="/travelForum/question/questions/IndexByCount"
+									class="hover" id="all">全部</a>
 								<c:forEach items="${tab}" var="tab">
-									<a href="/travelForum/question/tab/${tab.id}" data="${tab.tabName}">${tab.tabName}</a>
+									<a href="/travelForum/question/tab/${tab.id}"
+										data="${tab.tabName}">${tab.tabName}</a>
 								</c:forEach>
 							</div>
 						</div>
@@ -482,8 +492,8 @@ button, input, select, textarea {
 						<div class="listtitlebig clear_b">
 							<span>所有问题</span>
 							<div class="czright">
-								<a href="/travelForum/question/questions/IndexByCount" id="hot">热门</a> <a
-									href="/travelForum/question/questions/Index" id="timeDesc">时间</a>
+								<a href="/travelForum/question/questions/IndexByCount" id="hot">热门</a>
+								<a href="/travelForum/question/questions/Index" id="timeDesc">时间</a>
 
 							</div>
 						</div>
@@ -515,8 +525,10 @@ button, input, select, textarea {
 													<i class="fa fa-user-o" aria-hidden="true"></i>&nbsp;
 													${questions.user.username}&nbsp; &nbsp;</li>
 
-												<div class="ques-labels" style="margin-left: 50px; margin-top: 5px;">
-													<a class="tagiconone" href="/travelForum/question/tab/${questions.tabId}">${questions.tab.tabName}</a>
+												<div class="ques-labels"
+													style="margin-left: 50px; margin-top: 5px;">
+													<a class="tagiconone"
+														href="/travelForum/question/tab/${questions.tabId}">${questions.tab.tabName}</a>
 												</div>
 
 												<li class="publish" style="float: left"><i
@@ -543,6 +555,54 @@ button, input, select, textarea {
 					</div>
 				</div>
 			</div>
+			<%-- <div class="row">
+
+						<div class="col-md-6">当前第 ${pageInfo.pageNum} 页.总共
+							${pageInfo.pages} 页.一共 ${pageInfo.total} 条记录</div>
+
+						<!--点击分页-->
+						<div class="col-md-6">
+							<nav aria-label="Page navigation">
+								<ul class="pagination">
+
+									<li><a
+										href="${pageContext.request.contextPath}/questions/IndexByCount?pn=1">首页</a></li>
+
+									<!--上一页-->
+									<li><c:if test="${pageInfo.hasPreviousPage}">
+											<a
+												href="${pageContext.request.contextPath}/questions/IndexByCount?pn=${pageInfo.pageNum-1}"
+												aria-label="Previous"> <span aria-hidden="true">«</span>
+											</a>
+										</c:if></li>
+
+									<!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+									<c:forEach items="${pageInfo.navigatepageNums}" var="page_num">
+										<c:if test="${page_num == pageInfo.pageNum}">
+											<li class="active"><a href="#">${page_num}</a></li>
+										</c:if>
+										<c:if test="${page_num != pageInfo.pageNum}">
+											<li><a
+												href="${pageContext.request.contextPath}/questions/IndexByCount?pn=${page_num}">${page_num}</a></li>
+										</c:if>
+									</c:forEach>
+
+									<!--下一页-->
+									<li><c:if test="${pageInfo.hasNextPage}">
+											<a
+												href="${pageContext.request.contextPath}/questions/IndexByCount?pn=${pageInfo.pageNum+1}"
+												aria-label="Next"> <span aria-hidden="true">»</span>
+											</a>
+										</c:if></li>
+
+									<li><a
+										href="${pageContext.request.contextPath}/questions/IndexByCount?pn=${pageInfo.pages}">尾页</a></li>
+								</ul>
+							</nav>
+						</div>
+
+					</div> --%>
+
 			<div class="col-xs-3" style="float: left">
 
 				<div class="wyfbbox" style="margin: 20px 50px 10px;">
@@ -615,18 +675,18 @@ button, input, select, textarea {
 
 		function initPageDom() {
 			var message = $("#message").text();
-			if(message = "hot") {
+			if (message = "hot") {
 				$("#hot").addClass("hover");
 				$("#timeDesc").removeClass("hover");
-			}else if(message == "timeDesc"){
+			} else if (message == "timeDesc") {
 				$("#timeDesc").addClass("hover");
 				$("#hot").removeremoveClass("hover");
 			}
-			
+
 			var tabName = $("#tabName").text();
-			if(tabName != "" && tabName != null){
+			if (tabName != "" && tabName != null) {
 				$(".assortmentcon a").removeClass("hover");
-				$("a[data="+ tabName +"]").addClass("hover");
+				$("a[data=" + tabName + "]").addClass("hover");
 			}
 		}
 
@@ -636,13 +696,13 @@ button, input, select, textarea {
 			$(document).on("click", "#hot", hot);
 			$(document).on("click", "#timeDesc", timeDesc);
 		}
-		
-		function hot(){
+
+		function hot() {
 			$(this).addClass("hover");
 			$("#timeDesc").removeClass("hover");
 		}
-		
-		function timeDesc(){
+
+		function timeDesc() {
 			$(this).addClass("hover");
 			$("#hot").removeClass("hover");
 		}
@@ -686,9 +746,6 @@ button, input, select, textarea {
 	</script>
 
 	<script src="/travelForum/skin/js/bootstrap.js"></script>
-
-
-
 </body>
 
 </html>

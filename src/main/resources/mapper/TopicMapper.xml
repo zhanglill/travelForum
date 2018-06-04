@@ -94,6 +94,10 @@
 			<result column="username" property="username" jdbcType="VARCHAR" />
 			<result column="avatar" property="avatar" jdbcType="VARCHAR" />
 		</association>
+		<association property="tab" javaType="com.zl.travel.domain.Tab">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="tab_name" property="tabName" jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 	
 	<resultMap id="topicDetail" type="com.zl.travel.domain.Topic">
@@ -181,8 +185,12 @@
 
 	<select resultMap="topicAndUserDetail" parameterType="java.lang.Integer"
 		id="selectById">
-		SELECT topic.*,user.username,user.avatar from topic,user where topic.user_id
-		= user.id and topic.id = #{id,jdbcType=INTEGER} and topic.del_flag='0';
+		SELECT topic.*,user.username,user.avatar,tab.* from
+		topic left join user on topic.user_id = user.id
+		left join tab
+		on topic.tab_id = tab.id where
+		topic.id = #{id,jdbcType=INTEGER};
+		
 	</select>
 
 	<select resultMap="topicDetail" parameterType="java.lang.Integer"

@@ -16,10 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zl.travel.domain.Questions;
 import com.zl.travel.domain.QuestionsReply;
 import com.zl.travel.domain.Reply;
@@ -61,19 +64,24 @@ public class QuestionsController {
 	 * @return
 	 */
 	@RequestMapping("/questions/Index")
-	public ModelAndView toMain(HttpSession session) {
+	public ModelAndView toMain(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+			Map<String, Object> map, HttpSession session) {
 
 		ModelAndView indexPage = new ModelAndView("jsp/questions-index");
 
+		PageHelper.startPage(pn, 10);
+
 		// 全部主题
 		List<Questions> questions = questionsService.listQuestionsAndUsers();
-		
+
+		PageInfo pageInfo = new PageInfo<>(questions, 10);
+
 		List<Questions> question = questionsService.listQuestionsAndUsersByClick();
 
 		List<Questions> noReply = new ArrayList<>();
 
 		for (int i = 0; i < question.size(); i++) {
-			if(noReply.size() < 6){
+			if (noReply.size() < 6) {
 				if (question.get(i).getCountReplies() == 0) {
 					noReply.add(question.get(i));
 				}
@@ -84,10 +92,10 @@ public class QuestionsController {
 		List<Tab> tab = tabService.getQuestionTabs();
 
 		// 获取统计信息
-		
-		 int questionsNum = questionsService.getQuestionsNum(); 
-		 //int usersNum = userService.getUserCount();
-		 
+
+		int questionsNum = questionsService.getQuestionsNum();
+		// int usersNum = userService.getUserCount();
+
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
@@ -100,21 +108,22 @@ public class QuestionsController {
 
 		// 添加问答模块内容
 
+		indexPage.addObject("pageInfo", pageInfo);
 		indexPage.addObject("questions", questions);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
-		
+
 		indexPage.addObject("questionsNum", questionsNum);
 		indexPage.addObject("tabMessage", "timeDesc");
 		// indexPage.addObject("usersNum", usersNum);
-		 
+
 		// indexPage.addObject("user", user);
 
 		return indexPage;
 	}
-	
+
 	/**
 	 * 渲染首页 按评论数降序排列
 	 * 
@@ -122,19 +131,24 @@ public class QuestionsController {
 	 * @return
 	 */
 	@RequestMapping("/questions/IndexByCount")
-	public ModelAndView indexByCount(HttpSession session) {
+	public ModelAndView indexByCount(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+			HttpSession session) {
 
 		ModelAndView indexPage = new ModelAndView("jsp/questions-index");
 
+		PageHelper.startPage(pn, 5);
+
 		// 全部主题
 		List<Questions> questions = questionsService.listQuestionsAndUsersByCount();
-		
+
+		PageInfo pageInfo = new PageInfo<>(questions, 5);
+
 		List<Questions> question = questionsService.listQuestionsAndUsersByClick();
 
 		List<Questions> noReply = new ArrayList<>();
 
 		for (int i = 0; i < question.size(); i++) {
-			if(noReply.size() < 6){
+			if (noReply.size() < 6) {
 				if (question.get(i).getCountReplies() == 0) {
 					noReply.add(question.get(i));
 				}
@@ -147,7 +161,7 @@ public class QuestionsController {
 		// 获取统计信息
 		int questionsNum = questionsService.getQuestionsNum();
 		/*
-		 *  int usersNum = userService.getUserCount();
+		 * int usersNum = userService.getUserCount();
 		 */
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
@@ -162,13 +176,14 @@ public class QuestionsController {
 		// 添加问答模块内容
 
 		indexPage.addObject("questions", questions);
+		indexPage.addObject("pageInfo", pageInfo);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
 		indexPage.addObject("questionsNum", questionsNum);
 		indexPage.addObject("tabMessage", "hot");
-		
+
 		/*
 		 * indexPage.addObject("usersNum", usersNum);
 		 */
@@ -197,10 +212,10 @@ public class QuestionsController {
 		List<Tab> tab = tabService.getQuestionTabs();
 
 		int questionsNum = questionsService.getQuestionsNum();
-		
+
 		// 获取统计信息
 		/*
-		 *  int usersNum = userService.getUserCount();
+		 * int usersNum = userService.getUserCount();
 		 */
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
@@ -219,7 +234,7 @@ public class QuestionsController {
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
-		
+
 		indexPage.addObject("questionsNum", questionsNum);
 		indexPage.addObject("tabMessage", "timeDesc");
 		/*
@@ -229,7 +244,7 @@ public class QuestionsController {
 
 		return indexPage;
 	}
-	
+
 	@RequestMapping("/questions/questionNoReplyByClick")
 	public ModelAndView questionNoReplyByCount(HttpSession session) {
 
@@ -252,7 +267,7 @@ public class QuestionsController {
 
 		// 获取统计信息
 		/*
-		 *  int usersNum = userService.getUserCount();
+		 * int usersNum = userService.getUserCount();
 		 */
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
@@ -271,10 +286,10 @@ public class QuestionsController {
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
-		
+
 		indexPage.addObject("questionsNum", questionsNum);
 		indexPage.addObject("tabMessage", "hot");
-		
+
 		/*
 		 * 
 		 * indexPage.addObject("usersNum", usersNum);
@@ -303,10 +318,10 @@ public class QuestionsController {
 		}
 
 		int questionsNum = questionsService.getQuestionsNum();
-		
+
 		// 获取统计信息
 		/*
-		 *  int usersNum = userService.getUserCount();
+		 * int usersNum = userService.getUserCount();
 		 */
 		// 获取用户信息
 		Integer userId = (Integer) session.getAttribute("userId");
@@ -324,7 +339,7 @@ public class QuestionsController {
 		indexPage.addObject("hotestQuestions", hotestQuestions);
 		indexPage.addObject("userPersonalQuestions", userPersonalQuestions);
 		indexPage.addObject("questionsNum", questionsNum);
-		
+
 		/*
 		 * 
 		 * indexPage.addObject("usersNum", usersNum);
@@ -398,7 +413,7 @@ public class QuestionsController {
 		Tab tab = tabService.selectByPrimaryKey(tabId);
 		tab.setCount(tab.getCount() + 1);
 		tabService.updateByPrimaryKeySelective(tab);
-		
+
 		// 添加topic
 		boolean ifSucc = questionsService.addQuestions(questions);
 		boolean ifSuccAddCredit = userService.addCredit(1, userId);
@@ -470,16 +485,16 @@ public class QuestionsController {
 		List<Questions> noReply = new ArrayList<>();
 
 		for (int i = 0; i < question.size(); i++) {
-			if(noReply.size() < 6){
+			if (noReply.size() < 6) {
 				if (question.get(i).getCountReplies() == 0) {
 					noReply.add(question.get(i));
 				}
 			}
 			System.out.println(question.get(i).getCountReplies());
 		}
-		
-		int questionsNum = questionsService.getQuestionsNum(); 
-		
+
+		int questionsNum = questionsService.getQuestionsNum();
+
 		indexPage.addObject("questionsNum", questionsNum);
 		indexPage.addObject("questions", questions);
 		indexPage.addObject("noReply", noReply);
@@ -553,7 +568,7 @@ public class QuestionsController {
 		topicPage.addObject("questionTabName", questionTabName);
 		return topicPage;
 	}
-	
+
 	@RequestMapping("/questions/noReply/{id}")
 	public ModelAndView noReply(@PathVariable("id") Integer id, HttpSession session) {
 
