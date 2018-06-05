@@ -450,8 +450,7 @@ em {
 	<div class="panel col-xs-3" style="margin-top: 20px">
 		<div class="w300">
 			<div class="righttitle mt27">
-				热门玩法<a href="http://www.8264.com/youji/" target="_blank"
-					class="alllink">全部</a>
+				热门玩法<a href="/travelForum/question/questions/IndexByCount" class="alllink">全部</a>
 			</div>
 			<div class="hotmudidibox clear_b">
 				<ul>

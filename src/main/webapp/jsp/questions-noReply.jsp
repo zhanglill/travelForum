@@ -529,7 +529,7 @@ button, input, select, textarea {
 					</div>
 					<div class="xgwtbox">
 						<ul>
-							<c:forEach items="${questions}" var="noReply">
+							<c:forEach items="${hotestQuestions}" var="noReply">
 								<li><a href="/travelForum/question/questions/${noReply.id}"
 									target="_blank">
 										<div class="wds">

@@ -26,12 +26,15 @@ public interface QuestionsMapper {
     List<Questions> listQuestionsAndUsersByClick();
     
     List<Questions> listQuestionsAndUsersNoReply();
+    List<Questions> listQuestionsAndUsersNoReplyLimit();
     
     List<Questions> listQuestionsAndUsersNoReplyByClick();
+    List<Questions> listQuestionsAndUsersNoReplyByClickLimit();
     
     List<Questions> listQuestionsAndUser();
 
     List<Questions>  listMostCommentsQuestions();
+    List<Questions>  listMostCommentsQuestionsLimit();
 
     List<Questions> listUserPersonalQuestions(Integer userId);
     

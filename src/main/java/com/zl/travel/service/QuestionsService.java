@@ -28,8 +28,11 @@ public interface QuestionsService {
      List<Questions> listQuestionsAndUsersByClick();
      
      List<Questions> listQuestionsAndUsersNoReply();
+     List<Questions> listQuestionsAndUsersNoReplyLimit();
      
      List<Questions> listQuestionsAndUsersNoReplyByClick();
+     List<Questions> listQuestionsAndUsersNoReplyByClickLimit();
+     
      /**
       * 获取全部主题及用户信息 用于渲染首页
       */

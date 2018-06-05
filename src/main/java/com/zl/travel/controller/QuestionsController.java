@@ -79,24 +79,17 @@ public class QuestionsController {
 
 		for (int i = 0; i < questionList.size(); i++) {
 			newQuestion = questionList.get(i);
+			
+			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
-				String cotnent = newQuestion.getContent().substring(0, 200);
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
 			questions.add(newQuestion);
 		}
 
 		// 未有评论的问答
-		List<Questions> noReply = new ArrayList<>();
-		for (int i = 0; i < questionList.size(); i++) {
-			if (questionList.get(i).getCountReplies() == 0) {
-				for (int j = 0; j < 5; j++) {
-					noReply.add(questionList.get(i));
-					j++;
-				}
-			}
-			System.out.println(questionList.get(i).getCountReplies());
-		}
+		List<Questions> noReply = questionsService.listQuestionsAndUsersNoReplyByClickLimit();
 
 		List<Tab> tab = tabService.getQuestionTabs();
 
@@ -158,24 +151,17 @@ public class QuestionsController {
 
 		for (int i = 0; i < questionList.size(); i++) {
 			newQuestion = questionList.get(i);
+			
+			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
-				String cotnent = newQuestion.getContent().substring(0, 200);
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
 			questions.add(newQuestion);
 		}
 
 		// 未有评论的问答
-		List<Questions> noReply = new ArrayList<>();
-
-		for (int i = 0; i < questions.size(); i++) {
-			if (noReply.size() < 6) {
-				if (questions.get(i).getCountReplies() == 0) {
-					noReply.add(questions.get(i));
-				}
-			}
-			System.out.println(questions.get(i).getCountReplies());
-		}
+		List<Questions> noReply = questionsService.listQuestionsAndUsersNoReplyByClickLimit();
 
 		List<Tab> tab = tabService.getQuestionTabs();
 
@@ -220,26 +206,28 @@ public class QuestionsController {
 		ModelAndView indexPage = new ModelAndView("jsp/questions-noReply");
 
 		// 查询所有未有评论的问答
-		List<Questions> questionList = questionsService.listQuestionsAndUsers();
-		List<Questions> noReply = new ArrayList<>();
-		for (int i = 0; i < questionList.size(); i++) {
+		//List<Questions> questionList = questionsService.listQuestionsAndUsers();
+		List<Questions> questionList = questionsService.listQuestionsAndUsersNoReply();
+		/*for (int i = 0; i < questionList.size(); i++) {
 			if (questionList.get(i).getCountReplies() == 0) {
 				noReply.add(questionList.get(i));
 			}
 			System.out.println(questionList.get(i).getCountReplies());
 		}
-
+*/
 		// 截取内容长度
-		List<Questions> questions = new ArrayList<>();
+		List<Questions> noReply = new ArrayList<>();
 		Questions newQuestion = new Questions();
 
 		for (int i = 0; i < questionList.size(); i++) {
 			newQuestion = questionList.get(i);
+			
+			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
-				String cotnent = newQuestion.getContent().substring(0, 200);
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
-			questions.add(newQuestion);
+			noReply.add(newQuestion);
 		}
 
 		List<Tab> tab = tabService.getQuestionTabs();
@@ -264,7 +252,7 @@ public class QuestionsController {
 
 		List<User> userByCredit = userService.listUserByCredit();
 		indexPage.addObject("userByCredit", userByCredit);
-		indexPage.addObject("questions", questions);
+		//indexPage.addObject("questions", questions);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
@@ -286,28 +274,30 @@ public class QuestionsController {
 		ModelAndView indexPage = new ModelAndView("jsp/questions-noReply");
 
 		// 全部主题
-		List<Questions> questionsList = questionsService.listQuestionsAndUsersByClick();
-
-		List<Questions> noReply = new ArrayList<>();
+		List<Questions> questionsList = questionsService.listQuestionsAndUsersNoReplyByClick();
+		
+		/*List<Questions> noReply = new ArrayList<>();
 
 		for (int i = 0; i < questionsList.size(); i++) {
 			if (questionsList.get(i).getCountReplies() == 0) {
 				noReply.add(questionsList.get(i));
 			}
 			System.out.println(questionsList.get(i).getCountReplies());
-		}
+		}*/
 
 		// 截取内容长度
-		List<Questions> questions = new ArrayList<>();
+		List<Questions> noReply = new ArrayList<>();
 		Questions newQuestion = new Questions();
 
 		for (int i = 0; i < questionsList.size(); i++) {
 			newQuestion = questionsList.get(i);
+			
+			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
-				String cotnent = newQuestion.getContent().substring(0, 200);
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
-			questions.add(newQuestion);
+			noReply.add(newQuestion);
 		}
 
 		List<Tab> tab = tabService.getQuestionTabs();
@@ -331,7 +321,7 @@ public class QuestionsController {
 
 		List<User> userByCredit = userService.listUserByCredit();
 		indexPage.addObject("userByCredit", userByCredit);
-		indexPage.addObject("questions", questions);
+		//indexPage.addObject("questions", questions);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("noReply", noReply);
 		indexPage.addObject("hotestQuestions", hotestQuestions);
@@ -470,7 +460,7 @@ public class QuestionsController {
 		boolean ifSucc = questionsService.addQuestions(questions);
 		boolean ifSuccAddCredit = userService.addCredit(1, userId);
 
-		indexPage = new ModelAndView("redirect:/question/questions/Index");
+		indexPage = new ModelAndView("redirect:/question/questions/IndexByCount");
 
 		return indexPage;
 	}
@@ -535,8 +525,10 @@ public class QuestionsController {
 
 		for (int i = 0; i < questionsList.size(); i++) {
 			newQuestion = questionsList.get(i);
+			
+			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
-				String cotnent = newQuestion.getContent().substring(0, 200);
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
 			questions.add(newQuestion);
@@ -549,17 +541,7 @@ public class QuestionsController {
 		User user = userService.getUserById(uid);
 
 		// 根据tab查询所有未有评论的问答
-		List<Questions> question = questionsService.listQuestionsAndUsers();
-		List<Questions> noReply = new ArrayList<>();
-
-		for (int i = 0; i < question.size(); i++) {
-			if (noReply.size() < 6) {
-				if (question.get(i).getCountReplies() == 0) {
-					noReply.add(question.get(i));
-				}
-			}
-			System.out.println(question.get(i).getCountReplies());
-		}
+		List<Questions> noReply = questionsService.listQuestionsAndUsersNoReplyByClickLimit();
 
 		int questionsNum = questionsService.getQuestionsNum();
 
@@ -646,6 +628,8 @@ public class QuestionsController {
 	@RequestMapping("/questions/noReply/{id}")
 	public ModelAndView noReply(@PathVariable("id") Integer id, HttpSession session) {
 
+		boolean ifSucc = questionsService.clickAddOne(id);
+		
 		// 获取主题信息
 		Questions questions = questionsService.selectById(id);
 

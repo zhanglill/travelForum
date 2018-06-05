@@ -93,8 +93,16 @@ public class QuestionsServiceImpl implements QuestionsService {
         return questionsMapper.listQuestionsAndUsersNoReply();
     }
     
+    public List<Questions> listQuestionsAndUsersNoReplyLimit() {
+        return questionsMapper.listQuestionsAndUsersNoReplyLimit();
+    }
+    
     public List<Questions> listQuestionsAndUsersNoReplyByClick() {
         return questionsMapper.listQuestionsAndUsersNoReplyByClick();
+    }
+    
+    public List<Questions> listQuestionsAndUsersNoReplyByClickLimit() {
+        return questionsMapper.listQuestionsAndUsersNoReplyByClickLimit();
     }
     
     public List<Questions> listQuestionsAndUser() {

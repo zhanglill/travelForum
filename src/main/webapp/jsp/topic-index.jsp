@@ -607,7 +607,7 @@ ol, ul {
 
 							</div>
 							<div class="module-body">
-								<p>${topic.content.substring(0,200)}</p>
+								<p>${topic.content}</p>
 							</div>
 							<div class="module-pic">
 								<a href="/travelForum/topic/${topic.id}" class="pic-item"> 

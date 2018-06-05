@@ -99,36 +99,39 @@ public class TopicController {
 			newTopic = hotestTopicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
 			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+			
+			String str = "......";
 			if (txtcontent.length() > 200) {
-				String cotnent = txtcontent.substring(0, 200);
+				String cotnent = txtcontent.substring(0, 200).concat(str);
 				newTopic.setContent(cotnent);
-				hotestTopics.add(newTopic);
 			}
+			hotestTopics.add(newTopic);
 		}
 
 		// 热门问答
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
-		
 
 		List<Tab> tabs = tabService.getAllTabs();
 		List<Tab> tab = tabService.getQuestionTabs();
 		// List<Place> place = placeService.getAllPlace();
 
 		// 查询热门问答（按阅读量排序）
-		 List<Questions> questionsList = questionsService.listQuestionsAndUsersByClick();
+		List<Questions> questionsList = questionsService.listQuestionsAndUsersByClick();
 		// 截取内容长度
-			List<Questions> questions = new ArrayList<>();
-			Questions newQuestion = new Questions();
+		List<Questions> questions = new ArrayList<>();
+		Questions newQuestion = new Questions();
 
-			for (int i = 0; i < questionsList.size(); i++) {
-				newQuestion = questionsList.get(i);
-				if (newQuestion.getContent().length() > 200) {
-					String cotnent = newQuestion.getContent().substring(0, 200);
-					newQuestion.setContent(cotnent);
-				}
-				questions.add(newQuestion);
-			}
+		for (int i = 0; i < questionsList.size(); i++) {
+			newQuestion = questionsList.get(i);
 			
+			String str = "......";
+			if (newQuestion.getContent().length() > 200) {
+				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
+				newQuestion.setContent(cotnent);
+			}
+			questions.add(newQuestion);
+		}
+
 		// 获取统计信息
 		/*
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
@@ -166,17 +169,23 @@ public class TopicController {
 		ModelAndView indexPage = new ModelAndView("jsp/topic-index");
 
 		// 全部主题
-		List<Topic> topics = topicService.listTopicsAndUsers();
+		List<Topic> topicsList = topicService.listTopicsAndUsers();
 
-		/*
-		 * Topic newTopic = new Topic(); List<Topic> topics = new ArrayList<>();
-		 * 
-		 * for(int i=0; i < topicsList.size(); i++) {
-		 * if(topicsList.get(i).getContent().length() > 200){ String cotnent =
-		 * topicsList.get(i).getContent().substring(0, 200);
-		 * newTopic.setContent(cotnent); topics.add(newTopic); } }
-		 */
-
+		List<Topic> topics = new ArrayList<>();
+		Topic newTopic = new Topic();
+		for (int i = 0; i < topicsList.size(); i++) {
+			newTopic = topicsList.get(i);
+			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
+			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+			
+			String str = "......";
+			if (txtcontent.length() > 200) {
+				String cotnent = txtcontent.substring(0, 200).concat(str);
+				newTopic.setContent(cotnent);
+			}
+			topics.add(newTopic);
+		}
+		
 		// 获取话题统计信息
 		/*
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
