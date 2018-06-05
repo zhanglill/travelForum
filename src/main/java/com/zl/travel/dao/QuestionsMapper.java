@@ -24,6 +24,7 @@ public interface QuestionsMapper {
     List<Questions> listQuestionsAndUsersByCount();
     
     List<Questions> listQuestionsAndUsersByClick();
+    List<Questions> listQuestionsAndUsersByClickLimit();
     
     List<Questions> listQuestionsAndUsersNoReply();
     List<Questions> listQuestionsAndUsersNoReplyLimit();

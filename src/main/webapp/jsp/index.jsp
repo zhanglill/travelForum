@@ -12,7 +12,17 @@
 	
 	
 	
+	
+	
+	
+	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
+
+
+
 
 
 
@@ -226,15 +236,6 @@ em {
 		</div>
 		<a href="/travelForum/topic/Index" target="_blank" class="morelink">更多</a>
 	</div>
-
-	<!-- <div class="hotTravels" style="margin-top: 5px;">
-		<div class="hd"
-			style="border: 1px solid #EAEAEA; border-width: 1px 0; height: 42px; line-height: 42px; padding: 15px 0;">
-			<a href="http://www.b2b2c.tourex.net.cn/travels/list.html"
-				class="moreLink" style="margin-right: 125px;">查看更多游记</a>
-			<b
-				style="color: #333; font-weight: 700; font-size: 16px; margin: 30px 100px;">热门游记</b>
-		</div> -->
 	<div class="ol-xs-10">
 		<div class="panel col-xs-7" id="main"
 			style="margin: 20px 10px 20px 100px;">
@@ -243,15 +244,18 @@ em {
 				<c:forEach items="${hotestTopics}" var="topic">
 
 					<li style="list-style: none; margin-top: 18px;">
-						<dl class="clearfix">
+						<dl class="clearfix newlistcon">
 							<dt class="col-xs-3">
-								<a href="/travelForum/topic/${topic.id}" target="_blank"
-									title="${topic.title}"><img
-									src="/travelForum/skin/images/i2.jpg" alt="${topic.title}"
-									height="164" style="display: inline; width: 100%;"></a>
+								<c:forEach items="${srcList}" var="srcList">
+
+									<a href="/travelForum/topic/${topic.id}" class="newlistimg"
+										target="_blank"> <img src="${srcList}"
+										style="margin: 50px -15px 10px; width: 229px; height: 158px;">
+									</a>
+								</c:forEach>
 							</dt>
 							<dd class="col-xs-9" style="float: left">
-								<div class="wrapBox">
+								<div class="wrapBox" style="width: 90%; margin-left: 55px;">
 									<h3>
 										<a href="/travelForum/topic/${topic.id}"
 											title="${topic.title}">${topic.title}</a>
@@ -450,7 +454,8 @@ em {
 	<div class="panel col-xs-3" style="margin-top: 20px">
 		<div class="w300">
 			<div class="righttitle mt27">
-				热门玩法<a href="/travelForum/question/questions/IndexByCount" class="alllink">全部</a>
+				热门玩法<a href="/travelForum/question/questions/IndexByCount"
+					class="alllink">全部</a>
 			</div>
 			<div class="hotmudidibox clear_b">
 				<ul>

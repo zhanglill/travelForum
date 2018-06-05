@@ -501,10 +501,9 @@ mt45 {
 
 				<div class="wyfbbox" id="sidebar1"
 					style="float: left; margin: 5px 50px 100px;">
-					<div class="rtitle">热门问答</div>
+					<div class="rtitle"><a href="/travelForum/question/questions/IndexByCount">热门问答</a></div>
 					<div class="xgwtbox">
 						<ul>
-
 
 							<c:forEach items="${hotestQuestions}" var="noReply">
 								<li><a href="/travelForum/question/questions/${noReply.id}"

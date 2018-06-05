@@ -170,6 +170,36 @@
 		group by questions.id order by
 		questions.click desc;
 	</select>
+	
+	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersByClickLimit">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,questions.tab_id,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT
+		JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id
+		= user.id
+		LEFT JOIN questions_reply on
+		questions.id=questions_reply.questions_id
+		where questions.del_flag="0"
+		group by questions.id order by
+		questions.click desc limit 5;
+	</select>
+	
+	<!-- <select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersByClick">
+		select
+		questions.id,questions.user_id,questions.create_time,questions.update_time,questions.title,questions.content,questions.click,questions.tab_id,user.username,user.avatar,
+		tab.*,count(questions_reply.id) as count_replies from questions
+		LEFT
+		JOIN tab on tab.id=questions.tab_id
+		LEFT JOIN user on questions.user_id
+		= user.id
+		LEFT JOIN questions_reply on
+		questions.id=questions_reply.questions_id
+		where questions.del_flag="0"
+		group by questions.id order by
+		questions.click desc;
+	</select> -->
 
 	<!-- 查询没有评论的问答 ：按时间顺序 -->
 	<select resultMap="QuestionsAndUserInfo" id="listQuestionsAndUsersNoReply">

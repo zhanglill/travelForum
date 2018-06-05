@@ -11,11 +11,7 @@
 <meta name="keywords" content="" />
 <script type="application/x-javascript">
 	
-	
-	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
 
 </script>
 <!-- Custom Theme files -->
@@ -149,7 +145,7 @@ ol, ul {
 
 .strgy-item {
 	position: relative;
-	padding-top: 32px;
+	padding-top: 5px;
 	padding-left: 98px;
 }
 
@@ -208,6 +204,7 @@ ol, ul {
 
 .module-body {
 	margin-top: 20px;
+	width: 55%;
 }
 
 .module-body p {
@@ -302,7 +299,7 @@ ol, ul {
 }
 
 .label-list {
-	margin: -8px 0 0;
+	margin: -40px 0 0;
 	overflow: hidden;
 }
 
@@ -388,6 +385,159 @@ ol, ul {
 	-moz-border-radius: 50%;
 	border-radius: 50%;
 	margin: 0 2px;
+}
+
+/* ----- */
+.ayc {
+	width: 100%;
+	overflow: hidden;
+}
+
+.ayc_sub {
+	width: 168px;
+	height: 104px;
+	display: inline-block;
+	_zoom: 1;
+	float: left;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	margin-right: 10px;
+	overflow: hidden;
+}
+
+.ayc_sub img {
+	width: 168px;
+	height: 104px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	object-fit: cover;
+	-webkit-object-fit: cover;
+	-moz-object-fit: cover;
+	-o-object-fit: cover;
+}
+
+.aydetail {
+	display: inline-block;
+	_zoom: 1;
+	float: left;
+	width: 124px;
+	height: 104px;
+	text-align: center;
+	line-height: 104px;
+	color: #94a1a9;
+	background-color: #f4f6f8;
+	font-size: 15px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+/* ------ */
+.wyfbbox {
+	border: #eee solid 1px;
+	background: #fbfbfb;
+	padding: 17px 0;
+	margin-bottom: 35px;
+	width: 300px;
+}
+
+.wyfbbox .wytw {
+	background: url(../../../tps/i1/fbicon.png) 52px 15px no-repeat #4f7195;
+	width: 180px;
+	height: 40px;
+	text-align: center;
+	border-radius: 30px;
+	font-size: 14px;
+	color: #fff;
+	display: block;
+	margin: 0 auto;
+	line-height: 40px;
+	text-indent: 16px;
+}
+
+.smallfonttitle {
+	font-size: 14px;
+	color: #666;
+	text-align: center;
+}
+
+.numbox.peoplenum {
+	padding: 10px 0 10px 0;
+}
+
+.numbox {
+	text-align: center;
+	font-size: 0;
+	padding: 10px 0 0 0;
+}
+
+.numbox span {
+	width: 27px;
+	height: 35px;
+	line-height: 33px;
+	background: url(../../../tps/i1/numbg.png);
+	display: inline-block;
+	font-size: 28px;
+	color: #627d99;
+	font-weight: 700;
+}
+
+.smallfonttitle {
+	font-size: 12px;
+	color: #666;
+	text-align: center;
+}
+
+.rtitle {
+	font-size: 16px;
+	color: #585858;
+	border-bottom: #e6e6e6 solid 1px;
+	padding-bottom: 8px;
+	margin: 0px 15px;
+}
+
+.gxblist {
+	padding-top: 22px;
+	margin-bottom: -10px;
+}
+
+.gxblist ul {
+	margin-left: 20px;
+}
+
+.gxblist li {
+	overflow: hidden;
+	padding: 0 0 20px 0;
+}
+
+.gxblist li {
+	overflow: hidden;
+	padding: 0 0 20px 0;
+}
+
+.gxblist img {
+	border-radius: 50%;
+	float: left;
+	height: 48px;
+	width: 48px;
+}
+
+.gxblist span {
+	font-size: 14px;
+	color: #333;
+	float: left;
+	padding: 15px 6px 0 15px;
+}
+
+/* ---- */
+hr {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 0;
+	border-top: 1px solid #eee;
 }
 </style>
 
@@ -570,57 +720,150 @@ ol, ul {
 	</div>
 	--%>
 
-	<div class="container" style="background-color: white; width: 100%;">
-		<div class="row">
-			<div class="layout w980">
-				<div class="strgy-list-wrap" style="margin-bottom: 100px;">
+	<div class="container">
+		<div class="row" style="margin-top: 30px;">
 
-					<c:forEach items="${topics}" var="topic">
-						<c:if test="${topics}= null | ${topics} = ''">
-							<div class="strgy-item">
-								<div class="module-face">未查询到相关游记</div>
-							</div>
-						</c:if>
-						<!--一个游记-->
-						<div class="strgy-item">
-							<div class="module-face">
-								<a href="/travelForum/topic/tab/${topic.tabId}"><img
-									src="/travelForum/skins/skin/${topic.user.avatar}"></a>
-							</div>
-							<div class="module-title">
-								<h3>
-									<a href="/travelForum/topic/${topic.id}"> ${topic.title}</a>
-								</h3>
-							</div>
-							<div class="module-line">
-								<a href="/travelForum/user/member/${topic.user.username}"
-									class="user-name">${topic.user.username}</a> <span
-									class="rg-tags"><a
-									href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span>
-								&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;&nbsp;<span
-									class="dt-date">${topic.localCreateTime}</span>
+			<div class="col-xs-8" style="float: left">
+				<div class="panel" id="main" style="width: 770px;">
+					<div class="layout w980">
+						<div class="strgy-list-wrap" style="margin-bottom: 100px;">
 
-								&nbsp;&nbsp;&nbsp;<i class="fa fa-eye" aria-hidden="true"></i><span
-									class="dt-date">&nbsp;&nbsp;${topic.click}</span>
-								&nbsp;&nbsp;&nbsp;<i class="fa fa-comment-o" aria-hidden="true"></i><span
-									class="dt-date">&nbsp;&nbsp;${topic.countReplies}</span>
+							<c:forEach items="${topics}" var="topic">
+								<c:if test="${topics}= null | ${topics} = ''">
+									<div class="strgy-item">
+										<div class="module-face">未查询到相关游记</div>
+									</div>
+								</c:if>
+								<!--一个游记-->
+								<div class="strgy-item">
+									<div class="module-face">
+										<a href="/travelForum/topic/tab/${topic.tabId}"><img
+											src="/travelForum/skins/skin/${topic.user.avatar}"></a>
+									</div>
+									<div class="module-title">
+										<h3>
+											<a href="/travelForum/topic/${topic.id}"> ${topic.title}</a>
+										</h3>
+									</div>
+									<div class="module-line">
+										<a href="/travelForum/user/member/${topic.user.username}"
+											class="user-name">${topic.user.username}</a> <span
+											class="rg-tags"><a
+											href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span>&nbsp;&nbsp;&nbsp;
+										<i class="fa fa-map-marker"></i>&nbsp;&nbsp;${topic.province},${topic.city}&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o"
+											aria-hidden="true"></i>&nbsp;&nbsp;<span class="dt-date">${topic.localCreateTime}</span>
 
-							</div>
-							<div class="module-body">
-								<p>${topic.content}</p>
-							</div>
-							<div class="module-pic">
-								<a href="/travelForum/topic/${topic.id}" class="pic-item"> 
+										&nbsp;&nbsp;&nbsp;<i class="fa fa-eye" aria-hidden="true"></i><span
+											class="dt-date">&nbsp;&nbsp;${topic.click}</span>
+										&nbsp;&nbsp;&nbsp;<i class="fa fa-comment-o"
+											aria-hidden="true"></i><span class="dt-date">&nbsp;&nbsp;${topic.countReplies}</span>
+
+									</div>
+									<div class="module-body">
+										<p>${topic.content}</p>
+									</div>
+									<div class="module-pic">
+										<%-- <a href="/travelForum/topic/${topic.id}" class="pic-item"> 
 									<c:forEach items="${srcList}" var="srcList">
 										<img src="${srcList}">
 									</c:forEach>
-								</a>
-							</div>
+								</a> --%>
+										<c:forEach items="${srcList}" var="srcList">
+											<div class="ayc_sub">
+												<img src="${srcList}">
+											</div>
+										</c:forEach>
+										<!--<div class="ayc_sub">
+												<img
+													src="http://image1.8264.com/forum/public/20180605/5:4/152818747976.jpg!/progressive/true/unsharp/true/format/jpg/both/168x104">
+											</div>
+											<div class="ayc_sub">
+												<img
+													src="http://image1.8264.com/forum/201806/05/08305546gs08g7jrgzv7uc.jpg!/progressive/true/unsharp/true/format/jpg/both/168x104">
+											</div> -->
+										<a href="/travelForum/topic/${topic.id}" class="aydetail">查看详情
+											&gt;</a>
+									</div>
+								</div>
+								<hr>
+							</c:forEach>
+
 						</div>
-					</c:forEach>
+					</div>
 				</div>
 			</div>
+			<div class="col-xs-3" style="float: left">
 
+				<div class="wyfbbox" id="sidebar1"
+					style="float: left; margin: 5px 50px;">
+					<div class="rtitle">
+						<a href="/travelForum/question/questions/questionNoReplyByClick">游记类型</a>
+					</div>
+					<div class="xgwtbox">
+
+						<div class="mui-mbar-tab mui-mbar-tab-domestic">
+							<!-- <div class="mui-mbar-tab-title"></div> -->
+							<div class="label-list">
+								<a href="/travelForum/topic/Index" class="active" id="all">全部</a>
+								<c:forEach items="${tab}" var="tab">
+									<a href="/travelForum/topic/tab/${tab.id}"
+										data="${tab.tabName}">${tab.tabName}</a>
+								</c:forEach>
+
+							</div>
+						</div>
+
+						<%-- <ul>
+
+							<c:forEach items="${noReply}" var="noReply">
+								<li><a
+									href="/travelForum/question/questions/noReply/${noReply.id}">
+										<div class="wds">
+											<b>${noReply.countReplies}</b> 问答
+										</div> <span>${noReply.title}</span>
+								</a></li>
+
+							</c:forEach>
+						</ul> --%>
+					</div>
+				</div>
+
+				<!-- 	<div id="portal_block_7064" class="block move-span">
+					<div id="portal_block_7064_content" class="content">
+						<div class="portal_block_summary">
+							<div class="rlinkbox clear_b">
+								<ul>
+									<li><a href="/list/242">徒步</a></li>
+									<li><a href="/list/950">露营</a></li>
+									<li><a href="/list/931">安全急救</a></li>
+									<li><a href="/list/920">领队</a></li>
+									<li><a href="/list/915">登雪山</a></li>
+									<li><a href="/list/916">攀岩</a></li>
+									<li><a href="/list/917">骑行</a></li>
+									<li><a href="/list/918">跑步</a></li>
+									<li><a href="/list/919">滑雪</a></li>
+									<li><a href="/list/921">水上运动</a></li>
+									<li><a href="/list/951">钓鱼</a></li>
+									<li><a href="/list/952">潜水</a></li>
+									<li><a href="/list/953">攀冰</a></li>
+									<li><a href="/list/966">冲浪</a></li>
+									<li><a href="/list/967">网球</a></li>
+									<li><a href="/list/968">绳索知识</a></li>
+									<li><a href="/list/969">高尔夫</a></li>
+									<li><a href="/list/970">马术</a></li>
+									<li><a href="/list/973">户外摄影</a></li>
+									<li><a href="/list/971">羽毛球</a></li>
+									<li><a href="/list/974">游泳</a></li>
+									<li><a href="/list/975">溯溪</a></li>
+									<li><a href="/list/976">健身</a></li>
+									<li><a href="/list/977">瑜伽</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div> -->
+			</div>
 			<%-- <div class="col-md-5">当前第 ${pageInfo.pageNum} 页.总共
 				${pageInfo.pages} 页.一共 ${pageInfo.total} 条记录</div>
 
@@ -665,7 +908,7 @@ ol, ul {
 
 			</div> --%>
 
-			<div id="J-MuiCatebar" class="mui-mbar-outer" style="right: -452px;">
+			<%-- <div id="J-MuiCatebar" class="mui-mbar-outer" style="right: -452px;">
 				<div class="close-menu">
 					<a href="javascript:void(0);" class="close-button">展开</a>
 				</div>
@@ -683,12 +926,8 @@ ol, ul {
 								</h3>
 								<p class="art-count">1757篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
+									<a href="#"><img src="#"></a> <a href="#"><img
+										src="#"></a> <a href="#"><img src="#"></a>
 								</div>
 							</li>
 							<li>
@@ -698,12 +937,8 @@ ol, ul {
 								</h3>
 								<p class="art-count">1633篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
+									<a href="#"><img src="#"></a> <a href="#"><img
+										src="#"></a> <a href="#"><img src="#"></a>
 								</div>
 							</li>
 							<li>
@@ -713,12 +948,8 @@ ol, ul {
 								</h3>
 								<p class="art-count">932篇</p> <span class="pipe-line"></span>
 								<div class="usr-list">
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
-									<a href="#"><img
-										src="#"></a>
+									<a href="#"><img src="#"></a> <a href="#"><img
+										src="#"></a> <a href="#"><img src="#"></a>
 								</div>
 							</li>
 						</ul>
@@ -734,7 +965,7 @@ ol, ul {
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> --%>
 		</div>
 	</div>
 	<div style="display: none" id="tabName">${oneTab.tabName}</div>

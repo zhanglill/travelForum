@@ -67,6 +67,36 @@ public class TopicController {
 	private final Log log = LogFactory.getLog(getClass());
 
 	/**
+	 * 获取图片地址
+	 * 
+	 * @param content
+	 * @return
+	 */
+	public List findImgSrc(String content) {
+		// 获取html文本中的img的src
+		List srcList = new ArrayList<>();
+		Pattern p_img = Pattern.compile("<(img|IMG)(.*?)(/>|></img>|>)");
+		Matcher m_img = p_img.matcher(content);
+		boolean result_img = m_img.find();
+		if (result_img) {
+			while (result_img) {
+				// 获取到匹配的<img />标签中的内容
+				String str_img = m_img.group(2);
+				// 开始匹配<img />标签中的src
+				Pattern p_src = Pattern.compile("(src|SRC)=(\"|\')(.*?)(\"|\')");
+				Matcher m_src = p_src.matcher(str_img);
+				if (m_src.find()) {
+					String str_src = m_src.group(3);
+					srcList.add(str_src);
+				}
+				// 匹配content中是否存在下一个<img />标签，有则继续以上步骤匹配<img />标签中的src
+				result_img = m_img.find();
+			}
+		}
+		return srcList;
+	}
+
+	/**
 	 * 渲染首页
 	 * 
 	 * @param session
@@ -95,11 +125,15 @@ public class TopicController {
 
 		List<Topic> hotestTopics = new ArrayList<>();
 		Topic newTopic = new Topic();
+		List srcList = new ArrayList<>();
+
 		for (int i = 0; i < hotestTopicsList.size(); i++) {
+			srcList = findImgSrc(hotestTopicsList.get(i).getContent());
+
 			newTopic = hotestTopicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
 			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
-			
+
 			String str = "......";
 			if (txtcontent.length() > 200) {
 				String cotnent = txtcontent.substring(0, 200).concat(str);
@@ -116,20 +150,24 @@ public class TopicController {
 		// List<Place> place = placeService.getAllPlace();
 
 		// 查询热门问答（按阅读量排序）
-		List<Questions> questionsList = questionsService.listQuestionsAndUsersByClick();
+		List<Questions> questionsList = questionsService.listQuestionsAndUsersByClickLimit();
+
 		// 截取内容长度
 		List<Questions> questions = new ArrayList<>();
 		Questions newQuestion = new Questions();
 
 		for (int i = 0; i < questionsList.size(); i++) {
 			newQuestion = questionsList.get(i);
-			
+
 			String str = "......";
 			if (newQuestion.getContent().length() > 200) {
 				String cotnent = newQuestion.getContent().substring(0, 200).concat(str);
 				newQuestion.setContent(cotnent);
 			}
 			questions.add(newQuestion);
+		}
+		if (srcList.size() > 1) {
+			srcList = srcList.subList(0, 1);
 		}
 
 		// 获取统计信息
@@ -143,6 +181,7 @@ public class TopicController {
 
 		// 添加问答模块内容
 
+		indexPage.addObject("srcList", srcList);
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("tabs", tabs);
 		indexPage.addObject("questions", questions);
@@ -172,20 +211,32 @@ public class TopicController {
 		List<Topic> topicsList = topicService.listTopicsAndUsers();
 
 		List<Topic> topics = new ArrayList<>();
+
 		Topic newTopic = new Topic();
+		List srcList = new ArrayList<>();
+
 		for (int i = 0; i < topicsList.size(); i++) {
+
+			srcList = findImgSrc(topicsList.get(i).getContent());
+
 			newTopic = topicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
 			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
-			
+
 			String str = "......";
 			if (txtcontent.length() > 200) {
 				String cotnent = txtcontent.substring(0, 200).concat(str);
 				newTopic.setContent(cotnent);
 			}
 			topics.add(newTopic);
+
 		}
-		
+		if (srcList.size() > 2) {
+			srcList = srcList.subList(0, 2);
+		}
+
+		System.out.println(srcList);
+
 		// 获取话题统计信息
 		/*
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
@@ -213,6 +264,7 @@ public class TopicController {
 
 		List<Tab> tab = tabService.getAllTabs();
 
+		indexPage.addObject("srcList", srcList);
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("hotestTopics", hotestTopics);
 		indexPage.addObject("userPersonalTopics", userPersonalTopics);
