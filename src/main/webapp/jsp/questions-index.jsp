@@ -22,21 +22,7 @@
 <script type="application/x-javascript">
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
-
-
-
-
-
 
 
 </script>
@@ -627,8 +613,7 @@ button, input, select, textarea {
 
 							<c:forEach items="${noReply}" var="noReply">
 								<li><a
-									href="/travelForum/question/questions/noReply/${noReply.id}"
-									target="_blank">
+									href="/travelForum/question/questions/noReply/${noReply.id}">
 										<div class="wds">
 											<b>${noReply.countReplies}</b> 问答
 										</div> <span>${noReply.title}</span>
@@ -644,16 +629,14 @@ button, input, select, textarea {
 					<div class="rtitle">贡献排行榜</div>
 					<div class="gxblist">
 						<ul>
-							<li><a class="tx48"> <img
-									src="http://avatar.8264.com/data/avatar/040/36/35/58_avatar_middle.jpg!w48h48"
-									onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_middle.gif'">
-									<span>lvshaner</span>
-							</a></li>
-							<li><a class="tx48"> <img
-									src="http://avatar.8264.com/data/avatar/040/36/35/58_avatar_middle.jpg!w48h48"
-									onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_middle.gif'">
-									<span>lvshaner</span>
-							</a></li>
+							<c:forEach items="${userByCredit}" var="userByCredit">
+
+								<li><a class="tx48"> <img
+										src="/travelForum/skins/skin/${userByCredit.avatar}">
+										<span>${userByCredit.username}</span>
+								</a></li>
+								
+							</c:forEach>
 						</ul>
 					</div>
 				</div>

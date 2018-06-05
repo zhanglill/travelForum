@@ -39,6 +39,10 @@
 		</association>
 	</resultMap>
 
+	<select resultMap="AllUserInfo" id="listUserByCredit">
+		select * from user order by credit desc limit 5;
+	</select>
+
 	<!-- 管理员查询用户 -->
 	<select resultMap="AllUserInfo" parameterType="java.util.Map"
 		id="getUserList">
@@ -67,14 +71,15 @@
 		</where>
 		order by u.create_time
 	</select>
-	
+
 	<!-- 根据用户id查询用户信息 -->
 	<select resultMap="AllUserInfo" parameterType="java.lang.Integer"
 		id="selectUserInfoByPrimaryKey">
 		select u.*,log.* from user u left join login_log log on
-		u.id=log.user_id where u.del_flag='0' and u.id = #{id,jdbcType=INTEGER}
+		u.id=log.user_id where u.del_flag='0' and u.id =
+		#{id,jdbcType=INTEGER}
 	</select>
-	
+
 
 	<sql id="Base_Column_List">
 		id, username, password, email, phone_num, create_time,
@@ -92,12 +97,14 @@
 		update_time,
 		credit,
 		type,avatar,del_flag,is_locked)
-		values (#{username,jdbcType=VARCHAR},
+		values
+		(#{username,jdbcType=VARCHAR},
 		#{password,jdbcType=VARCHAR},
 		#{email,jdbcType=VARCHAR},
 		#{phoneNum,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
-		#{updateTime,jdbcType=TIMESTAMP}, #{credit,jdbcType=INTEGER},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{credit,jdbcType=INTEGER},
 		#{type,jdbcType=TINYINT},#{avatar,jdbcType=VARCHAR}),#{delFlag,jdbcType=VARCHAR},#{isLocked,jdbcType=VARCHAR})
 	</insert>
 
@@ -139,8 +146,8 @@
 				del_flag,
 			</if>
 			<if test="isLocked != null">
-                is_locked
-            </if>
+				is_locked
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -177,8 +184,8 @@
 				#{delFlag,jdbcType=VARCHAR},
 			</if>
 			<if test="isLocked != null">
-                #{isLocked,jdbcType=VARCHAR}
-            </if>
+				#{isLocked,jdbcType=VARCHAR}
+			</if>
 		</trim>
 	</insert>
 
@@ -200,14 +207,10 @@
 		where username = #{username,jdbcType=VARCHAR} and
 		del_flag='0' and is_locked='0'
 	</select>
-	<!-- <select resultMap="BaseResultMap" parameterType="java.lang.String"
-		id="selectByUsername">
-		select
-		<include refid="Base_Column_List" />
-		from user
-		where username = #{username,jdbcType=VARCHAR} and
-		del_flag='0' and type='0'
-	</select> -->
+	<!-- <select resultMap="BaseResultMap" parameterType="java.lang.String" 
+		id="selectByUsername"> select <include refid="Base_Column_List" /> from user 
+		where username = #{username,jdbcType=VARCHAR} and del_flag='0' and type='0' 
+		</select> -->
 	<!-- 根据用户名查询所有符合的用户 -->
 	<select resultMap="BaseResultMap" parameterType="java.lang.String"
 		id="selectByUsername2">
@@ -232,7 +235,8 @@
 	<select resultType="java.lang.Integer" parameterType="java.lang.String"
 		id="existUsername2">
 		SELECT count(*) from user where username =
-		#{username,jdbcType=VARCHAR} and del_flag='0' and is_locked='0' and type &gt; '0'
+		#{username,jdbcType=VARCHAR} and del_flag='0' and is_locked='0' and
+		type &gt; '0'
 	</select>
 
 	<!-- <delete parameterType="java.lang.Integer" id="deleteByPrimaryKey"> 
@@ -275,11 +279,11 @@
 				type = #{type,jdbcType=TINYINT},
 			</if>
 			<if test="delFlag != null">
-                del_flag = #{delFlag,jdbcType=TINYINT},
-            </if>
-            <if test="isLocked != null">
-                is_locked = #{isLocked,jdbcType=TINYINT}
-            </if>
+				del_flag = #{delFlag,jdbcType=TINYINT},
+			</if>
+			<if test="isLocked != null">
+				is_locked = #{isLocked,jdbcType=TINYINT}
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -300,7 +304,8 @@
 		avatar = #{avatar,jdbcType=VARCHAR},
 		type = #{type,jdbcType=TINYINT},
 		del_flag = #{delFlag,jdbcType=TINYINT},
-		is_locked = #{isLocked,jdbcType=TINYINT}
+		is_locked =
+		#{isLocked,jdbcType=TINYINT}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 
@@ -309,21 +314,24 @@
 		#{points,jdbcType=INTEGER} WHERE id =
 		#{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<update id="updateLockUserByPrimaryKey">
-        update user set is_locked = '1'
-        WHERE id = #{id,jdbcType=INTEGER}
-    </update>
-    
-    <update id="updateUnLockUserByPrimaryKey">
-        update user set is_locked = '0'
-        WHERE id = #{id,jdbcType=INTEGER}
-    </update>
+		update user set is_locked = '1'
+		WHERE id =
+		#{id,jdbcType=INTEGER}
+	</update>
 
-    <update id="updateUserRole">
-        update user set type = #{type,jdbcType=TINYINT}
-        WHERE id = #{id,jdbcType=INTEGER}
-    </update>
+	<update id="updateUnLockUserByPrimaryKey">
+		update user set is_locked = '0'
+		WHERE id =
+		#{id,jdbcType=INTEGER}
+	</update>
 
-    
+	<update id="updateUserRole">
+		update user set type = #{type,jdbcType=TINYINT}
+		WHERE
+		id = #{id,jdbcType=INTEGER}
+	</update>
+
+
 </mapper>

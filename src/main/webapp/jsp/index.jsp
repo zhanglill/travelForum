@@ -12,13 +12,7 @@
 	
 	
 	
-	
-	
-	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
-
-
-
 
 
 
@@ -207,6 +201,10 @@ em {
 	-moz-border-radius: 12px;
 	border-radius: 12px;
 }
+
+.extra li {
+	margin: 5px 5px;
+}
 </style>
 
 <body>
@@ -258,7 +256,7 @@ em {
 										<a href="/travelForum/topic/${topic.id}"
 											title="${topic.title}">${topic.title}</a>
 									</h3>
-									<div class="desc">${topic.content.substring(0,100)}</div>
+									<div class="desc">${topic.content}</div>
 									<div class="extra">
 										<ul class="clearfix"
 											style="list-style: none; margin-left: -18px;">
@@ -470,7 +468,7 @@ em {
 	<link rel="stylesheet"
 		href="/travelForum/skin/css/jquery.desoslide.css">
 	<script src="/travelForum/skin/js/jquery.desoslide.js"></script>
-	<script>
+	<!-- <script>
 				$('#demo1_thumbs').desoSlide({
 					main : {
 						container : '#demo1_main_image',
@@ -479,7 +477,7 @@ em {
 					effect : 'sideFade',
 					caption : true
 				});
-			</script>
+			</script> -->
 	<!-- //news -->
 	<!-- menu js -->
 	<script>

@@ -325,6 +325,19 @@ mt45 {
 	line-height: 1;
 	margin-right: 5px;
 }
+
+/* --- */
+.col-xs-8 li {
+    font-size: 1em;
+    color: #000;
+    line-height: 1.8em;
+}	
+
+.list-group-item p {
+    font-size: 1em;
+    color: #000;
+    line-height: 1.8em;
+}
 </style>
 
 </head>

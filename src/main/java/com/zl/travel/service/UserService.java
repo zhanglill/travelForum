@@ -6,7 +6,13 @@ import java.util.Map;
 import com.zl.travel.domain.User;
 
 public interface UserService {
-
+	
+	/**
+	 * 查询所有用户
+	 */
+	public List<User> listUserByCredit();
+	
+	
 	/**
 	 * 用户注册
 	 */

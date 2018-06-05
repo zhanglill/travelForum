@@ -131,8 +131,7 @@
 			</div>
 
 			<div class="panel-body">
-				<form action="/travelForum/topic/add" method="post" id="replyForm"
-					name="f">
+				<form action="/travelForum/topic/add" method="post" id="replyForm" name="f">
 					<div class="form-group">
 						<label for="title">标题</label> <input type="text"
 							class="form-control" id="title" name="title" placeholder="请输入标题"
@@ -145,7 +144,7 @@
 							name="content"></textarea>
 					</div> -->
 					<div>
-						<script id="content" type="text/plain" style="height: 500px;"></script>
+						<script id="content" type="text/plain" style="height: 500px;" required="required"></script>
 					</div>
 
 					<div class="form-group col-sm-3" style="margin-top: 10px;">
@@ -166,11 +165,9 @@
 					</div>
 					<div style="margin-top: 35px;">
 						<input type="text" class="btn btn-default" id="save"
-							style="float: right; width: 90px;" value="保存草稿"
-							onclick="javascript:document.f.action='/travelForum/topic/saveDraft';document.f.submit();">
+							style="float: right; width: 90px;" value="保存草稿">
 						<input type="submit" class="btn btn-success"
-							style="float: right; margin-right: 20px;" value="发表"
-							onclick="javascript:document.f.action='/travelForum/topic/add';document.f.submit();">
+							style="float: right; margin-right: 20px;" value="发表">
 					</div>
 				</form>
 			</div>

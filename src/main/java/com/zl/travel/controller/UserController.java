@@ -65,7 +65,7 @@ public class UserController {
      */
 
     @RequestMapping("/register")
-    public Object register(HttpServletRequest request) {
+    public ModelAndView register(HttpServletRequest request) {
         // 用户类型(后期删除)
         Byte type = new Byte("0");
         // 密码加密处理
@@ -89,9 +89,10 @@ public class UserController {
         user.setIsLocked("0");
         user.setDelFlag("0");
         userService.save(user);
-        HashMap<String, String> res = new HashMap<String, String>();
-        res.put("message", "success");
-        return res;
+        
+        ModelAndView indexPage = new ModelAndView("jsp/login");
+        
+        return indexPage;
     }
 
     /**

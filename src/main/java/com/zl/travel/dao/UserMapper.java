@@ -9,6 +9,8 @@ import com.zl.travel.domain.User;
 
 public interface UserMapper {
 
+	List<User> listUserByCredit();
+	
     // 用户注册
     int insert(User user);
 

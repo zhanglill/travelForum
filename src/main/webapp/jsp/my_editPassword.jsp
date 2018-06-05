@@ -127,29 +127,34 @@ body {
 		var newPassword = $("#newPassword").val();
 		var secondPassword = $("#secondPassword").val();
 
-		if (newPassword == secondPassword) {
-			$.ajax({
-				type : "POST",
-				url : contextPath + "/user/updatePassword",
-				dataType : "json",
-				data : {
-					"oldPassword" : oldPassword,
-					"newPassword" : newPassword,
-					"secondPassword" : secondPassword
-				},
-				success : function(datas) {
-					if (datas.message == "no") {
-						alert("输入的原始密码不正确！");
-					} else if (datas.message == "success") {
-						alert("密码修改成功！");
-					} else {
-						alert("密码修改失败！");
+		if(oldPassword == '' || newPassword == '' | secondPassword == ''){
+			alert("请将信息填写完整！")
+		}else{
+			if (newPassword == secondPassword) {
+				$.ajax({
+					type : "POST",
+					url : contextPath + "/user/updatePassword",
+					dataType : "json",
+					data : {
+						"oldPassword" : oldPassword,
+						"newPassword" : newPassword,
+						"secondPassword" : secondPassword
+					},
+					success : function(datas) {
+						if (datas.message == "no") {
+							alert("输入的原始密码不正确！");
+						} else if (datas.message == "success") {
+							alert("密码修改成功！");
+						} else {
+							alert("密码修改失败！");
+						}
 					}
-				}
-			});
-		} else {
-			alert("两次密码不一致！");
+				});
+			} else {
+				alert("两次密码不一致！");
+			}
 		}
+		
 
 	}
 	

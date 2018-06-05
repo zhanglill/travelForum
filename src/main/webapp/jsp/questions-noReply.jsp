@@ -547,16 +547,14 @@ button, input, select, textarea {
 					<div class="rtitle">贡献排行榜</div>
 					<div class="gxblist">
 						<ul>
-							<li><a class="tx48"> <img
-									src="http://avatar.8264.com/data/avatar/040/36/35/58_avatar_middle.jpg!w48h48"
-									onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_middle.gif'">
-									<span>lvshaner</span>
-							</a></li>
-							<li><a class="tx48"> <img
-									src="http://avatar.8264.com/data/avatar/040/36/35/58_avatar_middle.jpg!w48h48"
-									onerror="this.onerror=null;this.src='http://ucenter.8264.com/images/noavatar_middle.gif'">
-									<span>lvshaner</span>
-							</a></li>
+							<c:forEach items="${userByCredit}" var="userByCredit">
+
+								<li><a class="tx48"> <img
+										src="/travelForum/skins/skin/${userByCredit.avatar}">
+										<span>${userByCredit.username}</span>
+								</a></li>
+								
+							</c:forEach>
 						</ul>
 					</div>
 				</div>

@@ -108,7 +108,7 @@
 		content
 	</sql>
 
-	<select resultMap="QuestionsAndUserDetail" parameterType="java.lang.Integer"
+	<select resultMap="QuestionsAndUserInfo" parameterType="java.lang.Integer"
 		id="listQuestionsAndUsersOfTab">
 		select questions.*,user.username,user.avatar,
 		tab.tab_name,count(questions_reply.id) as count_replies from questions
@@ -231,7 +231,7 @@
 
 	<select resultMap="mostCommentsQuestions" id="listMostCommentsQuestions">
 		SELECT
-		questions.id,questions.title,questions.content,tab.*,count(questions_reply.id)
+		questions.*,tab.*,count(questions_reply.id)
 		as count_replies from questions
 		left join questions_reply on questions.id = questions_reply.questions_id
 		left join tab on questions.tab_id = tab.id

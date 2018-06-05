@@ -16,6 +16,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserMapper userDao;
 
+    public List<User> listUserByCredit() {
+    	return userDao.listUserByCredit();
+    };
+    
     /**
      * 用户注册
      */

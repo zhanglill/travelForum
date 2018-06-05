@@ -80,15 +80,6 @@ public class TopicController {
 		// 全部主题
 		List<Topic> topics = topicService.listTopicsAndUsers();
 
-		/*
-		 * Topic newTopic = new Topic(); List<Topic> topics = new ArrayList<>();
-		 * 
-		 * for(int i=0; i < topicsList.size(); i++) {
-		 * if(topicsList.get(i).getContent().length() > 200){ String cotnent =
-		 * topicsList.get(i).getContent().substring(0, 200);
-		 * newTopic.setContent(cotnent); topics.add(newTopic); } }
-		 */
-
 		// 获取统计信息
 		/*
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
@@ -100,17 +91,44 @@ public class TopicController {
 		User user = userService.getUserById(userId);
 
 		// 最热主题
-		List<Topic> hotestTopics = topicService.listMostCommentsTopics();
+		List<Topic> hotestTopicsList = topicService.listMostCommentsTopics();
 
+		List<Topic> hotestTopics = new ArrayList<>();
+		Topic newTopic = new Topic();
+		for (int i = 0; i < hotestTopicsList.size(); i++) {
+			newTopic = hotestTopicsList.get(i);
+			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
+			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+			if (txtcontent.length() > 200) {
+				String cotnent = txtcontent.substring(0, 200);
+				newTopic.setContent(cotnent);
+				hotestTopics.add(newTopic);
+			}
+		}
+
+		// 热门问答
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
+		
 
 		List<Tab> tabs = tabService.getAllTabs();
 		List<Tab> tab = tabService.getQuestionTabs();
 		// List<Place> place = placeService.getAllPlace();
 
-		// 全部问答
-		List<Questions> questions = questionsService.listQuestionsAndUsers();
+		// 查询热门问答（按阅读量排序）
+		 List<Questions> questionsList = questionsService.listQuestionsAndUsersByClick();
+		// 截取内容长度
+			List<Questions> questions = new ArrayList<>();
+			Questions newQuestion = new Questions();
 
+			for (int i = 0; i < questionsList.size(); i++) {
+				newQuestion = questionsList.get(i);
+				if (newQuestion.getContent().length() > 200) {
+					String cotnent = newQuestion.getContent().substring(0, 200);
+					newQuestion.setContent(cotnent);
+				}
+				questions.add(newQuestion);
+			}
+			
 		// 获取统计信息
 		/*
 		 * int topicsNum = topicService.getTopicsNum(); int usersNum =
@@ -122,7 +140,7 @@ public class TopicController {
 
 		// 添加问答模块内容
 
-		// indexPage.addObject("topics", topics);
+		indexPage.addObject("topics", topics);
 		indexPage.addObject("tabs", tabs);
 		indexPage.addObject("questions", questions);
 		indexPage.addObject("hotestTopics", hotestTopics);
@@ -227,13 +245,13 @@ public class TopicController {
 		regex = "src=\"(.*?)\"";
 
 		for (int i = 0; i < topics.size(); i++) {
-			
+
 			Pattern pa = Pattern.compile(regex);
 			Matcher ma = pa.matcher(topics.get(i).getContent());
 			while (ma.find()) {
 				srcList.add(ma.group());
 			}
-			
+
 			Topic topic = topics.get(i);
 			String txtcontent = topic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
 			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
@@ -719,6 +737,12 @@ public class TopicController {
 	@RequestMapping(value = "/delete/{id}")
 	@ResponseBody
 	public ModelAndView deleteById(@PathVariable Integer id) {
+
+		Integer tabId = topicService.selectById(id).getTabId();
+		Tab tab = tabService.selectByPrimaryKey(tabId);
+		tab.setCount(tab.getCount() - 1);
+		tabService.updateByPrimaryKeySelective(tab);
+
 		/*
 		 * Map<String, Object> rtnMap = new HashMap<String, Object>();
 		 * 
@@ -781,6 +805,12 @@ public class TopicController {
 	@RequestMapping(value = "/topic/delete/{id}")
 	@ResponseBody
 	public Map<String, Object> deleteByPrimaryKey(@PathVariable Integer id) {
+
+		Integer tabId = questionsService.selectById(id).getTabId();
+		Tab tab = tabService.selectByPrimaryKey(tabId);
+		tab.setCount(tab.getCount() - 1);
+		tabService.updateByPrimaryKeySelective(tab);
+
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 		boolean bool = topicService.deleteByPrimaryKey(id);
 		if (bool) {

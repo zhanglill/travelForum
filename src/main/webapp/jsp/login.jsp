@@ -248,7 +248,7 @@ a {
 								</div>
 							</div>
 							<div class="checkbox">
-								<a id="forgetPass" href="forgetPass.jsp" tabindex="4">忘记密码？</a>
+								<!-- <a id="forgetPass" href="forgetPass.jsp" tabindex="4">忘记密码？</a> -->
 								<label class="form-checkbox" style="float:right"><span><a href="/travelForum/manage/login.jsp">管理员登录</a></span></label> 
 							</div>
 							<div class="avatar">
@@ -274,7 +274,6 @@ a {
 										class="form-control ue-form" id="registerUserName"
 										name="username" tabindex="1" placeholder="请输入用户名"
 										required="required">
-									
 								</div>
 							</div>
 							<div class="form-group">
@@ -294,13 +293,13 @@ a {
 							</div>
 							<div class="form-group">
 								<div class="input-group">
-									<label for="userName">手机号：</label> <input type="text"
+									<label for="userName"><span class="Validform_label">手机号：</span></label> <input type="text"
 										class="form-control ue-form" id="registerPhoneNum" name="tel"
 										tabindex="3" placeholder="请输入手机号" required="required">
 								</div>
 							</div>
 							<div id="buttonDiv">
-								<button class="btn btn-info" id="registerButtons" tabindex="4"
+								<button class="btn btn-info" id="registerButton" tabindex="4"
 									type="submit">注册</button>
 								<button class="btn btn-default back" tabindex="5" type="button">返回首页</button>
 							</div>
@@ -359,8 +358,7 @@ var contextPath = '<%=request.getContextPath()%>';
 		$(document).on("click", "#loginButton", loginButtonClick);
 
 		/* 注册按钮点击事件 */
-		//$(document).on("click", "#registerButton", registerButtonClick);
-
+		$(document).on("click", "#registerButton", registerButtonClick);
 	}
 
 	/* 点击注册Tab,更改box样式 */
@@ -433,19 +431,17 @@ var contextPath = '<%=request.getContextPath()%>';
 	/* 注册方法 */
 	/* function submitValidate(flag) {
 		return flag;
-	}
-	function registerButtonClick() {
+	}*/
+	/* function registerButtonClick() {
 		if ($("#registerUserName").val() == ''
 				|| $("#registerPassword").val() == ''
 				|| $("#email").val() == ''
 				|| $("#registerPhoneNum").val() == '') {
 			alert("请将注册信息填写完整！");
-			return submitValidate(false);
 		} else {
 			var id = $("#registerUserName").val();
 			var password = $("#registerPassword").val();
 			var email = $("#email").val();
-			var areaCode = $("#areaCode").val();
 			var tel = $("#registerPhoneNum").val();
 			$.ajax({
 				type : "POST",
@@ -458,12 +454,14 @@ var contextPath = '<%=request.getContextPath()%>';
 				},
 				dataType : "json",
 				success : function(data) {
-					window.location.href = contextPath + "/";
+					if (data.stateCode == "0") {
+						alert("注册成功！");
+					}
 				}
 			});
 		}
-	}
- */
+	} */
+	
 	/* 验证用户名是否已存在  ----- 此方法存在问题（待解决） */
 	/* function checkUserName() {
 		var userName = $("#registerUserName").val();
