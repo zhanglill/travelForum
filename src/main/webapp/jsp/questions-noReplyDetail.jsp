@@ -22,8 +22,10 @@
 <script type="application/x-javascript">
 	
 	
+	
 		
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
 
 
 </script>
@@ -314,16 +316,15 @@ mt45 {
 
 /* --- */
 .tagiconone {
-    background: #e7f5ff;
-    color: #41a1e1;
-    font-size: 14px;
-    float: left;
-    padding: 5px 15px 7px 15px;
-    border-radius: 20px;
-    line-height: 1;
-    margin-right: 5px;
+	background: #e7f5ff;
+	color: #41a1e1;
+	font-size: 14px;
+	float: left;
+	padding: 5px 15px 7px 15px;
+	border-radius: 20px;
+	line-height: 1;
+	margin-right: 5px;
 }
-
 </style>
 
 </head>
@@ -374,16 +375,20 @@ mt45 {
 
 						</div>
 						<div>
-						<span class="text-muted" style="margin-left: 15px;"> <a
-							href="/travelForum/user/member/${questions.user.username}"> <strong>${questions.user.username}</strong></a></span>&nbsp;&nbsp;&nbsp;
+							<span class="text-muted" style="margin-left: 15px;"> <a
+								href="/travelForum/user/member/${questions.user.username}">
+									<strong>${questions.user.username}</strong>
+							</a></span>&nbsp;&nbsp;&nbsp;
 
-						<div class="ques-labels" style="margin-left: 100px; margin-top: -20px;">
-							<a class="tagiconone" href="/travelForum/question/tab/${questions.tabId}">${questions.tab.tabName}</a>
+							<div class="ques-labels"
+								style="margin-left: 100px; margin-top: -20px;">
+								<a class="tagiconone"
+									href="/travelForum/question/tab/${questions.tabId}">${questions.tab.tabName}</a>
+							</div>
+
+							<span class="text-muted" id="localCreateTime">${questions.localCreateTime}</span>&nbsp;&nbsp;&nbsp;
+							<span class="text-muted">阅读量：<span id="click">${questions.click}</span></span>
 						</div>
-                        
-						<span class="text-muted" id="localCreateTime">${questions.localCreateTime}</span>&nbsp;&nbsp;&nbsp;
-						<span class="text-muted">阅读量：<span id="click">${questions.click}</span></span>
-</div>
 						<%-- <c:if test="${!empty user}">
 							<ul class="nav navbar-nav navbar-right"
 								style="list-style-type: none; margin-right: 15px">
@@ -496,6 +501,25 @@ mt45 {
 
 				<div class="wyfbbox" id="sidebar1"
 					style="float: left; margin: 5px 50px 100px;">
+					<div class="rtitle">热门问答</div>
+					<div class="xgwtbox">
+						<ul>
+
+
+							<c:forEach items="${hotestQuestions}" var="noReply">
+								<li><a href="/travelForum/question/questions/${noReply.id}"
+									target="_blank">
+										<div class="wds">
+											<b>${noReply.countReplies}</b> 问答
+										</div> <span>${noReply.title}</span>
+								</a></li>
+
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<%-- <div class="wyfbbox" id="sidebar1"
+					style="float: left; margin: 5px 50px 100px;">
 					<div class="rtitle">相关问题</div>
 					<div class="xgwtbox">
 						<ul>
@@ -512,7 +536,7 @@ mt45 {
 							</c:forEach>
 						</ul>
 					</div>
-				</div>
+				</div> --%>
 
 			</div>
 

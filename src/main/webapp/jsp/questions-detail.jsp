@@ -23,8 +23,10 @@
 	
 	
 	
+	
 		
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
 
 
 
@@ -328,15 +330,15 @@ mt45 {
 
 /* --- */
 .col-xs-8 li {
-    font-size: 1em;
-    color: #000;
-    line-height: 1.8em;
-}	
+	font-size: 1em;
+	color: #000;
+	line-height: 1.8em;
+}
 
 .list-group-item p {
-    font-size: 1em;
-    color: #000;
-    line-height: 1.8em;
+	font-size: 1em;
+	color: #000;
+	line-height: 1.8em;
 }
 </style>
 
@@ -513,6 +515,24 @@ mt45 {
 
 				<div class="wyfbbox" id="sidebar1"
 					style="float: left; margin: 5px 50px 100px;">
+					<div class="rtitle">热门问答</div>
+					<div class="xgwtbox">
+						<ul>
+							<c:forEach items="${hotestQuestions}" var="noReply">
+								<li><a href="/travelForum/question/questions/${noReply.id}"
+									target="_blank">
+										<div class="wds">
+											<b>${noReply.countReplies}</b> 问答
+										</div> <span>${noReply.title}</span>
+								</a></li>
+
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+
+				<%-- <div class="wyfbbox" id="sidebar1"
+					style="float: left; margin: 5px 50px 100px;">
 					<div class="rtitle">相关问题</div>
 					<div class="xgwtbox">
 						<ul>
@@ -529,7 +549,7 @@ mt45 {
 							</c:forEach>
 						</ul>
 					</div>
-				</div>
+				</div> --%>
 
 			</div>
 
@@ -577,8 +597,7 @@ mt45 {
 	</script>
 	<!-- //smooth-scrolling-of-move-up -->
 	<script type="text/javascript">
-	var contextPath = '<%=request.getContextPath()%>
-		';
+	var contextPath = '<%=request.getContextPath()%>';
 
 		$(function() {
 			initPageDom();
