@@ -181,7 +181,8 @@ public class UserController {
         session.removeAttribute("userId");
         session.removeAttribute("username");
         
-        ModelAndView indexPage = new ModelAndView("jsp/index");
+        //ModelAndView indexPage = new ModelAndView("jsp/index");
+        ModelAndView indexPage = new ModelAndView("redirect:/");
 
 		// 全部主题
 		List<Topic> topics = topicService.listTopicsAndUsers();
@@ -215,15 +216,15 @@ public class UserController {
 		 */
 		//indexPage.addObject("place", place);
 		
-		indexPage.addObject("tab", tab);
+		//indexPage.addObject("tab", tab);
 
 		// 添加问答模块内容
 
 		//indexPage.addObject("topics", topics);
-		indexPage.addObject("tabs", tabs);
-		indexPage.addObject("questions", questions);
-		indexPage.addObject("hotestTopics", hotestTopics);
-		indexPage.addObject("hotestQuestions", hotestQuestions);
+		//indexPage.addObject("tabs", tabs);
+		//indexPage.addObject("questions", questions);
+		//indexPage.addObject("hotestTopics", hotestTopics);
+		//indexPage.addObject("hotestQuestions", hotestQuestions);
 		/*
 		 * indexPage.addObject("topicsNum", topicsNum);
 		 * indexPage.addObject("usersNum", usersNum);

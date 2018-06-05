@@ -175,7 +175,7 @@
 	<select resultMap="topicAndUserInfo" parameterType="java.lang.Integer"
 		id="listTopicsAndUsersOfTab">
 		select
-		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.province, topic.city,topic.click,topic.tab_id,topic.type,user.username,user.avatar,
+		topic.id,topic.user_id,topic.create_time,topic.update_time,topic.title,topic.content,topic.province, topic.city,topic.click,topic.tab_id,topic.type,user.username,user.avatar,
 		tab.tab_name,count(reply.id) as count_replies from topic LEFT JOIN
 		user on topic.user_id = user.id
 		LEFT JOIN tab on tab.id=topic.tab_id LEFT JOIN reply on

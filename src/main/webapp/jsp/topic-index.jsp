@@ -288,7 +288,7 @@ ol, ul {
 }
 
 .mui-mbar-tab {
-	padding: 45px 42px 0;
+	padding: 25px 20px 0;
 }
 
 .mui-mbar-tab-title {
@@ -539,6 +539,49 @@ hr {
 	border: 0;
 	border-top: 1px solid #eee;
 }
+
+/* ---- */
+.xgwtbox {
+	padding-top: 22px;
+	margin-left: 15px;
+}
+
+.xgwtbox li {
+	padding-bottom: 20px;
+	overflow: hidden;
+}
+
+.xgwtbox .wds {
+	width: 46px;
+	height: 46px;
+	border: #c6d1d7 solid 1px;
+	border-radius: 3px;
+	float: left;
+	color: #8197a5;
+	font-size: 12px;
+	text-align: center;
+	margin-right: 12px;
+	display: inline;
+	overflow: hidden;
+}
+
+.xgwtbox .wds b {
+	font-size: 14px;
+	display: block;
+	line-height: 1;
+	padding: 9px 0 0 0;
+}
+
+.xgwtbox span {
+	display: table-cell;
+	height: 48px;
+	vertical-align: middle;
+	font-size: 14px;
+	color: #333;
+	overflow: hidden;
+	width: 200px;
+	line-height: 20px;
+}
 </style>
 
 </head>
@@ -618,107 +661,6 @@ hr {
 		</div>
 	</div> -->
 
-	<%-- <div class="container">
-		<div class="row">
-
-			<div class="col-xs-8" style="float: left">
-				<div class="panel" id="main" style="width: 770px;">
-					<ul class="clearfix">
-						<c:forEach items="${topics}" var="topic">
-
-							<li style="list-style: none; margin-top: 18px;">
-								<dl class="clearfix summary oneline">
-									<dt class="col-xs-3">
-										<a href="http://www.b2b2c.tourex.net.cn/travels/31/"
-											title="${topic.title}"><img
-											src="/travelForum/skin/images/i2.jpg" alt="${topic.title}"
-											height="164" style="display: inline; width: 100%;"></a>
-									</dt>
-									<dd class="col-xs-9" style="float: left">
-										<div class="wrapBox">
-											<h3>
-												<a href="/travelForum/topic/${topic.id}"
-													title="${topic.title}">${topic.title}</a>
-											</h3>
-											<div class="desc" style="margin-top: 10px;">${topic.content}</div>
-											<div class="extra">
-												<ul class="clearfix"
-													style="list-style: none; margin-top: 10px;">
-													<li class="author" style="float: left"><span
-														class="badge"> ${topic.tab.tabName}&nbsp; </span></li>
-													<li class="author" style="float: left">
-														<img
-													href="/travelForum/user/member/${topic.user.username}"
-													width="16" height="16"> <i class="fa fa-user-o"
-														aria-hidden="true"></i>&nbsp; ${topic.user.username}&nbsp;
-														&nbsp;
-													</li>
-													<li class="author" style="float: left"><i
-														class="fa fa-map-marker"></i>&nbsp;${topic.province},${topic.city}&nbsp;
-														</span></li>
-													<li class="publish" style="float: left"><i
-														class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;${topic.localCreateTime}&nbsp;
-														&nbsp;</li>
-													<li class="view" style="float: left"><i
-														class="fa fa-eye" aria-hidden="true"></i>&nbsp;${topic.click}&nbsp;
-														&nbsp;</li>
-													<li class="ding" style="float: left"><i
-														class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;${topic.countReplies}</li>
-												</ul>
-											</div>
-										</div>
-									</dd>
-								</dl>
-							</li>
-							<hr />
-						</c:forEach>
-
-					</ul>
-
-				</div>
-
-			</div>
-			<div class="col-xs-3" style="float: left">
-
-				<div id="portal_block_7064" class="block move-span">
-					<div id="portal_block_7064_content" class="content">
-						<div class="portal_block_summary">
-							<div class="rlinkbox clear_b">
-								<ul>
-									<li><a href="/list/242">徒步</a></li>
-									<li><a href="/list/950">露营</a></li>
-									<li><a href="/list/931">安全急救</a></li>
-									<li><a href="/list/920">领队</a></li>
-									<li><a href="/list/915">登雪山</a></li>
-									<li><a href="/list/916">攀岩</a></li>
-									<li><a href="/list/917">骑行</a></li>
-									<li><a href="/list/918">跑步</a></li>
-									<li><a href="/list/919">滑雪</a></li>
-									<li><a href="/list/921">水上运动</a></li>
-									<li><a href="/list/951">钓鱼</a></li>
-									<li><a href="/list/952">潜水</a></li>
-									<li><a href="/list/953">攀冰</a></li>
-									<li><a href="/list/966">冲浪</a></li>
-									<li><a href="/list/967">网球</a></li>
-									<li><a href="/list/968">绳索知识</a></li>
-									<li><a href="/list/969">高尔夫</a></li>
-									<li><a href="/list/970">马术</a></li>
-									<li><a href="/list/973">户外摄影</a></li>
-									<li><a href="/list/971">羽毛球</a></li>
-									<li><a href="/list/974">游泳</a></li>
-									<li><a href="/list/975">溯溪</a></li>
-									<li><a href="/list/976">健身</a></li>
-									<li><a href="/list/977">瑜伽</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div> 
-			</div>
-	</div>
-	--%>
 
 	<div class="container">
 		<div class="row" style="margin-top: 30px;">
@@ -774,14 +716,6 @@ hr {
 												<img src="${srcList}">
 											</div>
 										</c:forEach>
-										<!--<div class="ayc_sub">
-												<img
-													src="http://image1.8264.com/forum/public/20180605/5:4/152818747976.jpg!/progressive/true/unsharp/true/format/jpg/both/168x104">
-											</div>
-											<div class="ayc_sub">
-												<img
-													src="http://image1.8264.com/forum/201806/05/08305546gs08g7jrgzv7uc.jpg!/progressive/true/unsharp/true/format/jpg/both/168x104">
-											</div> -->
 										<a href="/travelForum/topic/${topic.id}" class="aydetail">查看详情
 											&gt;</a>
 									</div>
@@ -814,158 +748,29 @@ hr {
 							</div>
 						</div>
 
-						<%-- <ul>
-
-							<c:forEach items="${noReply}" var="noReply">
-								<li><a
-									href="/travelForum/question/questions/noReply/${noReply.id}">
-										<div class="wds">
-											<b>${noReply.countReplies}</b> 问答
-										</div> <span>${noReply.title}</span>
-								</a></li>
-
-							</c:forEach>
-						</ul> --%>
 					</div>
 				</div>
-
-				<!-- 	<div id="portal_block_7064" class="block move-span">
-					<div id="portal_block_7064_content" class="content">
-						<div class="portal_block_summary">
-							<div class="rlinkbox clear_b">
-								<ul>
-									<li><a href="/list/242">徒步</a></li>
-									<li><a href="/list/950">露营</a></li>
-									<li><a href="/list/931">安全急救</a></li>
-									<li><a href="/list/920">领队</a></li>
-									<li><a href="/list/915">登雪山</a></li>
-									<li><a href="/list/916">攀岩</a></li>
-									<li><a href="/list/917">骑行</a></li>
-									<li><a href="/list/918">跑步</a></li>
-									<li><a href="/list/919">滑雪</a></li>
-									<li><a href="/list/921">水上运动</a></li>
-									<li><a href="/list/951">钓鱼</a></li>
-									<li><a href="/list/952">潜水</a></li>
-									<li><a href="/list/953">攀冰</a></li>
-									<li><a href="/list/966">冲浪</a></li>
-									<li><a href="/list/967">网球</a></li>
-									<li><a href="/list/968">绳索知识</a></li>
-									<li><a href="/list/969">高尔夫</a></li>
-									<li><a href="/list/970">马术</a></li>
-									<li><a href="/list/973">户外摄影</a></li>
-									<li><a href="/list/971">羽毛球</a></li>
-									<li><a href="/list/974">游泳</a></li>
-									<li><a href="/list/975">溯溪</a></li>
-									<li><a href="/list/976">健身</a></li>
-									<li><a href="/list/977">瑜伽</a></li>
-								</ul>
-							</div>
-						</div>
+				<div class="wyfbbox" id="sidebar1"
+					style="float: left; margin: 5px 50px;">
+					<div class="rtitle">
+						<a href="/travelForum/question/questions/questionNoReplyByClick">热门游记</a>
 					</div>
-				</div> -->
-			</div>
-			<%-- <div class="col-md-5">当前第 ${pageInfo.pageNum} 页.总共
-				${pageInfo.pages} 页.一共 ${pageInfo.total} 条记录</div>
+					<div class="xgwtbox">
+							<ul>
+								<c:forEach items="${hotestTopics}" var="hotestTopics">
+									<li><a
+										href="/travelForum/question/questions/noReply/${hotestTopics.id}">
+											<div class="wds">
+												<b>${hotestTopics.countReplies}</b> 评论
+											</div> <span>${hotestTopics.title}</span>
+									</a></li>
 
-			<div class="col-md-3">
-				<nav aria-label="Page navigation">
-					<ul class="pagination">
-
-						<li><a
-							href="${pageContext.request.contextPath}/topic/Index?pn=1">首页</a></li>
-
-						<!--上一页-->
-						<li><c:if test="${pageInfo.hasPreviousPage}">
-								<a
-									href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pageNum-1}"
-									aria-label="Previous"> <span aria-hidden="true">«</span>
-								</a>
-							</c:if></li>
-
-						<!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
-						<c:forEach items="${pageInfo.navigatepageNums}" var="page_num">
-							<c:if test="${page_num == pageInfo.pageNum}">
-								<li class="active"><a href="#">${page_num}</a></li>
-							</c:if>
-							<c:if test="${page_num != pageInfo.pageNum}">
-								<li><a
-									href="${pageContext.request.contextPath}/topic/Index?pn=${page_num}">${page_num}</a></li>
-							</c:if>
-						</c:forEach>
-
-						<!--下一页-->
-						<li><c:if test="${pageInfo.hasNextPage}">
-								<a
-									href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pageNum+1}"
-									aria-label="Next"> <span aria-hidden="true">»</span>
-								</a>
-							</c:if></li>
-
-						<li><a
-							href="${pageContext.request.contextPath}/topic/Index?pn=${pageInfo.pages}">尾页</a></li>
-					</ul>
-				</nav>
-
-			</div> --%>
-
-			<%-- <div id="J-MuiCatebar" class="mui-mbar-outer" style="right: -452px;">
-				<div class="close-menu">
-					<a href="javascript:void(0);" class="close-button">展开</a>
-				</div>
-				<div class="mui-mbar-standard">
-					<div class="mui-mbar-tab mui-mbar-tab-hot">
-						<div class="mui-mbar-tab-title">
-							热门旅行地<a href="http://www.8264.com/youji/" title="查看全部热门旅行地"
-								class="all-link">全部</a>
+								</c:forEach>
+							</ul>
 						</div>
-						<ul class="card-label-list">
-							<li>
-								<h3 class="art-tit">
-									<a
-										href="http://www.8264.com/youji/list-370976926840480-2-1.html">四川</a>
-								</h3>
-								<p class="art-count">1757篇</p> <span class="pipe-line"></span>
-								<div class="usr-list">
-									<a href="#"><img src="#"></a> <a href="#"><img
-										src="#"></a> <a href="#"><img src="#"></a>
-								</div>
-							</li>
-							<li>
-								<h3 class="art-tit">
-									<a
-										href="http://www.8264.com/youji/list-371031142404000-2-1.html">西藏</a>
-								</h3>
-								<p class="art-count">1633篇</p> <span class="pipe-line"></span>
-								<div class="usr-list">
-									<a href="#"><img src="#"></a> <a href="#"><img
-										src="#"></a> <a href="#"><img src="#"></a>
-								</div>
-							</li>
-							<li>
-								<h3 class="art-tit">
-									<a
-										href="http://www.8264.com/youji/list-370866516119456-2-1.html">云南</a>
-								</h3>
-								<p class="art-count">932篇</p> <span class="pipe-line"></span>
-								<div class="usr-list">
-									<a href="#"><img src="#"></a> <a href="#"><img
-										src="#"></a> <a href="#"><img src="#"></a>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div class="mui-mbar-tab mui-mbar-tab-domestic">
-						<div class="mui-mbar-tab-title">游记类型</div>
-						<div class="label-list">
-							<a href="/travelForum/topic/Index" class="active" id="all">全部</a>
-							<c:forEach items="${tab}" var="tab">
-								<a href="/travelForum/topic/tab/${tab.id}" data="${tab.tabName}">${tab.tabName}</a>
-							</c:forEach>
 
-						</div>
 					</div>
 				</div>
-			</div> --%>
 		</div>
 	</div>
 	<div style="display: none" id="tabName">${oneTab.tabName}</div>

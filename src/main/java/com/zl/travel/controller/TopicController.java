@@ -488,7 +488,31 @@ public class TopicController {
 
 		ModelAndView indexPage = new ModelAndView("jsp/topic-index");
 
-		List<Topic> topics = topicService.listTopicsAndUsersOfTab(tabId);
+		List<Topic> topicsList = topicService.listTopicsAndUsersOfTab(tabId);
+		List<Topic> topics = new ArrayList<>();
+		Topic newTopic = new Topic();
+
+		List srcList = new ArrayList<>();
+		for (int i = 0; i < topicsList.size(); i++) {
+			srcList = findImgSrc(topicsList.get(i).getContent());
+
+			newTopic = topicsList.get(i);
+			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
+			txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");// 去除字符串中的空格,回车,换行符,制表符
+
+			String str = "......";
+			if (txtcontent.length() > 200) {
+				String cotnent = txtcontent.substring(0, 200).concat(str);
+				newTopic.setContent(cotnent);
+			}
+			topics.add(newTopic);
+		}
+		if (srcList.size() > 2) {
+			srcList = srcList.subList(0, 2);
+		}
+
+		// 最热主题
+		List<Topic> hotestTopics = topicService.listMostCommentsTopics();
 		List<Tab> tab = tabService.getAllTabs();
 		Tab oneTab = tabService.selectByPrimaryKey(tabId);
 		// 获取用户信息
@@ -496,7 +520,8 @@ public class TopicController {
 		User user = userService.getUserById(uid);
 
 		indexPage.addObject("topics", topics);
-
+		indexPage.addObject("hotestTopics", hotestTopics);
+		indexPage.addObject("srcList", srcList);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("oneTab", oneTab);
 		indexPage.addObject("user", user);

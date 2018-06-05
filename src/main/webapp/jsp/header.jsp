@@ -152,7 +152,7 @@ li {
 					<li><a href="/travelForum/">首页</a></li>
 					<li><a href="/travelForum/topic/Index">论坛</a></li>
 					<li><a href="/travelForum/question/questions/IndexByCount">问答</a></li>
-					<li><a href="/travelForum/jsp/footer.jsp">足迹</a></li>
+					<!-- <li><a href="/travelForum/jsp/footer.jsp">足迹</a></li> -->
 
 					<li><a href="/travelForum/manage/login.jsp" id="manage">后台管理</a></li>
 					<li>
@@ -195,11 +195,11 @@ li {
 									aria-hidden="true"></i>&nbsp;写游记</a>
 							</p>
 						</li>
-						<li>
+						<!-- <li>
 							<p class="navbar-text">
 								<a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i>&nbsp;消息</a>
 							</p>
-						</li>
+						</li> -->
                         <li class="dropdown">
                               <a href="/travelForum/topic/myIndex" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <span>${sessionScope.username}</span>
