@@ -194,7 +194,7 @@
 			<div class="headerL">
 				<div class="site">
 					当前位置： <a href="/travelForum/">首页</a> &gt; <a
-						href="/travelForum/topic/Index">游记</a> &gt;<span>发表游记</span>
+						href="/travelForum/topic/Index">游记</a> &gt;<span>游记详情</span>
 				</div>
 			</div>
 		</div>
@@ -216,11 +216,11 @@
 						<div style="margin-bottom: 15px; margin-left: 15px;">
 							<h3 id="title">${topic.title}</h3>
 
-							<%-- <c:if test="${!empty user}">
+							<c:if test="${!empty user}">
 
 						<c:if
 							test="${sessionScope.userId == topic.userId && topic.type == '0'}">
-							<div style="float: left; margin-top: -30px; margin-left: 750px;">
+							<div style="float: left; margin-top: -30px; margin-left: 350px;">
 								<span class="text-muted"><a
 									href="/travelForum/getOneById/${topic.id}" id="edit"><i
 										class="fa fa-edit" aria-hidden="true"></i>&nbsp;编辑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>
@@ -229,7 +229,7 @@
 										class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;删除&nbsp;&nbsp;</a></span>
 							</div>
 						</c:if>
-					</c:if> --%>
+					</c:if>
 
 						</div>
 						<div>
@@ -335,7 +335,7 @@
 						<ul>
 							<c:forEach items="${hotestTopics}" var="hotestTopics">
 									<li><a
-										href="/travelForum/question/questions/noReply/${hotestTopics.id}">
+										href="/travelForum/topic/${hotestTopics.id}">
 											<div class="wds">
 												<b>${hotestTopics.countReplies}</b> 评论
 											</div> <span>${hotestTopics.title}</span>
@@ -350,6 +350,9 @@
 	</div>
 	<div style="display: none" id="userId">${topic.userId}</div>
 	<div style="display: none" id="topicId">${topic.id}</div>
+	<div style="display: none" id="tabId">${topic.tabId}</div>
+	<div style="display: none" id="province">${topic.province}</div>
+	<div style="display: none" id="city">${topic.city}</div>
 
 	<!-- menu js -->
 	<script>
@@ -398,6 +401,9 @@
 		var content = $("#content").text();
 		var tabId = $("#tabId").text();
 		var topicId = $("#topicId").text();
+		
+		var province = $("#province").text();
+		var city = $("#city").text();
 
 		$(function() {
 			initPageEvent();
@@ -426,12 +432,15 @@
 				dataType : "json",
 				async : false,
 				data : {
+					"topicId" : topicId,
 					"userId" : userId,
 					"title" : title,
 					"createTime" : localCreateTime,
 					"click" : click,
 					"content" : content,
-					"tabId" : tabId
+					"tabId" : tabId,
+					"province" : province,
+ 					"city" : city
 				},
 				success : function(data) {
 					alert(data.message);
@@ -447,12 +456,15 @@
 				dataType : "json",
 				async : false,
 				data : {
+					"topicId" : topicId,
 					"userId" : userId,
 					"title" : title,
 					"createTime" : localCreateTime,
 					"click" : click,
 					"content" : content,
-					"tabId" : tabId
+					"tabId" : tabId,
+					"province" : province,
+ 					"city" : city
 				},
 				success : function(data) {
 					alert(data.message);

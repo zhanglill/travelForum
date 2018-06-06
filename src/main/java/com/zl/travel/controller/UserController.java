@@ -441,8 +441,11 @@ public class UserController {
         // 用户个人发表的文章
         List<Topic> userPersonalTopics = topicService.listUserPersonalTopics(userId);
 
-        ModelAndView mv = new ModelAndView("jsp/update_avatar");
-        mv.addObject("user", user);
+        ModelAndView mv = new ModelAndView("jsp/my_info");
+        
+        User rtnUser = userService.getUserById(userId);
+        mv.addObject("data", rtnUser);
+        //mv.addObject("user", user);
         mv.addObject("userPersonalTopics", userPersonalTopics);
         // mv.addObject("hotestTopics", hotestTopics);
         return mv;

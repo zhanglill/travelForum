@@ -10,8 +10,12 @@
 <script type="application/x-javascript">
 	
 	
+	
+	
     
      addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
+
 
 
 </script>
@@ -56,9 +60,9 @@ body {
 </head>
 <body>
 
-<!-- 引入header文件 -->
+	<!-- 引入header文件 -->
 	<jsp:include page="header.jsp"></jsp:include>
-	
+
 
 
 	<div style="width: 70%; margin: 1% 2% 1% 15%; align: center;">
@@ -74,6 +78,7 @@ body {
 						<ul id="myTab" class="nav nav-tabs">
 							<li class="active"><a href="#myInfo" data-toggle="tab">个人资料</a></li>
 							<li><a href="#editInfo" data-toggle="tab">资料修改</a></li>
+							<li><a href="#updateAvatar" data-toggle="tab">修改头像</a></li>
 						</ul>
 
 						<div id="myTabContent" class="tab-content"
@@ -168,6 +173,22 @@ body {
 
 							</div>
 
+							<div class="tab-pane fade" id="updateAvatar">
+
+								<form action="/travelForum/user/settings/avatar/update"
+									enctype="multipart/form-data" method="post"
+									class="form-horizontal" role="form">
+									<div style="margin-left: 17%">
+										<img width="60px" height="60px" src="" class="img-rounded">
+										<input type="file" name="avatar"
+											accept="image/png,image/jpeg,image/jpg"> <br /> <input
+											class="btn btn-default" type="submit" value="上传头像">
+									</div>
+								</form>
+
+
+							</div>
+
 						</div>
 					</div>
 				</div>
@@ -198,7 +219,8 @@ body {
 	}
 
 	function initMyInfo() {
-		$.ajax({
+		$
+				.ajax({
 					type : "GET",
 					url : contextPath + "/user/getUserById/" + userId,
 					dataType : "json",
@@ -230,6 +252,9 @@ body {
 								datas.data.email);
 						$("#editInfo input[name=phone]").attr("value",
 								datas.data.phoneNum);
+
+						$("#updateAvatar img").attr("src",
+								"/travelForum/skins/skin/" + datas.data.avatar);
 					}
 				});
 	}
@@ -275,15 +300,15 @@ body {
 			}
 		});
 	}
-	
+
 	// 登出 
-    $("#logout").on("click",function() {
-            $.ajax({
-                url : contextPath + "/user/signout",
-                /* success : function(data) {
-                } */
-            });
-    });
+	$("#logout").on("click", function() {
+		$.ajax({
+			url : contextPath + "/user/signout",
+		/* success : function(data) {
+		} */
+		});
+	});
 </script>
 
 <link rel="stylesheet" href="/travelForum/skin/css/jquery.desoslide.css">
@@ -340,17 +365,17 @@ body {
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="/travelForum/skin/js/bootstrap.js"></script>
 
-				<!-- FlexSlider -->
-				<script defer src="/travelForum/skin/js/jquery.flexslider.js"></script>
-				<script type="text/javascript">
-                    $(window).load(function() {
-                        $('.flexslider').flexslider({
-                            animation : "slide",
-                            start : function(slider) {
-                                $('body').removeClass('loading');
-                            }
-                        });
-                    });
-                </script>
-				<!-- End-slider-script -->
+<!-- FlexSlider -->
+<script defer src="/travelForum/skin/js/jquery.flexslider.js"></script>
+<script type="text/javascript">
+	$(window).load(function() {
+		$('.flexslider').flexslider({
+			animation : "slide",
+			start : function(slider) {
+				$('body').removeClass('loading');
+			}
+		});
+	});
+</script>
+<!-- End-slider-script -->
 </html>

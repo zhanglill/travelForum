@@ -83,7 +83,7 @@
 							required="required" value="${topic.title}">
 					</div>
 					<div>
-						<script id="content" type="text/plain" style="height: 500px;"></script>
+						<script id="content" type="text/plain" style="height: 500px;">${topic.content}</script>
 					</div>
 					<div class="form-group col-sm-3" style="margin-top:10px;">
 						<label>地点</label> 

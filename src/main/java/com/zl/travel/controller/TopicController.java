@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zl.travel.domain.ImgSrc;
 import com.zl.travel.domain.Place;
 import com.zl.travel.domain.Questions;
 import com.zl.travel.domain.Reply;
@@ -125,10 +126,15 @@ public class TopicController {
 
 		List<Topic> hotestTopics = new ArrayList<>();
 		Topic newTopic = new Topic();
-		List srcList = new ArrayList<>();
-
+		List srcLists = new ArrayList<>();
+		
 		for (int i = 0; i < hotestTopicsList.size(); i++) {
-			srcList = findImgSrc(hotestTopicsList.get(i).getContent());
+			
+			List imgSrcList = new ArrayList<>();
+			imgSrcList = findImgSrc(hotestTopicsList.get(i).getContent());
+			if(imgSrcList.size() > 1){
+				imgSrcList = imgSrcList.subList(0, 1);
+			}
 
 			newTopic = hotestTopicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
@@ -140,7 +146,14 @@ public class TopicController {
 				newTopic.setContent(cotnent);
 			}
 			hotestTopics.add(newTopic);
+			
+			ImgSrc imgSrc = new ImgSrc();
+			imgSrc.setKey(imgSrcList);
+			imgSrc.setValue(hotestTopicsList.get(i));
+			srcLists.add(imgSrc);
 		}
+		
+		
 
 		// 热门问答
 		List<Questions> hotestQuestions = questionsService.listMostCommentsQuestions();
@@ -166,9 +179,9 @@ public class TopicController {
 			}
 			questions.add(newQuestion);
 		}
-		if (srcList.size() > 1) {
+		/*if (srcList.size() > 1) {
 			srcList = srcList.subList(0, 1);
-		}
+		}*/
 
 		// 获取统计信息
 		/*
@@ -180,8 +193,7 @@ public class TopicController {
 		indexPage.addObject("tab", tab);
 
 		// 添加问答模块内容
-
-		indexPage.addObject("srcList", srcList);
+		indexPage.addObject("srcLists", srcLists);
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("tabs", tabs);
 		indexPage.addObject("questions", questions);
@@ -213,11 +225,15 @@ public class TopicController {
 		List<Topic> topics = new ArrayList<>();
 
 		Topic newTopic = new Topic();
-		List srcList = new ArrayList<>();
+		List srcLists = new ArrayList<>();
 
 		for (int i = 0; i < topicsList.size(); i++) {
 
-			srcList = findImgSrc(topicsList.get(i).getContent());
+			List imgSrcList = new ArrayList<>();
+			imgSrcList = findImgSrc(topicsList.get(i).getContent());
+			if(imgSrcList.size() > 2){
+				imgSrcList = imgSrcList.subList(0, 2);
+			}
 
 			newTopic = topicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
@@ -230,12 +246,12 @@ public class TopicController {
 			}
 			topics.add(newTopic);
 
+			ImgSrc imgSrc = new ImgSrc();
+			imgSrc.setKey(imgSrcList);
+			imgSrc.setValue(topicsList.get(i));
+			srcLists.add(imgSrc);
+			
 		}
-		if (srcList.size() > 2) {
-			srcList = srcList.subList(0, 2);
-		}
-
-		System.out.println(srcList);
 
 		// 获取话题统计信息
 		/*
@@ -264,7 +280,7 @@ public class TopicController {
 
 		List<Tab> tab = tabService.getAllTabs();
 
-		indexPage.addObject("srcList", srcList);
+		indexPage.addObject("srcLists", srcLists);
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("hotestTopics", hotestTopics);
 		indexPage.addObject("userPersonalTopics", userPersonalTopics);
@@ -491,10 +507,16 @@ public class TopicController {
 		List<Topic> topicsList = topicService.listTopicsAndUsersOfTab(tabId);
 		List<Topic> topics = new ArrayList<>();
 		Topic newTopic = new Topic();
+		List srcLists = new ArrayList<>();
 
-		List srcList = new ArrayList<>();
 		for (int i = 0; i < topicsList.size(); i++) {
-			srcList = findImgSrc(topicsList.get(i).getContent());
+
+				List imgSrcList = new ArrayList<>();
+				imgSrcList = findImgSrc(topicsList.get(i).getContent());
+				if(imgSrcList.size() > 2){
+					imgSrcList = imgSrcList.subList(0, 2);
+				}
+				
 
 			newTopic = topicsList.get(i);
 			String txtcontent = newTopic.getContent().replaceAll("</?[^>]+>", ""); // 剔出<html>的标签
@@ -506,9 +528,12 @@ public class TopicController {
 				newTopic.setContent(cotnent);
 			}
 			topics.add(newTopic);
-		}
-		if (srcList.size() > 2) {
-			srcList = srcList.subList(0, 2);
+			
+			ImgSrc imgSrc = new ImgSrc();
+			imgSrc.setKey(imgSrcList);
+			imgSrc.setValue(topicsList.get(i));
+			srcLists.add(imgSrc);
+			
 		}
 
 		// 最热主题
@@ -521,7 +546,7 @@ public class TopicController {
 
 		indexPage.addObject("topics", topics);
 		indexPage.addObject("hotestTopics", hotestTopics);
-		indexPage.addObject("srcList", srcList);
+		indexPage.addObject("srcLists", srcLists);
 		indexPage.addObject("tab", tab);
 		indexPage.addObject("oneTab", oneTab);
 		indexPage.addObject("user", user);
@@ -697,21 +722,27 @@ public class TopicController {
 		String content = (String) params.get("content");
 		Integer tabId = Integer.parseInt((String) params.get("tabId"));
 		int click = Integer.parseInt((String) params.get("click"));
-
+		String province = (String) params.get("province");
+		String city = (String) params.get("city");
 		String createTime = (String) params.get("createTime");
 
+		Integer topicId = Integer.parseInt((String) params.get("topicId"));
+		Topic topics = topicService.selectById(topicId);
+		
 		// 新建Topic
 		Topic topic = new Topic();
-		topic.setUserId(userId);
-		topic.setTitle(title);
-		topic.setContent(content);
-		topic.setTabId(tabId);
+		topic.setUserId(topics.getUserId());
+		topic.setTitle(topics.getTitle());
+		topic.setContent(topics.getContent());
+		topic.setTabId(topics.getTabId());
 		topic.setType(1); // 转发
-		topic.setClick(click);
+		topic.setClick(topics.getClick());
 		topic.setCreateTime(new Date());
 		topic.setUpdateTime(new Date());
 		topic.setDelFlag("0");
 		topic.setIsPublish("0");
+		topic.setCity(topics.getCity());
+		topic.setProvince(topics.getProvince());
 
 		// 添加topic
 		boolean ifSucc = topicService.addTopic(topic);
@@ -745,21 +776,27 @@ public class TopicController {
 		String content = (String) params.get("content");
 		int click = Integer.parseInt((String) params.get("click"));
 		Integer tabId = Integer.parseInt((String) params.get("tabId"));
-
+		String province = (String) params.get("province");
+		String city = (String) params.get("city");
 		String createTime = (String) params.get("createTime");
+		
+		Integer topicId = Integer.parseInt((String) params.get("topicId"));
+		Topic topics = topicService.selectById(topicId);
 
 		// 新建Topic
 		Topic topic = new Topic();
-		topic.setUserId(userId);
-		topic.setTitle(title);
-		topic.setContent(content);
-		topic.setTabId(tabId);
+		topic.setUserId(topics.getUserId());
+		topic.setTitle(topics.getTitle());
+		topic.setContent(topics.getContent());
+		topic.setTabId(topics.getTabId());
 		topic.setType(2); // 收藏
-		topic.setClick(click);
+		topic.setClick(topics.getClick());
 		topic.setCreateTime(new Date());
 		topic.setUpdateTime(new Date());
 		topic.setDelFlag("0");
 		topic.setIsPublish("0");
+		topic.setCity(topics.getCity());
+		topic.setProvince(topics.getProvince());
 
 		// 添加topic
 		boolean ifSucc = topicService.addTopic(topic);
@@ -824,6 +861,7 @@ public class TopicController {
 	@ResponseBody
 	public ModelAndView deleteById(@PathVariable Integer id) {
 
+		boolean ifSucc = topicService.deleteByPrimaryKey(id);
 		Integer tabId = topicService.selectById(id).getTabId();
 		Tab tab = tabService.selectByPrimaryKey(tabId);
 		tab.setCount(tab.getCount() - 1);
@@ -836,6 +874,13 @@ public class TopicController {
 		 * rtnMap.put("message", "删除失败"); }
 		 */
 		ModelAndView indexPage = new ModelAndView("redirect:/topic/Index");
+		
+		if (ifSucc) {
+			indexPage.addObject("message", "收藏成功");
+		} else {
+			indexPage.addObject("message", "收藏失败");
+		}
+		
 		/*
 		 * boolean bool = topicService.deleteByPrimaryKey(id);
 		 * 

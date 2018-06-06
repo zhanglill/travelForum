@@ -10,7 +10,9 @@
 <script type="application/x-javascript">
 	
 	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
 
 
 </script>
@@ -227,7 +229,60 @@ em {
 			style="margin: 20px 10px 20px 100px;">
 			<ul class="clearfix">
 
-				<c:forEach items="${hotestTopics}" var="topic">
+				<c:forEach items="${srcLists}" var="ImgSrc">
+
+					<li style="list-style: none; margin-top: 18px;">
+						<dl class="clearfix newlistcon">
+							<dt class="col-xs-3">
+								<c:forEach items="${ImgSrc.key}" var="oneSrc">
+
+									<a href="/travelForum/topic/${ImgSrc.value.id}" class="newlistimg"
+										target="_blank"> <img src="${oneSrc}"
+										style="margin: 50px -15px 10px; width: 229px; height: 158px;">
+									</a>
+								</c:forEach>
+							</dt>
+							<dd class="col-xs-9" style="float: left">
+								<div class="wrapBox" style="width: 90%; margin-left: 55px;">
+									<h3>
+										<a href="/travelForum/topic/${ImgSrc.value.id}"
+											title="${ImgSrc.value.title}">${ImgSrc.value.title}</a>
+									</h3>
+									<div class="desc">${ImgSrc.value.content}</div>
+									<div class="extra">
+										<ul class="clearfix"
+											style="list-style: none; margin-left: -18px;">
+											<li class="author" style="float: left">
+												<%-- <img href="/travelForum/user/member/${topic.user.username}"
+													width="16" height="16"> --%> <i class="fa fa-user-o"
+												aria-hidden="true"></i>&nbsp; ${ImgSrc.value.user.username}&nbsp;
+											</li>
+											<%-- <li class="author" style="float: left"><span
+												class="badge"> ${topic.tab.tabName}&nbsp; </span></li> --%>
+											<li class="author" style="float: left"><span
+												class="rg-tags"><a
+													href="/travelForum/topic/tab/${ImgSrc.value.tabId}">${ImgSrc.value.tab.tabName}</a></span></li>
+											<li class="author" style="float: left"><i
+												class="fa fa-map-marker"></i>&nbsp;${ImgSrc.value.province},${ImgSrc.value.city}&nbsp;
+												&nbsp;</li>
+											<li class="publish" style="float: left"><i
+												class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;${ImgSrc.value.localCreateTime}&nbsp;
+												&nbsp;</li>
+											<li class="view" style="float: left"><i
+												class="fa fa-eye" aria-hidden="true"></i>&nbsp;${ImgSrc.value.click}&nbsp;
+												&nbsp;</li>
+											<li class="ding" style="float: left"><i
+												class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;${ImgSrc.value.countReplies}</li>
+										</ul>
+									</div>
+								</div>
+							</dd>
+						</dl>
+					</li>
+					<hr />
+				</c:forEach>
+
+				<%-- <c:forEach items="${hotestTopics}" var="topic">
 
 					<li style="list-style: none; margin-top: 18px;">
 						<dl class="clearfix newlistcon">
@@ -251,12 +306,12 @@ em {
 										<ul class="clearfix"
 											style="list-style: none; margin-left: -18px;">
 											<li class="author" style="float: left">
-												<%-- <img href="/travelForum/user/member/${topic.user.username}"
-													width="16" height="16"> --%> <i class="fa fa-user-o"
+												<img href="/travelForum/user/member/${topic.user.username}"
+													width="16" height="16"> <i class="fa fa-user-o"
 												aria-hidden="true"></i>&nbsp; ${topic.user.username}&nbsp;
 											</li>
-											<%-- <li class="author" style="float: left"><span
-												class="badge"> ${topic.tab.tabName}&nbsp; </span></li> --%>
+											<li class="author" style="float: left"><span
+												class="badge"> ${topic.tab.tabName}&nbsp; </span></li>
 											<li class="author" style="float: left"><span
 												class="rg-tags"><a
 													href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span></li>
@@ -278,7 +333,7 @@ em {
 						</dl>
 					</li>
 					<hr />
-				</c:forEach>
+				</c:forEach> --%>
 				<li style="margin-top: -20px;"><a
 					href="/travelForum/topic/Index" class="morelink">更多</a></li>
 			</ul>

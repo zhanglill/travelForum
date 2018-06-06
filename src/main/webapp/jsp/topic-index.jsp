@@ -11,7 +11,9 @@
 <meta name="keywords" content="" />
 <script type="application/x-javascript">
 	
+	
 	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+
 
 </script>
 <!-- Custom Theme files -->
@@ -670,8 +672,8 @@ hr {
 					<div class="layout w980">
 						<div class="strgy-list-wrap" style="margin-bottom: 100px;">
 
-							<c:forEach items="${topics}" var="topic">
-								<c:if test="${topics}= null | ${topics} = ''">
+							<c:forEach items="${srcLists}" var="ImgSrc">
+								<c:if test="${ImgSrc.value}= null | ${ImgSrc.value} = ''">
 									<div class="strgy-item">
 										<div class="module-face">未查询到相关游记</div>
 									</div>
@@ -679,45 +681,42 @@ hr {
 								<!--一个游记-->
 								<div class="strgy-item">
 									<div class="module-face">
-										<a href="/travelForum/topic/tab/${topic.tabId}"><img
-											src="/travelForum/skins/skin/${topic.user.avatar}"></a>
+										<a href="/travelForum/topic/tab/${ImgSrc.value.tabId}"><img
+											src="/travelForum/skins/skin/${ImgSrc.value.user.avatar}"></a>
 									</div>
 									<div class="module-title">
 										<h3>
-											<a href="/travelForum/topic/${topic.id}"> ${topic.title}</a>
+											<a href="/travelForum/topic/${ImgSrc.value.id}">
+												${ImgSrc.value.title}</a>
 										</h3>
 									</div>
 									<div class="module-line">
-										<a href="/travelForum/user/member/${topic.user.username}"
-											class="user-name">${topic.user.username}</a> <span
+										<a
+											href="/travelForum/user/member/${ImgSrc.value.user.username}"
+											class="user-name">${ImgSrc.value.user.username}</a> <span
 											class="rg-tags"><a
-											href="/travelForum/topic/tab/${topic.tabId}">${topic.tab.tabName}</a></span>&nbsp;&nbsp;&nbsp;
-										<i class="fa fa-map-marker"></i>&nbsp;&nbsp;${topic.province},${topic.city}&nbsp;
+											href="/travelForum/topic/tab/${ImgSrc.value.tabId}">${ImgSrc.value.tab.tabName}</a></span>&nbsp;&nbsp;&nbsp;
+										<i class="fa fa-map-marker"></i>&nbsp;&nbsp;${ImgSrc.value.province},${ImgSrc.value.city}&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-clock-o"
-											aria-hidden="true"></i>&nbsp;&nbsp;<span class="dt-date">${topic.localCreateTime}</span>
+											aria-hidden="true"></i>&nbsp;&nbsp;<span class="dt-date">${ImgSrc.value.localCreateTime}</span>
 
 										&nbsp;&nbsp;&nbsp;<i class="fa fa-eye" aria-hidden="true"></i><span
-											class="dt-date">&nbsp;&nbsp;${topic.click}</span>
+											class="dt-date">&nbsp;&nbsp;${ImgSrc.value.click}</span>
 										&nbsp;&nbsp;&nbsp;<i class="fa fa-comment-o"
-											aria-hidden="true"></i><span class="dt-date">&nbsp;&nbsp;${topic.countReplies}</span>
+											aria-hidden="true"></i><span class="dt-date">&nbsp;&nbsp;${ImgSrc.value.countReplies}</span>
 
 									</div>
 									<div class="module-body">
-										<p>${topic.content}</p>
+										<p>${ImgSrc.value.content}</p>
 									</div>
 									<div class="module-pic">
-										<%-- <a href="/travelForum/topic/${topic.id}" class="pic-item"> 
-									<c:forEach items="${srcList}" var="srcList">
-										<img src="${srcList}">
-									</c:forEach>
-								</a> --%>
-										<c:forEach items="${srcList}" var="srcList">
+										<c:forEach items="${ImgSrc.key}" var="oneSrc">
 											<div class="ayc_sub">
-												<img src="${srcList}">
+												<img src="${oneSrc}">
 											</div>
 										</c:forEach>
-										<a href="/travelForum/topic/${topic.id}" class="aydetail">查看详情
-											&gt;</a>
+										<a href="/travelForum/topic/${ImgSrc.value.id}"
+											class="aydetail">查看详情 &gt;</a>
 									</div>
 								</div>
 								<hr>
@@ -753,24 +752,24 @@ hr {
 				<div class="wyfbbox" id="sidebar1"
 					style="float: left; margin: 5px 50px;">
 					<div class="rtitle">
-						<a href="/travelForum/question/questions/questionNoReplyByClick">热门游记</a>
+						<a href="#">热门游记</a>
 					</div>
 					<div class="xgwtbox">
-							<ul>
-								<c:forEach items="${hotestTopics}" var="hotestTopics">
-									<li><a
-										href="/travelForum/question/questions/noReply/${hotestTopics.id}">
-											<div class="wds">
-												<b>${hotestTopics.countReplies}</b> 评论
-											</div> <span>${hotestTopics.title}</span>
-									</a></li>
+						<ul>
+							<c:forEach items="${hotestTopics}" var="hotestTopics">
+								<li><a
+									href="/travelForum/topic/${hotestTopics.id}">
+										<div class="wds">
+											<b>${hotestTopics.countReplies}</b> 评论
+										</div> <span>${hotestTopics.title}</span>
+								</a></li>
 
-								</c:forEach>
-							</ul>
-						</div>
-
+							</c:forEach>
+						</ul>
 					</div>
+
 				</div>
+			</div>
 		</div>
 	</div>
 	<div style="display: none" id="tabName">${oneTab.tabName}</div>
