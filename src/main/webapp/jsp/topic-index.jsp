@@ -731,7 +731,7 @@ hr {
 				<div class="wyfbbox" id="sidebar1"
 					style="float: left; margin: 5px 50px;">
 					<div class="rtitle">
-						<a href="/travelForum/question/questions/questionNoReplyByClick">游记类型</a>
+						<a href="#">游记类型</a>
 					</div>
 					<div class="xgwtbox">
 

@@ -271,8 +271,8 @@ em {
 											<li class="view" style="float: left"><i
 												class="fa fa-eye" aria-hidden="true"></i>&nbsp;${ImgSrc.value.click}&nbsp;
 												&nbsp;</li>
-											<li class="ding" style="float: left"><i
-												class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;${ImgSrc.value.countReplies}</li>
+											<%-- <li class="ding" style="float: left"><i
+												class="fa fa-comment-o" aria-hidden="true"></i>&nbsp;${ImgSrc.value.countReplies}</li> --%>
 										</ul>
 									</div>
 								</div>
@@ -358,7 +358,7 @@ em {
 			</div>
 		</div>
 
-		<div class="panel col-xs-3" style="margin-top: 20px">
+		<!-- <div class="panel col-xs-3" style="margin-top: 20px">
 			<div class="w300">
 				<div class="righttitle mt27">
 					热门旅行地<a href="/travelForum/topic/Index" target="_blank"
@@ -417,7 +417,7 @@ em {
 					</ul>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 
 

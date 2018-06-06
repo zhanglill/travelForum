@@ -204,8 +204,8 @@
 	<div class="container">
 		<div class="row">
 
-			<div class="col-xs-8" style="float: left; margin-top: 20px;">
-				<div class="panel panel-default" id="main" style="width: 870px;">
+			<div class="col-xs-8" style="float: left; margin-top: 20px; margin-left: -40px; margin-right: 20px;">
+				<div class="panel panel-default" id="main" style="width: 900px;">
 
 					<div class="panel-heading" style="background-color: white">
 						<span style="font-size: 16px;">游记详情</span>
